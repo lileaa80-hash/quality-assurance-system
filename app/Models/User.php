@@ -2,58 +2,53 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * Kolom-kolom yang bisa diisi (Mass Assignment).
-     * Pastikan kolom baru dari migration kamu ada di sini.
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'nip',
-        'position',
-        'signature',
-        'is_active',
-        'unit_id', // Tambahkan ini jika kamu punya relasi ke tabel units
     ];
 
-    /**
-     * Kolom yang disembunyikan saat data ditampilkan (misal dalam API).
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Casting tipe data kolom.
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'is_active' => 'boolean',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
     /**
-     * Relasi ke Tabel Unit.
-     * User bekerja di unit mana?
+     * Relasi ke Units (Many to Many lewat user_units)
      */
-    public function unit(): BelongsTo
+    public function units()
     {
-        return $this->belongsTo(Unit::class);
+        // Menghubungkan User ke Unit melalui tabel user_units yang kamu buat
+        return $this->belongsToMany(Unit::class, 'user_units')
+                    ->withPivot('role_in_unit', 'start_date', 'end_date', 'is_active')
+                    ->withTimestamps();
     }
+
+    /* Catatan: Relasi di bawah ini saya beri komentar (/*) dulu 
+       biar tidak MERAH di VS Code kamu sebelum kamu buat filenya.
+    */
+
+    /*
+    public function documents() {
+        return $this->hasMany(Document::class, 'created_by');
+    }
+
+    public function audit_schedules() {
+        return $this->hasMany(AuditSchedule::class, 'created_by');
+    }
+    */
 }

@@ -2,40 +2,64 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Unit extends Model
 {
+    use HasFactory;
+
+    protected $table = 'units';
+
+    // Kolom yang bisa diisi (Mass Assignment) - Sama persis dengan Migration kamu
     protected $fillable = [
-        'code', 'name', 'type', 'parent_id', 'level',
-        'accreditation_status', 'accreditation_expiry',
-        'head_name', 'head_nip', 'address', 'phone',
-        'email', 'metadata', 'is_active'
+        'code',
+        'name',
+        'type',
+        'parent_id',
+        'level',
+        'accreditation_status',
+        'accreditation_expiry',
+        'head_name',
+        'head_nip',
+        'address',
+        'phone',
+        'email',
+        'metadata',
+        'is_active'
     ];
 
-    protected $casts = [
-        'metadata' => 'array',
-        'is_active' => 'boolean',
-        'accreditation_expiry' => 'date',
-    ];
+    /**
+     * Relasi ke Users (Many to Many lewat user_units)
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_units')
+                    ->withPivot('role_in_unit', 'start_date', 'end_date', 'is_active')
+                    ->withTimestamps();
+    }
 
-    // Relasi ke Atasan (Misal: Prodi ke Fakultas)
-    public function parent(): BelongsTo
+    /**
+     * Relasi ke Unit Induk (Self Join)
+     */
+    public function parent()
     {
         return $this->belongsTo(Unit::class, 'parent_id');
     }
 
-    // Relasi ke Bawahan (Misal: Fakultas punya banyak Prodi)
-    public function children(): HasMany
+    /**
+     * Relasi ke Unit Bawahan
+     */
+    public function children()
     {
         return $this->hasMany(Unit::class, 'parent_id');
     }
 
-    // Relasi ke User yang ada di unit ini
-    public function users(): HasMany
+    /**
+     * Relasi ke Audit Schedules
+     */
+    public function audit_schedules()
     {
-        return $this->hasMany(User::class, 'unit_id');
+        return $this->hasMany(AuditSchedule::class, 'unit_id');
     }
 }
