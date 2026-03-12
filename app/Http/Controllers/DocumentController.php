@@ -27,10 +27,11 @@ class DocumentController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi input agar tidak ada data null yang masuk ke database
         $request->validate([
             'document_number' => 'required|unique:documents',
-            'title' => 'required',
-            'type' => 'required',
+            'title'           => 'required',
+            'type'            => 'required',
         ]);
 
         DB::table('documents')->insert([
@@ -56,17 +57,34 @@ class DocumentController extends Controller
             ->where('documents.id', $id)
             ->first();
 
+        if (!$document) {
+            return redirect()->route('documents.index')->with('error', 'Dokumen tidak ditemukan.');
+        }
+
         return view('documents.show', compact('document'));
     }
 
     public function edit($id)
     {
         $document = DB::table('documents')->where('id', $id)->first();
+        
+        if (!$document) {
+            return redirect()->route('documents.index')->with('error', 'Dokumen tidak ditemukan.');
+        }
+
         return view('documents.edit', compact('document'));
     }
 
     public function update(Request $request, $id)
     {
+        // Validasi ini PENTING supaya error "Column type cannot be null" tidak muncul lagi
+        $request->validate([
+            'document_number' => 'required|unique:documents,document_number,'.$id,
+            'title'           => 'required',
+            'type'            => 'required',
+            'status'          => 'required',
+        ]);
+
         DB::table('documents')->where('id', $id)->update([
             'document_number' => $request->document_number,
             'title'           => $request->title,
