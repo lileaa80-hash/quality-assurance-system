@@ -1,54 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid mt-4">
+<div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-header text-white py-3" style="background-color: #007bff;">
-                    <h5 class="mb-0 font-weight-bold">Registrasi Dokumen Baru</h5>
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Register New Document</h4>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body">
                     <form action="{{ route('documents.store') }}" method="POST">
                         @csrf
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label font-weight-bold">Nomor Dokumen</label>
-                                <input type="text" name="document_number" class="form-control @error('document_number') is-invalid @enderror" placeholder="SOP/IT/001" required>
-                                @error('document_number') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label font-weight-bold">Jenis Dokumen</label>
-                                <select name="type" class="form-control" required>
-                                    <option value="sop">SOP</option>
-                                    <option value="manual_mutu">Manual Mutu</option>
-                                    <option value="formulir">Formulir</option>
-                                    <option value="kebijakan">Kebijakan</option>
-                                    <option value="laporan">Laporan</option>
-                                </select>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label">Document Number</label>
+                            <input type="text" name="document_number" class="form-control" placeholder="e.g. 001/SPMI/2024" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label font-weight-bold">Judul Dokumen</label>
-                            <input type="text" name="title" class="form-control" required>
+                            <label class="form-label">Title</label>
+                            <input type="text" name="title" class="form-control" placeholder="Enter document title" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label font-weight-bold">Induk Dokumen (Optional)</label>
-                            <select name="parent_id" class="form-control">
-                                <option value="">-- Pilih Jika Ada --</option>
-                                @foreach($parentDocs as $p)
-                                    <option value="{{ $p->id }}">{{ $p->document_number }} - {{ $p->title }}</option>
-                                @endforeach
+                            <label class="form-label">Document Type</label>
+                            <select name="type" class="form-select">
+                                <option value="Standard">Standard</option>
+                                <option value="Policy">Policy</option>
+                                <option value="Manual">Manual</option>
+                                <option value="Form">Form</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label font-weight-bold">Keterangan</label>
-                            <textarea name="description" class="form-control" rows="3"></textarea>
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="draft">Draft</option>
+                                <option value="published">Published</option>
+                            </select>
                         </div>
                         <hr>
-                        <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ route('documents.index') }}" class="btn btn-light border">Batal</a>
-                            <button type="submit" class="btn btn-primary px-4">Simpan Dokumen</button>
+                        <div class="d-flex justify-content-end">
+                            <a href="{{ route('documents.index') }}" class="btn btn-secondary me-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Save Document</button>
                         </div>
                     </form>
                 </div>
