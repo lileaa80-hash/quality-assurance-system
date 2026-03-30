@@ -2,15 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Document extends Model
 {
-    protected $fillable = ['code', 'title', 'type', 'category', 'description', 'status'];
+    use HasFactory;
 
-    public function versions(): HasMany
+    // INI BAGIAN PALING PENTING! 
+    // Pastikan 'document_number' ada di dalam daftar ini.
+    protected $fillable = [
+        'document_number','title','type','status','description','parent_id','effective_date','created_by','current_version','is_controlled', 
+        'is_active'
+    ];
+
+    public function creator()
     {
-        return $this->hasMany(DocumentVersion::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 }
