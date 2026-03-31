@@ -2,63 +2,64 @@
 
 @section('content')
 <div class="container mt-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
-            <h6 class="mb-0 fw-bold">User Management</h6>
-            <a href="{{ route('users.create') }}" class="btn btn-light btn-sm fw-bold py-0" style="font-size: 0.75rem;">
-                + Add New User
+    <div class="card shadow border-0">
+        <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold">SPMI SYSTEM - User Management</h5>
+            <a href="{{ route('users.create') }}" class="btn btn-light btn-sm px-3 fw-bold shadow-sm">
+                <i class="fas fa-plus-circle me-1"></i> Add New User
             </a>
         </div>
         
-        <div class="card-body">
+        <div class="card-body p-4">
             @if(session('success'))
-                <div class="alert alert-success py-2 border-0 shadow-sm" role="alert" style="background-color: #d1e7dd; font-size: 0.85rem;">
-                    {{ session('success') }}
+                <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                    <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
             <div class="table-responsive">
-                <table class="table table-borderless align-middle mt-2" style="font-size: 0.85rem;">
-                    <thead>
-                        <tr class="border-bottom">
-                            <th class="fw-bold">No</th>
-                            <th class="fw-bold">Full Name</th>
-                            <th class="fw-bold">Email Address</th>
-                            <th class="fw-bold">Status</th>
-                            <th class="fw-bold text-center">Actions</th>
+                <table class="table table-hover align-middle border rounded">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-3 fw-bold small text-muted" width="50">NO</th>
+                            <th class="fw-bold small text-muted">FULL NAME</th>
+                            <th class="fw-bold small text-muted">EMAIL ADDRESS</th>
+                            <th class="fw-bold small text-muted">STATUS</th>
+                            <th class="fw-bold small text-muted text-center" width="200">ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($users as $user)
-                        <tr class="border-bottom">
-                            <td>
-                                <span class="badge bg-secondary text-white px-2 py-1" style="font-size: 0.65rem; border-radius: 4px;">
+                        <tr>
+                            <td class="ps-3">
+                                <span class="badge bg-light text-dark border small">
                                     {{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}
                                 </span>
                             </td>
-                            <td class="fw-bold text-muted small">"{{ $user->name }}"</td>
-                            <td class="text-muted">{{ $user->email }}</td>
+                            <td>
+                                <div class="fw-bold text-dark">{{ $user->name }}</div>
+                            </td>
+                            <td class="text-muted small">{{ $user->email }}</td>
                             <td>
                                 @if($user->status == 'active')
-                                    <span class="badge bg-success text-uppercase" style="font-size: 0.65rem; border-radius: 4px;">ACTIVE</span>
+                                    <span class="badge bg-success-subtle text-success border border-success px-3">ACTIVE</span>
                                 @else
-                                    <span class="badge bg-warning text-dark text-uppercase" style="font-size: 0.65rem; border-radius: 4px;">INACTIVE</span>
+                                    <span class="badge bg-warning-subtle text-dark border border-warning px-3">INACTIVE</span>
                                 @endif
                             </td>
                             <td>
-                                <div class="d-flex justify-content-center">
-                                    <a href="{{ route('users.show', $user->id) }}" class="btn btn-info btn-sm text-white py-0 px-2 rounded-0 border-end border-white" style="font-size: 0.75rem;">
-                                        Show
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="{{ route('users.show', $user->id) }}" class="btn btn-info btn-sm text-white px-2 shadow-sm" title="View Details">
+                                        View
                                     </a>
-
-                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm text-white py-0 px-2 rounded-0 border-end border-white" style="font-size: 0.75rem;">
+                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm text-white px-2 shadow-sm" title="Edit User">
                                         Edit
                                     </a>
-                                    
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Yakin?')">
+                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?')">
                                         @csrf 
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm py-0 px-2 rounded-0" style="font-size: 0.75rem; border-bottom-right-radius: 4px; border-top-right-radius: 4px;">
+                                        <button type="submit" class="btn btn-danger btn-sm px-2 shadow-sm" title="Delete User">
                                             Delete
                                         </button>
                                     </form>
@@ -67,16 +68,28 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">Data tidak tersedia.</td>
+                            <td colspan="5" class="text-center py-5 text-muted italic">
+                                <i class="fas fa-folder-open d-block mb-2 fs-3"></i>
+                                No user data available.
+                            </td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
 
-            <div class="d-flex justify-content-end mt-3">
-                {{ $users->links() }}
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="small text-muted">
+                    Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} users
+                </div>
+                <div>
+                    {{ $users->links() }}
+                </div>
             </div>
+        </div>
+
+        <div class="card-footer bg-light py-2 text-center text-muted small border-0">
+            © 2026 SPMI Digital System - RPL
         </div>
     </div>
 </div>

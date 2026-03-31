@@ -1,40 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-5">
-    <div class="card shadow border-0">
-        <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
-            <h5 class="mb-0 fw-bold">Document Details</h5>
-            <span class="badge bg-light text-primary">{{ $document->document_number }}</span>
+<div class="container">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <h5>Document Details: {{ $document->document_number }}</h5>
+            <a href="{{ route('documents.index') }}" class="btn btn-secondary btn-sm">Back to List</a>
         </div>
-        <div class="card-body p-5">
-            <div class="row border-bottom pb-3 mb-3">
-                <div class="col-md-3 text-secondary fw-bold">Document Title</div>
-                <div class="col-md-9 fs-5 fw-bold text-dark">{{ $document->title }}</div>
-            </div>
-            
-            <div class="row border-bottom pb-3 mb-3">
-                <div class="col-md-3 text-secondary fw-bold">Category & Status</div>
-                <div class="col-md-9">
-                    <span class="badge bg-warning text-dark px-3 py-2 me-2">{{ $document->type }}</span>
-                    <span class="badge bg-danger px-3 py-2">{{ strtoupper($document->status) }}</span>
-                </div>
-            </div>
-
-            <div class="row border-bottom pb-3 mb-3">
-                <div class="col-md-3 text-secondary fw-bold">Description</div>
-                <div class="col-md-9 text-muted">{{ $document->description ?? 'No description provided.' }}</div>
-            </div>
-
-            <div class="row pb-3">
-                <div class="col-md-3 text-secondary fw-bold">Created By</div>
-                <div class="col-md-9"><i class="text-primary fw-bold">Erlina Chantika</i></div>
-            </div>
-
-            <div class="mt-5 d-flex gap-2">
-                <a href="{{ route('documents.index') }}" class="btn btn-outline-secondary">Back to List</a>
-                <a href="{{ route('documents.edit', $document->id) }}" class="btn btn-warning text-white shadow-sm px-4">Edit Data</a>
-            </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th width="200">Title</th>
+                    <td>{{ $document->title }}</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td><span class="badge bg-primary">{{ strtoupper($document->type) }}</span></td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td><span class="badge bg-success">{{ strtoupper($document->status) }}</span></td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ $document->description }}</td>
+                </tr>
+                <tr>
+                    <th>Created By</th>
+                    <td>{{ $document->creator->name ?? 'System' }}</td>
+                </tr>
+                <tr>
+                    <th>Effective Date</th>
+                    <td>{{ $document->effective_date }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="{{ route('documents.edit', $document->id) }}" class="btn btn-warning">Edit Document</a>
         </div>
     </div>
 </div>

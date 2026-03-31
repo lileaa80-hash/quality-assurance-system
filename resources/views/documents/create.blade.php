@@ -23,11 +23,11 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Document Number</label>
-                        <input type="text" name="document_number" class="form-control bg-light" placeholder="e.g. 090808" value="{{ old('document_number') }}" required>
+                        <input type="text" name="document_number" class="form-control" value="{{ old('document_number') }}" required>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Title</label>
-                        <input type="text" name="title" class="form-control" placeholder="Enter title" value="{{ old('title') }}" required>
+                        <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
                     </div>
                 </div>
 
@@ -35,23 +35,23 @@
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Document Type</label>
                         <select name="type" class="form-select">
-                            <option value="Standard">Standard</option>
-                            <option value="Policy">Policy</option>
-                            <option value="Manual">Manual</option>
+                            <option value="standard" {{ old('type') == 'standard' ? 'selected' : '' }}>Standard</option>
+                            <option value="policy" {{ old('type') == 'policy' ? 'selected' : '' }}>Policy</option>
+                            <option value="manual" {{ old('type') == 'manual' ? 'selected' : '' }}>Manual</option>
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Status</label>
                         <select name="status" class="form-select">
-                            <option value="Draft">Draft</option>
-                            <option value="Published">Published</option>
+                            <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                            <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>Published</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="mb-4">
                     <label class="form-label fw-bold">Description</label>
-                    <textarea name="description" class="form-control" rows="3" placeholder="Enter description...">{{ old('description') }}</textarea>
+                    <textarea name="description" class="form-control" rows="3">{{ old('description') }}</textarea>
                 </div>
 
                 <div class="d-flex justify-content-end gap-2">

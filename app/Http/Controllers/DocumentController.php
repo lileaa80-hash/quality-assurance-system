@@ -8,20 +8,29 @@ use Illuminate\Support\Facades\Auth;
 
 class DocumentController extends Controller
 {
+    /**
+     * Menampilkan daftar dokumen.
+     */
     public function index()
     {
+        // Mengambil data dokumen terbaru beserta user pembuatnya
         $documents = Document::with('creator')->latest()->get();
         return view('documents.index', compact('documents'));
     }
 
+    /**
+     * Menampilkan form tambah dokumen baru.
+     */
     public function create()
     {
         return view('documents.create');
     }
 
+    /**
+     * Menyimpan dokumen baru ke database.
+     */
     public function store(Request $request)
     {
-        // Validasi hanya data yang ada di form
         $request->validate([
             'document_number' => 'required|unique:documents,document_number',
             'title'           => 'required|string|max:255',
@@ -31,41 +40,71 @@ class DocumentController extends Controller
 
         try {
             Document::create([
-                'document_number'    => $request->document_number,
-                'title'              => $request->title,
-                'type'               => $request->type,
-                'status'             => $request->status,
-                'description'        => $request->description ?? '-',
-                'parent_id'          => null, // Di-null kan saja karena tidak ada di form
-                'effective_date'     => now(),
-                'created_by'         => Auth::id() ?? 1,
-                'current_version'    => 1,
-                'is_controlled'      => true,
-                'is_active'          => true,
+                'document_number' => $request->document_number,
+                'title'           => $request->title,
+                'type'            => strtolower($request->type), // Menghindari error Data Truncated
+                'status'          => strtolower($request->status),
+                'description'     => $request->description ?? '-',
+                'parent_id'       => null,
+                'effective_date'  => now(),
+                'created_by'      => Auth::id() ?? 1, // Menggunakan ID 1 jika belum login
+                'current_version' => 1,
+                'is_controlled'   => true,
+                'is_active'       => true,
             ]);
 
-            return redirect()->route('documents.index')->with('success', 'New document added!');
+            return redirect()->route('documents.index')->with('success', 'Document added successfully!');
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Gagal menyimpan: ' . $e->getMessage()]);
+            return back()->withInput()->withErrors(['error' => 'Gagal simpan: ' . $e->getMessage()]);
         }
     }
 
-    public function edit($id)
+    /**
+     * MENAMPILKAN DETAIL DOKUMEN (Penyembuh error yang kamu alami sekarang)
+     */
+    public function show(Document $document)
     {
-        $document = Document::findOrFail($id);
+        // Melempar data $document ke folder resources/views/documents/show.blade.php
+        return view('documents.show', compact('document'));
+    }
+
+    /**
+     * Menampilkan form edit dokumen.
+     */
+    public function edit(Document $document)
+    {
         return view('documents.edit', compact('document'));
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update data dokumen.
+     */
+    public function update(Request $request, Document $document)
     {
-        $document = Document::findOrFail($id);
-        $document->update($request->all());
+        $data = $request->all();
+        
+        // Tetap paksa lowercase agar tidak error saat update
+        if(isset($data['type'])) $data['type'] = strtolower($data['type']);
+        if(isset($data['status'])) $data['status'] = strtolower($data['status']);
+        
+        $document->update($data);
+
         return redirect()->route('documents.index')->with('success', 'Document updated!');
     }
 
+    /**
+     * Menghapus dokumen.
+     */
     public function destroy($id)
     {
-        Document::findOrFail($id)->delete();
-        return redirect()->route('documents.index')->with('success', 'Document deleted!');
+        $document = Document::find($id);
+
+        if (!$document) {
+            return redirect()->route('documents.index')->with('error', 'Dokumen tidak ditemukan!');
+        }
+
+        $document->delete();
+
+        return redirect()->route('documents.index')->with('success', 'Document deleted successfully!');
     }
 }

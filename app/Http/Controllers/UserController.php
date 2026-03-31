@@ -3,24 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Document; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of the users.
+     * Menampilkan daftar user dengan pagination.
      */
     public function index()
     {
-        // Menggunakan paginate agar $users->links() di Blade tidak error
         $users = User::latest()->paginate(10);
-        
         return view('users.index', compact('users'));
     }
 
     /**
-     * Show the form for creating a new user.
+     * Menampilkan form tambah user baru.
      */
     public function create()
     {
@@ -28,7 +27,7 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created user in storage.
+     * Menyimpan user baru ke database.
      */
     public function store(Request $request)
     {
@@ -51,47 +50,68 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified user.
+     * Menampilkan detail user
+     */
+    public function show(User $user)
+    {
+        // Mengambil dokumen milik user ini agar variabel $documents tersedia di Blade
+        $documents = Document::where('created_by', $user->id)->get();
+
+        return view('users.show', compact('user', 'documents'));
+    }
+
+    /**
+     * Menampilkan form edit user
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        // Mengambil dokumen agar @forelse($documents as $doc) tidak error
+        $documents = Document::where('created_by', $user->id)->get();
+
+        return view('users.edit', compact('user', 'documents'));
     }
 
     /**
-     * Update the specified user in storage.
+     * Memperbarui data user.
      */
     public function update(Request $request, User $user)
-    {
-        $request->validate([
-            'name'   => 'required|string|max:255',
-            'email'  => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'status' => 'required|in:active,inactive',
-        ]);
+{
+    // 1. Validasi harus pakai 'full_name' sesuai input di Blade
+    $request->validate([
+        'full_name' => 'required|string|max:255',
+        'email'     => 'required|string|email|max:255|unique:users,email,' . $user->id,
+        'status'    => 'required', // Kita bebaskan dari in:active agar tidak error case-sensitive
+        'password'  => 'nullable|string|min:8|confirmed',
+    ]);
 
-        $data = [
-            'name'   => $request->name,
-            'email'  => $request->email,
-            'status' => $request->status,
-        ];
+    // 2. Mapping data dari form ke kolom database
+    $user->name = $request->full_name; // 'full_name' dari form masuk ke kolom 'name'
+    $user->email = $request->email;
+    $user->status = $request->status;
 
-        // Update password hanya jika diisi
-        if ($request->filled('password')) {
-            $request->validate(['password' => 'confirmed|min:8']);
-            $data['password'] = Hash::make($request->password);
-        }
-
-        $user->update($data);
-
-        return redirect()->route('users.index')
-            ->with('success', 'User updated successfully.');
+    // 3. Update password jika diisi
+    if ($request->filled('password')) {
+        $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
     }
 
+    $user->save();
+
+    return redirect()->route('users.index')
+        ->with('success', 'User updated successfully.');
+}
+
     /**
-     * Remove the specified user from storage.
+     * Menghapus user
      */
     public function destroy(User $user)
     {
+        // Proteksi jika user punya dokumen
+        $hasDocuments = Document::where('created_by', $user->id)->exists();
+
+        if ($hasDocuments) {
+            return back()->with('error', 'Gagal hapus! User ini masih punya dokumen.');
+        }
+
         $user->delete();
 
         return redirect()->route('users.index')

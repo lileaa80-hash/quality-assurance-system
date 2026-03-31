@@ -1,41 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>SPMI - User Details</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .navbar-custom { background-color: #007bff; padding: 15px; color: white; font-weight: bold; margin-bottom: 30px; }
-        .info-label { font-size: 0.85rem; color: #adb5bd; text-transform: uppercase; font-weight: 600; }
-        .info-value { font-size: 1.1rem; color: #495057; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
-    <nav class="navbar-custom"><div class="container">SPMI SYSTEM</div></nav>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold mb-4">User Information</h5>
-                        <div class="info-label">Full Name</div>
-                        <div class="info-value">{{ $user->name }}</div>
-                        
-                        <div class="info-label">Email Address</div>
-                        <div class="info-value">{{ $user->email }}</div>
-                        
-                        <div class="info-label">Account Status</div>
-                        <div class="info-value">
-                            <span class="badge {{ $user->status == 'active' ? 'bg-success' : 'bg-danger' }} rounded-pill px-3">
-                                {{ strtoupper($user->status) }}
-                            </span>
+@extends('layouts.app')
+
+@section('content')
+<div class="container mt-5">
+    <div class="card shadow border-0">
+        <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold">SPMI SYSTEM - User Profile Details</h5>
+            <a href="{{ route('users.index') }}" class="btn btn-light btn-sm px-3 shadow-sm">Back to List</a>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="row g-4">
+                <div class="col-md-4 border-end">
+                    <div class="mb-4">
+                        <label class="text-muted small text-uppercase fw-bold">User Information</label>
+                        <h3 class="fw-bold text-dark mb-1">{{ $user->name }}</h3>
+                        <p class="text-muted small">{{ $user->email }}</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="text-muted small text-uppercase fw-bold d-block mb-2">Status Account</label>
+                        <span class="badge {{ $user->status == 'active' ? 'bg-success' : 'bg-danger' }} px-3 py-2 fs-6 shadow-sm">
+                            {{ strtoupper($user->status ?? 'ACTIVE') }}
+                        </span>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning text-white w-100 shadow-sm fw-bold">
+                            <i class="fas fa-edit me-1"></i> Edit Profile
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="mb-4">
+                        <h6 class="fw-bold text-uppercase small text-muted mb-3 border-bottom pb-2">System Information</h6>
+                        <div class="bg-light rounded p-3 border shadow-sm">
+                            <div class="row mb-2 small">
+                                <div class="col-sm-4 text-muted">Join Date</div>
+                                <div class="col-sm-8 fw-bold">: {{ $user->created_at->format('d M Y, H:i') }}</div>
+                            </div>
+                            <div class="row mb-0 small">
+                                <div class="col-sm-4 text-muted">Last Update</div>
+                                <div class="col-sm-8 fw-bold text-primary">: {{ \Carbon\Carbon::parse($user->updated_at)->diffForHumans() }}</div>
+                            </div>
                         </div>
-                        <hr>
-                        <a href="{{ url('/users') }}" class="btn btn-outline-secondary w-100">Back to List</a>
+                    </div>
+
+                    <div>
+                        <h6 class="fw-bold text-uppercase small text-muted mb-3">Documents Created ({{ count($documents) }})</h6>
+                        <div class="table-responsive border rounded shadow-sm">
+                            <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-3 fw-bold">Doc Number</th>
+                                        <th class="fw-bold">Title</th>
+                                        <th class="fw-bold text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($documents as $doc)
+                                    <tr>
+                                        <td class="ps-3 fw-bold text-primary">{{ $doc->document_number }}</td>
+                                        <td>{{ $doc->title }}</td>
+                                        <td class="text-center">
+                                            <a href="{{ route('documents.show', $doc->id) }}" class="btn btn-sm btn-outline-primary py-0 px-2">View</a>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr><td colspan="3" class="text-center py-3 text-muted italic">No documents found.</td></tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+@endsection

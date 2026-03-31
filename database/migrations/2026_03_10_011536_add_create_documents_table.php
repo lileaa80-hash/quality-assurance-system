@@ -6,59 +6,63 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('document_number')->unique(); // Nomor dokumen: SOP/01/2024
+            $table->string('document_number')->unique();
             $table->string('title');
+            
+            // Kolom Type (Pastikan 'standard' ada di sini)
             $table->enum('type', [
-                'sop', 'manual_mutu', 'formulir', 'pedoman', 
+                'sop', 'manual_mutu', 'standard', 'formulir', 'pedoman', 
                 'kebijakan', 'laporan', 'sertifikat', 'borang'
             ]);
+
+            // Kolom Status
             $table->enum('status', [
                 'draft', 'review', 'approved', 'published', 
                 'archived', 'obsolete'
             ])->default('draft');
             
-            // Hierarki dokumen
+            // Hierarki & Versi
             $table->foreignId('parent_id')->nullable()->constrained('documents');
-            
-            // Versi terkini
             $table->integer('current_version')->default(1);
             $table->date('effective_date')->nullable();
-            $table->date('review_date')->nullable(); // Tanggal review berikutnya
+            $table->date('review_date')->nullable();
             $table->date('expiry_date')->nullable();
             
-            // Penanggung jawab
+            // User Relations
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('approved_by')->nullable()->constrained('users');
             $table->timestamp('approved_at')->nullable();
             
-            // Distribusi
-            $table->boolean('is_controlled')->default(true); // Dokumen terkendali
-            $table->json('distribution_units')->nullable(); // Unit yang menerima
-            
-            // MinIO path untuk file
-            $table->string('file_path')->nullable(); // Path di MinIO
+            // File & QR
+            $table->boolean('is_controlled')->default(true);
+            $table->json('distribution_units')->nullable();
+            $table->string('file_path')->nullable();
             $table->string('file_name')->nullable();
             $table->string('file_size')->nullable();
             $table->string('mime_type')->nullable();
+            $table->string('qr_code')->nullable();
             
-            // QR Code
-            $table->string('qr_code')->nullable(); // Path QR code image
-            
+            // Others
             $table->text('description')->nullable();
             $table->json('metadata')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-            
-            $table->index('type');
-            $table->index('status');
-            $table->index('effective_date');
+
+            // Indexing untuk performa
+            $table->index(['type', 'status', 'effective_date']);
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('documents');
