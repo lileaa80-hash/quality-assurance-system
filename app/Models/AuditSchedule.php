@@ -9,12 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class AuditSchedule extends Model
 {
     protected $fillable = [
-        'unit_id', 
-        'title', 
-        'description',
-        'start_date', 
-        'end_date', 
-        'status'
+        'unit_id','title','description','start_date','end_date','status'
     ];
 
     protected $casts = [

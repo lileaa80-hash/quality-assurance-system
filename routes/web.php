@@ -7,7 +7,8 @@ use App\Http\Controllers\StandardController;
 use App\Http\Controllers\StandardIndicatorController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\AuditScheduleController; 
-use App\Http\Controllers\AuditTeamController;// Import ini wajib!
+use App\Http\Controllers\AuditTeamController;
+use App\Http\Controllers\AuditChecklistController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,3 +22,4 @@ Route::resource('standardindicators', StandardIndicatorController::class)->names
 Route::resource('documents', DocumentController::class);
 Route::resource('audit_schedules', AuditScheduleController::class);
 Route::resource('audit_teams', AuditTeamController::class);
+Route::resource('audit_checklists', AuditChecklistController::class);

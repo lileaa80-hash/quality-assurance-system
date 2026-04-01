@@ -9,11 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class AuditFinding extends Model
 {
     protected $fillable = [
-        'audit_schedule_id', 
-        'indicator_id', 
-        'description', 
-        'category', 
-        'status'
+        'audit_schedule_id','indicator_id','description','category','status'
     ];
 
     public function schedule(): BelongsTo
