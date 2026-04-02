@@ -9,6 +9,8 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\AuditScheduleController; 
 use App\Http\Controllers\AuditTeamController;
 use App\Http\Controllers\AuditChecklistController;
+use App\Http\Controllers\AuditFindingController;
+use App\Http\Controllers\CorrectiveActionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,3 +25,5 @@ Route::resource('documents', DocumentController::class);
 Route::resource('audit_schedules', AuditScheduleController::class);
 Route::resource('audit_teams', AuditTeamController::class);
 Route::resource('audit_checklists', AuditChecklistController::class);
+Route::resource('audit_findings', AuditFindingController::class);
+Route::resource('corrective_actions', CorrectiveActionController::class);
