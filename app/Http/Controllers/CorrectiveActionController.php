@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Log;
 
 class CorrectiveActionController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $query = DB::table('corrective_actions')
+        $actions = DB::table('corrective_actions')
             ->join('audit_findings', 'corrective_actions.audit_finding_id', '=', 'audit_findings.id')
             ->join('units', 'corrective_actions.unit_id', '=', 'units.id')
             ->join('users', 'corrective_actions.responsible_person', '=', 'users.id')
@@ -20,25 +20,20 @@ class CorrectiveActionController extends Controller
                 'audit_findings.finding_number', 
                 'units.name as unit_name',
                 'users.name as pic_name'
-            );
-
-        // Filter berdasarkan status akhir
-        if ($request->filled('status')) {
-            $query->where('corrective_actions.final_status', $request->status);
-        }
-
-        $actions = $query->orderBy('corrective_actions.created_at', 'desc')->paginate(10);
+            )
+            ->orderBy('corrective_actions.created_at', 'desc')
+            ->get();
 
         return view('corrective_actions.index', compact('actions'));
     }
 
     public function create()
     {
-        // Hanya ambil temuan yang statusnya masih 'open' agar bisa dibuatkan rencana perbaikan
+        // Ambil finding yang masih OPEN agar bisa dibuatkan CAPA
         $findings = DB::table('audit_findings')->where('status', 'open')->get();
         $units = DB::table('units')->get();
         $users = DB::table('users')->get();
-
+        
         return view('corrective_actions.create', compact('findings', 'units', 'users'));
     }
 
@@ -56,6 +51,7 @@ class CorrectiveActionController extends Controller
 
         DB::beginTransaction();
         try {
+            // 1. Insert ke tabel corrective_actions
             DB::table('corrective_actions')->insert([
                 'ca_number' => $request->ca_number,
                 'audit_finding_id' => $request->audit_finding_id,
@@ -66,23 +62,23 @@ class CorrectiveActionController extends Controller
                 'preventive_action_plan' => $request->preventive_action_plan,
                 'target_completion_date' => $request->target_completion_date,
                 'responsible_person' => $request->responsible_person,
-                'verification_status' => 'pending',
-                'final_status' => 'open',
+                'verification_status' => 'pending', // Default awal
+                'final_status' => 'open',           // Masih proses
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
 
-            // Update status Finding asal menjadi 'in_progress' karena sudah ada rencana perbaikan
+            // 2. Update status Finding asal menjadi 'in_progress'
             DB::table('audit_findings')
                 ->where('id', $request->audit_finding_id)
                 ->update(['status' => 'in_progress']);
 
             DB::commit();
-            return redirect()->route('corrective_actions.index')->with('success', 'Corrective Action Plan created successfully!');
+            return redirect()->route('corrective_actions.index')->with('success', 'Corrective Action Plan Created!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            return back()->withInput()->with('error', 'Error: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to save: ' . $e->getMessage());
         }
     }
 
@@ -92,19 +88,15 @@ class CorrectiveActionController extends Controller
             ->join('audit_findings', 'corrective_actions.audit_finding_id', '=', 'audit_findings.id')
             ->join('units', 'corrective_actions.unit_id', '=', 'units.id')
             ->join('users', 'corrective_actions.responsible_person', '=', 'users.id')
-            ->leftJoin('users as verifiers', 'corrective_actions.verified_by', '=', 'verifiers.id')
             ->select(
                 'corrective_actions.*', 
                 'audit_findings.finding_number', 
                 'audit_findings.finding_description',
                 'units.name as unit_name',
-                'users.name as pic_name',
-                'verifiers.name as verifier_name'
+                'users.name as pic_name'
             )
             ->where('corrective_actions.id', $id)
             ->first();
-
-        if (!$action) return abort(404);
 
         return view('corrective_actions.show', compact('action'));
     }
@@ -122,43 +114,48 @@ class CorrectiveActionController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'ca_number' => 'required|unique:corrective_actions,ca_number,' . $id,
             'root_cause' => 'required',
             'corrective_action_plan' => 'required',
+            'final_status' => 'required'
         ]);
 
+        DB::beginTransaction();
         try {
+            // 1. Update data Corrective Action
             DB::table('corrective_actions')
                 ->where('id', $id)
                 ->update([
-                    'ca_number' => $request->ca_number,
-                    'root_cause' => $request->root_cause,
+                    'unit_id' => $request->unit_id,
+                    'audit_finding_id' => $request->audit_finding_id,
                     'cause_category' => $request->cause_category,
+                    'root_cause' => $request->root_cause,
                     'corrective_action_plan' => $request->corrective_action_plan,
                     'preventive_action_plan' => $request->preventive_action_plan,
                     'target_completion_date' => $request->target_completion_date,
                     'responsible_person' => $request->responsible_person,
-                    // Field implementasi biasanya diisi saat update
-                    'implementation_evidence' => $request->implementation_evidence, 
-                    'implementation_date' => $request->implementation_date,
-                    'verification_status' => $request->verification_status ?? 'pending',
-                    'final_status' => $request->final_status ?? 'open',
+                    'final_status' => $request->final_status,
                     'updated_at' => now(),
                 ]);
 
-            return redirect()->route('corrective_actions.index')->with('success', 'Corrective Action updated!');
+            // 2. Jika status diubah jadi 'closed', update juga status di Finding-nya
+            if ($request->final_status == 'closed') {
+                $ca = DB::table('corrective_actions')->where('id', $id)->first();
+                DB::table('audit_findings')
+                    ->where('id', $ca->audit_finding_id)
+                    ->update(['status' => 'closed']);
+            }
+
+            DB::commit();
+            return redirect()->route('corrective_actions.index')->with('success', 'Report Updated Successfully!');
         } catch (\Exception $e) {
-            return back()->with('error', 'Update failed: ' . $e->getMessage());
+            DB::rollBack();
+            return back()->with('error', 'Update Failed: ' . $e->getMessage());
         }
     }
 
     public function destroy($id)
     {
-        try {
-            DB::table('corrective_actions')->where('id', $id)->delete();
-            return redirect()->route('corrective_actions.index')->with('success', 'Data deleted successfully!');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Delete failed.');
-        }
+        DB::table('corrective_actions')->where('id', $id)->delete();
+        return redirect()->route('corrective_actions.index')->with('success', 'Deleted Successfully!');
     }
 }

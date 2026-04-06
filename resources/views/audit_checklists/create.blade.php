@@ -20,7 +20,7 @@
                             @endforeach
                         </select>
                     </div>
-
+                    
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-muted small mb-1">UNIT</label>
                         <select name="unit_id" class="form-select form-select-sm shadow-sm" required>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuditScheduleController extends Controller
 {
@@ -21,39 +22,36 @@ class AuditScheduleController extends Controller
 
     public function create()
     {
+        // BENAR: Panggil tabel 'standards'
         $standards = DB::table('standards')->get();
         return view('audit_schedules.create', compact('standards'));
     }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'audit_number' => 'required|unique:audit_schedules',
-            'title' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'standards_used' => 'required|array',
-        ]);
-
+   public function store(Request $request)
+{
+    // Kita buat simpel biar nggak error terus
+    try {
         DB::table('audit_schedules')->insert([
-            'audit_number' => $request->audit_number,
-            'title' => $request->title,
-            'type' => $request->type,
-            'scope' => $request->scope,
-            'period_year' => $request->period_year,
-            'period_semester' => $request->period_semester,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'standards_used' => json_encode($request->standards_used),
-            'status' => 'planned',
-            'notes' => $request->notes,
-            'created_by' => Auth::id() ?? 1,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'audit_number'    => $request->audit_number,
+            'title'           => $request->title,
+            'type'            => $request->type ?? 'internal',
+            'scope'           => $request->scope ?? 'program',
+            'period_year'     => $request->period_year ?? 2026,
+            'period_semester' => $request->period_semester ?? 'Ganjil',
+            'start_date'      => $request->start_date,
+            'end_date'        => $request->end_date,
+            'standards_used'  => json_encode($request->standards_used),
+            'status'          => 'planned',
+            'notes'           => $request->notes,
+            'created_by'      => Auth::id() ?? 1,
+            'created_at'      => now(),
+            'updated_at'      => now(),
         ]);
 
-        return redirect()->route('audit_schedules.index')->with('success', 'Audit Schedule created successfully.');
+        return redirect()->route('audit_schedules.index')->with('success', 'HORE BERHASIL!');
+    } catch (\Exception $e) {
+        return back()->withInput()->withErrors(['msg' => 'Aduh, ada masalah: ' . $e->getMessage()]);
     }
+}
 
     public function show($id)
     {
@@ -63,6 +61,10 @@ class AuditScheduleController extends Controller
             ->where('audit_schedules.id', $id)
             ->first();
 
+        if (!$schedule) {
+            return redirect()->route('audit_schedules.index')->with('error', 'Data tidak ditemukan.');
+        }
+
         return view('audit_schedules.show', compact('schedule'));
     }
 
@@ -70,34 +72,45 @@ class AuditScheduleController extends Controller
     {
         $schedule = DB::table('audit_schedules')->where('id', $id)->first();
         $standards = DB::table('standards')->get();
+
+        if (!$schedule) {
+            return redirect()->route('audit_schedules.index')->with('error', 'Data tidak ditemukan.');
+        }
+
         return view('audit_schedules.edit', compact('schedule', 'standards'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required',
+            'title'          => 'required',
+            'start_date'     => 'required|date',
+            'end_date'       => 'required|date',
             'standards_used' => 'required|array',
         ]);
 
-        DB::table('audit_schedules')->where('id', $id)->update([
-            'title' => $request->title,
-            'type' => $request->type,
-            'scope' => $request->scope,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'standards_used' => json_encode($request->standards_used),
-            'status' => $request->status,
-            'notes' => $request->notes,
-            'updated_at' => now(),
-        ]);
+        try {
+            DB::table('audit_schedules')->where('id', $id)->update([
+                'title'           => $request->title,
+                'type'            => $request->type,
+                'scope'           => $request->scope,
+                'start_date'      => $request->start_date,
+                'end_date'        => $request->end_date,
+                'standards_used'  => json_encode($request->standards_used),
+                'status'          => $request->status ?? 'planned',
+                'notes'           => $request->notes,
+                'updated_at'      => now(),
+            ]);
 
-        return redirect()->route('audit_schedules.index')->with('success', 'Audit Schedule updated successfully.');
+            return redirect()->route('audit_schedules.index')->with('success', 'Audit Schedule berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Gagal memperbarui data.');
+        }
     }
 
     public function destroy($id)
     {
         DB::table('audit_schedules')->where('id', $id)->delete();
-        return redirect()->route('audit_schedules.index')->with('success', 'Audit Schedule deleted.');
+        return redirect()->route('audit_schedules.index')->with('success', 'Audit Schedule telah dihapus.');
     }
 }
