@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class AuditFindingController extends Controller
 {
-    /**
-     * Tampilkan daftar temuan audit.
-     */
+    
     public function index(Request $request)
     {
         $query = DB::table('audit_findings')
@@ -25,12 +23,10 @@ class AuditFindingController extends Controller
                 'users.name as auditor_name'
             );
 
-        // Filter Status
         if ($request->filled('status')) {
             $query->where('audit_findings.status', $request->status);
         }
 
-        // Search
         if ($request->filled('search')) {
             $query->where(function($q) use ($request) {
                 $q->where('finding_number', 'like', '%' . $request->search . '%')

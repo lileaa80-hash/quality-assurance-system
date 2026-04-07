@@ -22,13 +22,11 @@ class AuditScheduleController extends Controller
 
     public function create()
     {
-        // BENAR: Panggil tabel 'standards'
         $standards = DB::table('standards')->get();
         return view('audit_schedules.create', compact('standards'));
     }
    public function store(Request $request)
 {
-    // Kita buat simpel biar nggak error terus
     try {
         DB::table('audit_schedules')->insert([
             'audit_number'    => $request->audit_number,
