@@ -32,7 +32,7 @@
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold text-secondary">Status</label>
+                         <label class="form-label fw-bold text-secondary">Status</label>
                         <select name="status" class="form-select">
                             <option value="draft" {{ $document->status == 'draft' ? 'selected' : '' }}>Draft</option>
                             <option value="published" {{ $document->status == 'published' ? 'selected' : '' }}>Published</option>

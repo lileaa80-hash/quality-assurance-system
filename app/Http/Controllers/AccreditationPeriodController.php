@@ -54,7 +54,6 @@ class AccreditationPeriodController extends Controller
                 'result_grade' => $request->result_grade,
                 'result_score' => $request->result_score,
                 'certificate_number' => $request->certificate_number,
-                // Jika ada upload file, logic-nya ditaruh di sini
                 'certificate_file' => $request->certificate_file, 
                 'assessors' => $request->assessors ? json_encode($request->assessors) : null,
                 'metadata' => $request->metadata ? json_encode($request->metadata) : null,

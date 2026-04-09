@@ -12,6 +12,7 @@ use App\Http\Controllers\AuditChecklistController;
 use App\Http\Controllers\AuditFindingController;
 use App\Http\Controllers\CorrectiveActionController;
 use App\Http\Controllers\AccreditationPeriodController;
+use App\Http\Controllers\AccreditationBorangController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,3 +30,4 @@ Route::resource('audit_checklists', AuditChecklistController::class);
 Route::resource('audit_findings', AuditFindingController::class);
 Route::resource('corrective_actions', CorrectiveActionController::class);
 Route::resource('accreditation_periods', AccreditationPeriodController::class);
+Route::resource('accreditation_borangs', AccreditationBorangController::class);
