@@ -9,12 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class AccreditationBorangController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $borangs = DB::table('accreditation_borangs')
             ->join('accreditation_periods', 'accreditation_borangs.accreditation_period_id', '=', 'accreditation_periods.id')
             ->join('standards', 'accreditation_borangs.standard_id', '=', 'standards.id')
-            ->join('users', 'accreditation_borangs.filled_by', '=', 'users.id')
+            ->leftJoin('users', 'accreditation_borangs.filled_by', '=', 'users.id')
             ->select(
                 'accreditation_borangs.*',
                 'accreditation_periods.period_name',
@@ -27,9 +30,11 @@ class AccreditationBorangController extends Controller
         return view('accreditation_borangs.index', compact('borangs'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        // Ambil data untuk dropdown form
         $periods = DB::table('accreditation_periods')->get();
         $standards = DB::table('standards')->get();
         $indicators = DB::table('standard_indicators')->get();
@@ -37,56 +42,80 @@ class AccreditationBorangController extends Controller
         return view('accreditation_borangs.create', compact('periods', 'standards', 'indicators'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'accreditation_period_id' => 'required',
-            'standard_id' => 'required',
-            'standard_indicator_id' => 'required',
-            'status' => 'required',
-        ]);
+    $request->validate([
+        'accreditation_period_id' => 'required',
+        'standard_id'             => 'required',
+        'standard_indicator_id'   => 'required',
+        'status'                  => 'required',
+    ]);
 
-        try {
-            DB::table('accreditation_borangs')->insert([
-                'accreditation_period_id' => $request->accreditation_period_id,
-                'standard_id' => $request->standard_id,
-                'standard_indicator_id' => $request->standard_indicator_id,
-                'response' => $request->response,
-                'analysis' => $request->analysis,
-                'target' => $request->target,
-                'achievement' => $request->achievement,
-                // Mengubah array dokumen jadi JSON
-                'supporting_documents' => $request->supporting_documents ? json_encode($request->supporting_documents) : null,
-                'self_assessment_score' => $request->self_assessment_score,
-                'status' => $request->status,
-                'filled_by' => Auth::id() ?? 1, // Menggunakan ID user login atau default 1 untuk test
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+    try {
+        // STEP 3: Gunakan query builder dengan logging
+        $data = [
+            'accreditation_period_id' => $request->accreditation_period_id,
+            'standard_id'             => $request->standard_id,
+            'standard_indicator_id'   => $request->standard_indicator_id,
+            'response'                => $request->response,
+            'analysis'                => $request->analysis,
+            'target'                  => $request->target,
+            'achievement'             => $request->achievement,
+            'supporting_documents'    => $request->supporting_documents ? json_encode($request->supporting_documents) : null,
+            'self_assessment_score'   => $request->self_assessment_score ?? 0,
+            'status'                  => $request->status,
+            'filled_by'               => Auth::id() ?? 1,
+            'created_at'              => now(),
+            'updated_at'              => now(),
+        ];
 
-            return redirect()->route('accreditation_borangs.index')->with('success', 'Borang Berhasil Disimpan!');
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return back()->withInput()->with('error', 'Gagal menyimpan borang: ' . $e->getMessage());
-        }
+        DB::table('accreditation_borangs')->insert($data);
+
+        return redirect()->route('accreditation_borangs.index')->with('success', 'Borang Berhasil!');
+
+    } catch (\Exception $e) {
+        // STEP 4: Langsung matikan aplikasi dan munculkan error aslinya
+        dd("DATABASE ERROR: " . $e->getMessage()); 
+    }
     }
 
+   
     public function show($id)
     {
         $borang = DB::table('accreditation_borangs')
             ->join('accreditation_periods', 'accreditation_borangs.accreditation_period_id', '=', 'accreditation_periods.id')
             ->join('standards', 'accreditation_borangs.standard_id', '=', 'standards.id')
             ->join('standard_indicators', 'accreditation_borangs.standard_indicator_id', '=', 'standard_indicators.id')
-            ->select('accreditation_borangs.*', 'accreditation_periods.period_name', 'standards.name as standard_name', 'standard_indicators.name as indicator_name')
+            ->select(
+                'accreditation_borangs.*', 
+                'accreditation_periods.period_name', 
+                'standards.name as standard_name', 
+                'standard_indicators.name as indicator_name'
+            )
             ->where('accreditation_borangs.id', $id)
             ->first();
+
+        if (!$borang) {
+            return redirect()->route('accreditation_borangs.index')->with('error', 'Data tidak ditemukan.');
+        }
 
         return view('accreditation_borangs.show', compact('borang'));
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit($id)
     {
         $borang = DB::table('accreditation_borangs')->where('id', $id)->first();
+        
+        if (!$borang) {
+            return redirect()->route('accreditation_borangs.index')->with('error', 'Data tidak ditemukan.');
+        }
+
         $periods = DB::table('accreditation_periods')->get();
         $standards = DB::table('standards')->get();
         $indicators = DB::table('standard_indicators')->get();
@@ -94,31 +123,50 @@ class AccreditationBorangController extends Controller
         return view('accreditation_borangs.edit', compact('borang', 'periods', 'standards', 'indicators'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'status'                => 'required|in:draft,submitted,approved',
+            'self_assessment_score' => 'nullable|numeric|min:0|max:4',
+        ]);
+
         try {
             DB::table('accreditation_borangs')
                 ->where('id', $id)
                 ->update([
-                    'response' => $request->response,
-                    'analysis' => $request->analysis,
-                    'target' => $request->target,
-                    'achievement' => $request->achievement,
+                    'response'              => $request->response,
+                    'analysis'              => $request->analysis,
+                    'target'                => $request->target,
+                    'achievement'           => $request->achievement,
                     'self_assessment_score' => $request->self_assessment_score,
-                    'status' => $request->status,
-                    'updated_at' => now(),
+                    'status'                => $request->status,
+                    'updated_at'            => now(),
                 ]);
 
-            return redirect()->route('accreditation_borangs.index')->with('success', 'Borang Berhasil Diperbarui!');
+            return redirect()->route('accreditation_borangs.index')
+                             ->with('success', 'Borang Berhasil Diperbarui!');
+
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
+            Log::error('Error Update Borang: ' . $e->getMessage());
             return back()->with('error', 'Update Gagal: ' . $e->getMessage());
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id)
     {
-        DB::table('accreditation_borangs')->where('id', $id)->delete();
-        return redirect()->route('accreditation_borangs.index')->with('success', 'Borang Dihapus!');
+        try {
+            DB::table('accreditation_borangs')->where('id', $id)->delete();
+            return redirect()->route('accreditation_borangs.index')
+                             ->with('success', 'Borang Berhasil Dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->route('accreditation_borangs.index')
+                             ->with('error', 'Gagal menghapus data.');
+        }
     }
 }
