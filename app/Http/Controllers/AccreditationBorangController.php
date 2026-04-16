@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AccreditationBorangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $borangs = DB::table('accreditation_borangs')
@@ -30,9 +27,6 @@ class AccreditationBorangController extends Controller
         return view('accreditation_borangs.index', compact('borangs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $periods = DB::table('accreditation_periods')->get();
@@ -42,9 +36,6 @@ class AccreditationBorangController extends Controller
         return view('accreditation_borangs.create', compact('periods', 'standards', 'indicators'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
     $request->validate([
@@ -55,7 +46,6 @@ class AccreditationBorangController extends Controller
     ]);
 
     try {
-        // STEP 3: Gunakan query builder dengan logging
         $data = [
             'accreditation_period_id' => $request->accreditation_period_id,
             'standard_id'             => $request->standard_id,
@@ -77,7 +67,7 @@ class AccreditationBorangController extends Controller
         return redirect()->route('accreditation_borangs.index')->with('success', 'Borang Berhasil!');
 
     } catch (\Exception $e) {
-        // STEP 4: Langsung matikan aplikasi dan munculkan error aslinya
+  
         dd("DATABASE ERROR: " . $e->getMessage()); 
     }
     }
@@ -105,9 +95,6 @@ class AccreditationBorangController extends Controller
         return view('accreditation_borangs.show', compact('borang'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $borang = DB::table('accreditation_borangs')->where('id', $id)->first();
@@ -123,9 +110,6 @@ class AccreditationBorangController extends Controller
         return view('accreditation_borangs.edit', compact('borang', 'periods', 'standards', 'indicators'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -155,9 +139,6 @@ class AccreditationBorangController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         try {

@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory; // Tambah ini
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EvaluationQuestion extends Model
 {
+    use HasFactory; // Pakai ini
+
     protected $fillable = [
         'questionnaire_id', 'section', 'question_text', 'type',
         'options', 'scale_labels', 'weight', 'order', 'is_required'
@@ -16,6 +19,9 @@ class EvaluationQuestion extends Model
         'options' => 'array',
         'scale_labels' => 'array',
         'is_required' => 'boolean',
+        // Tambahkan ini biar aman pas perhitungan matematika
+        'weight' => 'integer',
+        'order' => 'integer',
     ];
 
     public function questionnaire(): BelongsTo
