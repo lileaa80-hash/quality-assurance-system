@@ -34,19 +34,15 @@ Route::resource('audit_findings', AuditFindingController::class);
 Route::resource('corrective_actions', CorrectiveActionController::class);
 Route::resource('accreditation_periods', AccreditationPeriodController::class);
 Route::resource('accreditation_borangs', AccreditationBorangController::class);
+Route::resource('document_versions', DocumentVersionController::class);
 Route::resource('evaluation_questions', EvaluationQuestionController::class);
-Route::get('document_versions/{document_id}/index', [DocumentVersionController::class, 'index'])->name('document_versions.index');
-Route::get('document_versions/{document_id}/create', [DocumentVersionController::class, 'create'])->name('document_versions.create');
-
-// Gunakan resource untuk store, show, edit, update, destroy
-Route::resource('document_versions', DocumentVersionController::class)->except(['index', 'create']);
 
 
 // --- Route Testing Koneksi MinIO ---
 Route::get('/test-minio', function () {
     try {
-        Storage::disk('minio')->put('test.txt', 'Halo MinIO, ini dari Laravel! File ini dibuat pada: ' . now());  
-        return "Berhasil upload ke MinIO! Silakan cek dashboard MinIO kamu.";
+        Storage::disk('minio')->put('test.txt', 'Halo MinIO! File dibuat pada: ' . now());  
+        return "Berhasil upload ke MinIO!";
     } catch (\Exception $e) {
         return "Gagal terhubung ke MinIO. Pesan Error: " . $e->getMessage();
     }
