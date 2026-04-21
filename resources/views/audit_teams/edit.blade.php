@@ -18,7 +18,6 @@
                             <input type="text" class="form-control form-control-sm bg-light" value="{{ $team->audit_number }}" readonly>
                             <small class="text-muted italic">Schedule cannot be changed after assignment.</small>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-muted">ROLE</label>
                             <select name="role" class="form-select form-select-sm" required>
@@ -28,13 +27,11 @@
                                 <option value="trainee" {{ $team->role == 'trainee' ? 'selected' : '' }}>Trainee</option>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-muted">REMARKS / NOTES</label>
                             <textarea name="notes" class="form-control form-control-sm" rows="3">{{ $team->notes }}</textarea>
                         </div>
                     </div>
-
                     <div class="col-md-6 border-start">
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-muted">ASSIGNED UNITS</label>

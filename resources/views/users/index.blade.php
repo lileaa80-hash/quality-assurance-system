@@ -9,7 +9,6 @@
                 <i class="fas fa-plus-circle me-1"></i> Add New User
             </a>
         </div>
-        
         <div class="card-body p-4">
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
@@ -17,7 +16,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-
             <div class="table-responsive">
                 <table class="table table-hover align-middle border rounded">
                     <thead class="table-light">
@@ -77,7 +75,6 @@
                     </tbody>
                 </table>
             </div>
-
             <div class="d-flex justify-content-between align-items-center mt-4">
                 <div class="small text-muted">
                     Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} users
@@ -87,7 +84,6 @@
                 </div>
             </div>
         </div>
-
         <div class="card-footer bg-light py-2 text-center text-muted small border-0">
             © 2026 SPMI Digital System - RPL
         </div>

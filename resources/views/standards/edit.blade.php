@@ -12,8 +12,7 @@
                 <div class="card-body p-4">
                     <form action="{{ route('standards.update', $standard->id) }}" method="POST">
                         @csrf
-                        @method('PUT') {{-- Wajib ada untuk proses Update --}}
-                        
+                        @method('PUT')
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label font-weight-bold">Standard Code</label>
@@ -23,19 +22,16 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
                             <div class="col-md-6 mb-3">
                                 <label class="form-label font-weight-bold">Version</label>
                                 <input type="text" name="version" class="form-control" value="{{ old('version', $standard->version) }}">
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label font-weight-bold">Standard Name</label>
                             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" 
                                 value="{{ old('name', $standard->name) }}" required>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label font-weight-bold">Type</label>

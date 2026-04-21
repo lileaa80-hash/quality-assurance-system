@@ -11,7 +11,6 @@
             <div class="mb-4">
                 <h4 class="fw-bold text-secondary">Unit / Department Information</h4>
             </div>
-
             <div class="border-top border-bottom py-3">
                 <div class="row mb-3">
                     <div class="col-sm-3 fw-bold text-muted">Unit Code</div>

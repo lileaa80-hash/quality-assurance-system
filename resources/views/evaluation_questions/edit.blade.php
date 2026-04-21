@@ -15,7 +15,7 @@
                 <div class="mb-4">
                     <h6 class="text-dark fw-bold small border-bottom pb-2 mb-3">CORE INFORMATION</h6>
                     <div class="row g-3">
-                        {{-- Section Update --}}
+
                         <div class="col-md-12">
                             <label class="form-label fw-bold text-muted small mb-1">SECTION / CATEGORY</label>
                             <input type="text" name="section" class="form-control form-control-sm shadow-sm" value="{{ old('section', $question->section) }}" required>

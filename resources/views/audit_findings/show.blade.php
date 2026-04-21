@@ -109,7 +109,6 @@
                     </div>
                     @endif
                 </div>
-
                 <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
                     <form action="{{ route('audit_findings.destroy', $finding->id) }}" method="POST" onsubmit="return confirm('Delete this finding?')">
                         @csrf
@@ -125,12 +124,10 @@
             </div>
         </div>
     </div>
-
     <div class="text-center mt-5 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL
     </div>
 </div>
-
 <style>
     .italic { font-style: italic; }
 </style>

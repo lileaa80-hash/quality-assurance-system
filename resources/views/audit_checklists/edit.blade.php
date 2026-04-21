@@ -11,7 +11,6 @@
             <form action="{{ route('audit_checklists.update', $checklist->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-muted small mb-1">UNIT</label>
@@ -23,7 +22,6 @@
                             @endforeach
                         </select>
                     </div>
-
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-muted small mb-1">STANDARD</label>
                         <select name="standard_id" class="form-select form-select-sm shadow-sm" required>
@@ -34,7 +32,6 @@
                             @endforeach
                         </select>
                     </div>
-
                     <div class="col-12">
                         <label class="form-label fw-bold text-muted small mb-1">INDICATOR</label>
                         <select name="standard_indicator_id" class="form-select form-select-sm shadow-sm" required>

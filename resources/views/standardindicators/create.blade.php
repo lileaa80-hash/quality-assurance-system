@@ -8,11 +8,9 @@
                 <div class="card-header text-white py-3" style="background-color: #007bff;">
                     <h5 class="mb-0 font-weight-bold">SPMI SYSTEM - Create New Indicator</h5>
                 </div>
-
                 <div class="card-body p-4">
                     <form action="{{ route('indicators.store') }}" method="POST">
                         @csrf
-                        
                         <div class="mb-3">
                             <label class="form-label font-weight-bold text-dark">Parent Standard</label>
                             <select name="standard_id" class="form-control @error('standard_id') is-invalid @enderror" required>
@@ -27,7 +25,6 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label font-weight-bold text-dark">Indicator Code</label>

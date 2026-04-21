@@ -6,7 +6,6 @@
         <div class="card-header text-white" style="background-color: #007bff;">
             <h5 class="mb-0">SPMI SYSTEM - Standards List</h5>
         </div>
-        
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4 class="mb-0">Standards Management</h4>

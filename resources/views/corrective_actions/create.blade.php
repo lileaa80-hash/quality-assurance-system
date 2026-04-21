@@ -6,14 +6,12 @@
         <div class="card-header bg-primary text-white py-2">
             <h6 class="mb-0 fw-bold">Add New Corrective Action (CAPA)</h6>
         </div>
-
         <div class="card-body p-4">
             @if(session('error'))
                 <div class="alert alert-danger py-2 small shadow-sm mb-3 border-0">
                     {{ session('error') }}
                 </div>
             @endif
-
             <form action="{{ route('corrective_actions.store') }}" method="POST">
                 @csrf
                 <div class="row g-3">
@@ -21,7 +19,6 @@
                         <label class="form-label fw-bold text-muted small mb-1">CA NUMBER</label>
                         <input type="text" name="ca_number" class="form-control form-control-sm shadow-sm" placeholder="e.g. CAPA/2026/001" value="{{ old('ca_number') }}" required>
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label fw-bold text-muted small mb-1">AUDIT FINDING</label>
                         <select name="audit_finding_id" class="form-select form-select-sm shadow-sm" required>
@@ -31,7 +28,6 @@
                             @endforeach
                         </select>
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label fw-bold text-muted small mb-1">UNIT</label>
                         <select name="unit_id" class="form-select form-select-sm shadow-sm" required>

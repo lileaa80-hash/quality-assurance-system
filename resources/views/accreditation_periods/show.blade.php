@@ -117,7 +117,6 @@
                     </div>
                     @endif
                 </div>
-
                 <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
                     <form action="{{ route('accreditation_periods.destroy', $period->id) }}" method="POST" onsubmit="return confirm('Delete this record?')">
                         @csrf
@@ -133,7 +132,6 @@
             </div>
         </div>
     </div>
-
     <div class="text-center mt-5 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL
     </div>

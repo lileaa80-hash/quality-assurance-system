@@ -11,7 +11,6 @@
                 <div class="col-md-6">
                     <label class="text-muted small fw-bold">AUDIT NUMBER</label>
                     <p class="fw-bold">{{ $schedule->audit_number }}</p>
-                    
                     <label class="text-muted small fw-bold">TITLE</label>
                     <p>{{ $schedule->title }}</p>
 
@@ -21,7 +20,6 @@
                 <div class="col-md-6">
                     <label class="text-muted small fw-bold">DATE RANGE</label>
                     <p>{{ $schedule->start_date }} s/d {{ $schedule->end_date }}</p>
-
                     <label class="text-muted small fw-bold">STATUS</label>
                     <div><span class="badge bg-info text-uppercase">{{ $schedule->status }}</span></div>
                 </div>

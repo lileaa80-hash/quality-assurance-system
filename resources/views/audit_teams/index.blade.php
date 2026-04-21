@@ -34,9 +34,7 @@
                         <td class="text-center">
                             <div class="btn-group">
                                 <a href="{{ route('audit_teams.show', $team->id) }}" class="btn btn-info btn-sm py-0 px-2 text-white" style="font-size: 0.7rem;">Show</a>
-                                
                                 <a href="{{ route('audit_teams.edit', $team->id) }}" class="btn btn-warning btn-sm py-0 px-2" style="font-size: 0.7rem;">Edit</a>
-                                
                                 <form action="{{ route('audit_teams.destroy', $team->id) }}" method="POST" class="d-inline">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm py-0 px-2" style="font-size: 0.7rem;" onclick="return confirm('Delete member?')">Delete</button>

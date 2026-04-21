@@ -70,13 +70,11 @@
                             <option value="observation" {{ $finding->category == 'observation' ? 'selected' : '' }}>Observation</option>
                         </select>
                     </div>
-
                     <div class="col-12">
                         <label class="form-label fw-bold text-muted small mb-1">FINDING DESCRIPTION</label>
                         <textarea name="finding_description" class="form-control form-control-sm shadow-sm" rows="3" required>{{ old('finding_description', $finding->finding_description) }}</textarea>
                     </div>
                 </div>
-
                 <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
                     <a href="{{ route('audit_findings.index') }}" class="btn btn-light btn-sm px-3 fw-bold border" style="font-size: 11px;">Cancel</a>
                     <button type="submit" class="btn btn-primary btn-sm px-3 fw-bold shadow-sm" style="font-size: 11px;">Update Finding</button>

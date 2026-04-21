@@ -16,21 +16,18 @@
                         <h3 class="fw-bold text-dark mb-1">{{ $user->name }}</h3>
                         <p class="text-muted small">{{ $user->email }}</p>
                     </div>
-                    
                     <div class="mb-4">
                         <label class="text-muted small text-uppercase fw-bold d-block mb-2">Status Account</label>
                         <span class="badge {{ $user->status == 'active' ? 'bg-success' : 'bg-danger' }} px-3 py-2 fs-6 shadow-sm">
                             {{ strtoupper($user->status ?? 'ACTIVE') }}
                         </span>
                     </div>
-
                     <div class="mt-4">
                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning text-white w-100 shadow-sm fw-bold">
                             <i class="fas fa-edit me-1"></i> Edit Profile
                         </a>
                     </div>
                 </div>
-
                 <div class="col-md-8">
                     <div class="mb-4">
                         <h6 class="fw-bold text-uppercase small text-muted mb-3 border-bottom pb-2">System Information</h6>

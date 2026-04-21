@@ -11,7 +11,6 @@
                 <div class="col-md-6">
                     <label class="text-muted small fw-bold">AUDIT NUMBER</label>
                     <p class="fw-bold text-primary">{{ $team->audit_number }}</p>
-
                     <label class="text-muted small fw-bold">AUDITOR NAME</label>
                     <p>{{ $team->user_name }}</p>
 
@@ -27,7 +26,6 @@
                             <span class="badge bg-light text-dark border">Standard Auditor</span>
                         @endif
                     </p>
-
                     <label class="text-muted small fw-bold">ASSIGNED UNITS</label>
                     <ul class="ps-3">
                         @php $units = json_decode($team->assigned_units) ?? []; @endphp

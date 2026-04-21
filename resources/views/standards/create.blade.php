@@ -8,12 +8,9 @@
                 <div class="card-header text-white py-3" style="background-color: #007bff;">
                     <h5 class="mb-0 font-weight-bold">SPMI SYSTEM - Create New Standard</h5>
                 </div>
-
                 <div class="card-body p-4">
-                    {{-- Form Start --}}
                     <form action="{{ route('standards.store') }}" method="POST">
                         @csrf
-                        
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label font-weight-bold text-dark">Standard Code</label>
@@ -23,13 +20,11 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
                             <div class="col-md-6 mb-3">
                                 <label class="form-label font-weight-bold text-dark">Version</label>
                                 <input type="text" name="version" class="form-control" placeholder="1.0" value="{{ old('version', '1.0') }}">
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label font-weight-bold text-dark">Standard Name</label>
                             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" 
@@ -49,7 +44,6 @@
                                     <option value="other">Other</option>
                                 </select>
                             </div>
-
                             <div class="col-md-6 mb-3">
                                 <label class="form-label font-weight-bold text-dark">Parent (Optional)</label>
                                 <select name="parent_id" class="form-control shadow-none">
@@ -62,7 +56,6 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label font-weight-bold text-dark">Description</label>
                             <textarea name="description" class="form-control" rows="3" placeholder="Explain more about this standard..."></textarea>

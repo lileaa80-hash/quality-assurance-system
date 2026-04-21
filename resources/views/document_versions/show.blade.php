@@ -38,14 +38,12 @@
                         <span class="small fw-semibold">{{ $version->creator_name }}</span>
                     </div>
                     <div class="col-6 col-md-3 text-md-end">
-                        {{-- Kamu bisa tambahkan route download nanti --}}
                         <a href="{{ Storage::disk('s3')->url($version->file_path) }}" target="_blank" class="btn btn-primary btn-sm px-3">
                             <i class="bi bi-download"></i> Open/Download
                         </a>
                     </div>
                 </div>
             </div>
-
             <div class="mb-0">
                 <label class="fw-bold text-muted small d-block mb-1">CHANGE DESCRIPTION</label>
                 <div class="p-3 border rounded bg-white small">

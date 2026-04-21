@@ -16,7 +16,6 @@
                     </ul>
                 </div>
             @endif
-
             <form action="{{ route('audit_schedules.update', $schedule->id) }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -27,7 +26,6 @@
                             <label class="form-label small fw-bold text-muted">TITLE</label>
                             <input type="text" name="title" class="form-control form-control-sm" value="{{ $schedule->title }}" required>
                         </div>
-                        
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label small fw-bold text-muted">AUDIT TYPE</label>

@@ -35,10 +35,7 @@ Route::resource('corrective_actions', CorrectiveActionController::class);
 Route::resource('accreditation_periods', AccreditationPeriodController::class);
 Route::resource('accreditation_borangs', AccreditationBorangController::class);
 Route::resource('document_versions', DocumentVersionController::class);
-Route::resource('evaluation_questions', EvaluationQuestionController::class);
 
-
-// --- Route Testing Koneksi MinIO ---
 Route::get('/test-minio', function () {
     try {
         Storage::disk('minio')->put('test.txt', 'Halo MinIO! File dibuat pada: ' . now());  

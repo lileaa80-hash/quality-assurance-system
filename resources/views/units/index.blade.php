@@ -9,7 +9,6 @@
                 Add New Unit
             </a>
         </div>
-
         <div class="card-body p-0">
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show m-3 py-2 small border-0 shadow-sm" role="alert" style="background-color: #d4edda;">
@@ -17,7 +16,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-
             <div class="table-responsive">
                 <table class="table table-hover mb-0" style="font-size: 13px;">
                     <thead class="bg-light">

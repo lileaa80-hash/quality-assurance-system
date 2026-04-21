@@ -21,7 +21,6 @@
                             </select>
                             <small class="text-muted">Link this member to an existing audit schedule.</small>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-muted">AUDITOR NAME</label>
                             <select name="user_id" class="form-select form-select-sm" required>
@@ -31,7 +30,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-muted">ROLE</label>
                             <select name="role" class="form-select form-select-sm" required>

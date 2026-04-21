@@ -17,13 +17,11 @@
                     </ul>
                 </div>
             @endif
-
             @if(session('error'))
                 <div class="alert alert-danger py-2 small shadow-sm mb-3">
                     {{ session('error') }}
                 </div>
             @endif
-
             <form action="{{ route('audit_findings.store') }}" method="POST">
                 @csrf
                 <div class="row g-3">

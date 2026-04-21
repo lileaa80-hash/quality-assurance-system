@@ -9,7 +9,6 @@
                     <h5 class="mb-0 font-weight-bold">Detailed Indicator View</h5>
                     <a href="{{ route('indicators.index') }}" class="btn btn-sm btn-light text-primary font-weight-bold px-3">Back to List</a>
                 </div>
-
                 <div class="card-body p-0">
                     <table class="table table-striped mb-0">
                         <tr>

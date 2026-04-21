@@ -9,7 +9,6 @@
                 Back to List
             </a>
         </div>
-
         <div class="card-body p-0">
             <div class="p-3 border-bottom bg-light d-flex justify-content-between align-items-center">
                 <span class="text-muted small fw-bold text-uppercase">Audit Result Status:</span>
@@ -25,7 +24,6 @@
                     {{ strtoupper(str_replace('_', ' ', $checklist->result)) }}
                 </span>
             </div>
-
             <div class="p-4">
                 <div class="row g-4">
                     <div class="col-md-6">

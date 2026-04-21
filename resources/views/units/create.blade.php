@@ -30,7 +30,6 @@
                         <label class="form-label fw-bold">Unit Name</label>
                         <input type="text" name="name" class="form-control" placeholder="Enter unit name" value="{{ old('name') }}" required>
                     </div>
-
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold">Type</label>
                         <select name="type" class="form-select">
@@ -48,7 +47,6 @@
                             <option value="university" {{ old('level') == 'university' ? 'selected' : '' }}>University</option>
                         </select>
                     </div>
-
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold">Parent Unit</label>
                         <select name="parent_id" class="form-select">

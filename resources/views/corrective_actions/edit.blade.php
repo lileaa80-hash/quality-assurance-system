@@ -18,7 +18,6 @@
                         <input type="text" name="ca_number" class="form-control form-control-sm shadow-sm bg-light" 
                                value="{{ $action->ca_number }}" readonly>
                     </div>
-
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-muted small mb-1">UNIT</label>
                         <select name="unit_id" class="form-select form-select-sm shadow-sm" required>
@@ -29,7 +28,6 @@
                             @endforeach
                         </select>
                     </div>
-
                     <div class="col-12">
                         <label class="form-label fw-bold text-muted small mb-1">AUDIT FINDING REFERENCE</label>
                         <select name="audit_finding_id" class="form-select form-select-sm shadow-sm" required>

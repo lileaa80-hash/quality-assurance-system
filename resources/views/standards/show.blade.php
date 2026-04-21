@@ -9,7 +9,6 @@
                     <h5 class="mb-0 font-weight-bold">Standard Details</h5>
                     <a href="{{ route('standards.index') }}" class="btn btn-sm btn-light text-primary font-weight-bold">Back to List</a>
                 </div>
-
                 <div class="card-body p-0">
                     <table class="table table-striped mb-0">
                         <tr>

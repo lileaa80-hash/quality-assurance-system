@@ -10,7 +10,6 @@
         <form action="{{ route('units.update', $unit->id) }}" method="POST">
             @csrf
             @method('PUT')
-            
             <div class="card-body p-4">
                 @if ($errors->any())
                     <div class="alert alert-danger border-0 shadow-sm mb-4">
@@ -21,7 +20,6 @@
                         </ul>
                     </div>
                 @endif
-
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold small">Unit Code</label>
@@ -31,7 +29,6 @@
                         <label class="form-label fw-bold small">Unit Name</label>
                         <input type="text" name="name" class="form-control" value="{{ old('name', $unit->name) }}" required>
                     </div>
-
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold small">Type</label>
                         <select name="type" class="form-select">

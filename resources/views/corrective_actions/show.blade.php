@@ -9,7 +9,6 @@
                 Back to List
             </a>
         </div>
-
         <div class="card-body p-0">
             <div class="p-3 border-bottom bg-light d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center gap-3">
@@ -24,7 +23,6 @@
                     <span class="badge {{ $statusBadge }} px-3 py-2" style="font-size: 11px; border-radius: 4px;">
                         {{ strtoupper($action->final_status) }}
                     </span>
-
                     <span class="text-muted small fw-bold text-uppercase ms-2">Verification:</span>
                     @php
                         $vBadge = [

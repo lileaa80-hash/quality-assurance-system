@@ -9,14 +9,12 @@
                 + Add New Schedule
             </a>
         </div>
-        
         <div class="card-body">
             @if(session('success'))
                 <div class="alert alert-success py-2 border-0 shadow-sm" role="alert" style="background-color: #d1e7dd; font-size: 0.85rem;">
                     {{ session('success') }}
                 </div>
             @endif
-
             <div class="table-responsive">
                 <table class="table table-borderless align-middle mt-2" style="font-size: 0.85rem;">
                     <thead>

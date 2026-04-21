@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container mt-5 mb-5">
-    {{-- Munculin pesan merah kalau ada yang lupa diisi --}}
     @if ($errors->any())
         <div class="alert alert-danger shadow-sm">
             <ul class="mb-0 small">
@@ -12,7 +11,6 @@
             </ul>
         </div>
     @endif
-
     <div class="card shadow-sm border-0">
         <div class="card-header bg-primary text-white py-2 text-center">
             <h6 class="mb-0 fw-bold">Create New Audit Schedule</h6>
