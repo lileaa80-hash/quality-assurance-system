@@ -14,14 +14,11 @@ class AccreditationBorang extends Model
         'self_assessment_score','assessor_score','assessor_notes','status','filled_by','verified_by','verified_at',
     ];
 
-    // Mengubah JSON di database menjadi array PHP secara otomatis
     protected $casts = [
         'supporting_documents' => 'array',
         'verified_at' => 'datetime',
     ];
 
-    /** * --- RELASI --- 
-     */
 
     public function accreditationPeriod()
     {
