@@ -32,8 +32,6 @@
                                    placeholder="e.g. Survei Kepuasan Mahasiswa 2026" 
                                    value="{{ old('title') }}" required>
                         </div>
-
-                        {{-- Category Selection --}}
                         <div class="col-md-6">
                             <label class="form-label fw-bold text-muted small mb-1">CATEGORY</label>
                             <select name="category" class="form-select form-select-sm shadow-sm" required>
@@ -43,8 +41,6 @@
                                 <option value="service" {{ old('category') == 'service' ? 'selected' : '' }}>Service</option>
                             </select>
                         </div>
-
-                        {{-- Status Selection --}}
                         <div class="col-md-6">
                             <label class="form-label fw-bold text-muted small mb-1">STATUS</label>
                             <select name="status" class="form-select form-select-sm shadow-sm" required>

@@ -14,20 +14,10 @@ class EvaluationQuestion extends Model
      * Field yang boleh diisi secara mass-assignment.
      */
     protected $fillable = [
-        'questionnaire_id',
-        'section',
-        'question_text',
-        'type',
-        'options',
-        'scale_labels',
-        'weight',
-        'order',
-        'is_required',
+        'questionnaire_id','section','question_text','type','options','scale_labels',
+        'weight','order','is_required',
     ];
 
-    /**
-     * Casting field agar otomatis dikonversi ke tipe data PHP yang sesuai.
-     */
     protected $casts = [
         'options' => 'array',
         'scale_labels' => 'array',
@@ -36,18 +26,11 @@ class EvaluationQuestion extends Model
         'order' => 'integer',
     ];
 
-    /**
-     * Relasi ke kuesioner induk (EvaluationQuestionnaire).
-     * Pastikan model EvaluationQuestionnaire sudah kamu buat juga ya.
-     */
     public function questionnaire(): BelongsTo
     {
         return $this->belongsTo(EvaluationQuestionnaire::class, 'questionnaire_id');
     }
 
-    /**
-     * Helper untuk mendapatkan label tipe pertanyaan yang lebih rapi (opsional)
-     */
     public function getTypeLabelAttribute(): string
     {
         return ucwords(str_replace('_', ' ', $this->type));
