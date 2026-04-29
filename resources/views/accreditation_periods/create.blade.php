@@ -12,11 +12,9 @@
                 <div class="alert alert-danger py-2 small shadow-sm mb-3 border-0">
                     {{ session('error') }}
                 </div>
-            @endif
-
+            @endi
             <form action="{{ route('accreditation_periods.store') }}" method="POST">
                 @csrf
-                
                 <div class="mb-4">
                     <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">BASIC INFORMATION</h6>
                     <div class="row g-3">
@@ -24,7 +22,6 @@
                             <label class="form-label fw-bold text-muted small mb-1">PERIOD NAME</label>
                             <input type="text" name="period_name" class="form-control form-control-sm shadow-sm" placeholder="e.g. Akreditasi Prodi RPL 2026" value="{{ old('period_name') }}" required>
                         </div>
-
                         <div class="col-md-3">
                             <label class="form-label fw-bold text-muted small mb-1">UNIT / DEPT</label>
                             <select name="unit_id" class="form-select form-select-sm shadow-sm" required>

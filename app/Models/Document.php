@@ -12,17 +12,11 @@ class Document extends Model
 {
     use HasFactory;
 
-    /**
-     * Kolom yang boleh diisi secara massal.
-     */
     protected $fillable = [
         'document_number','title','type','status','description','parent_id','effective_date','created_by',
         'current_version','is_controlled','is_active',
     ];
 
-    /**
-     * Cast attributes to native types.
-     */
     protected $casts = [
         'effective_date' => 'date',
         'is_controlled'  => 'boolean',

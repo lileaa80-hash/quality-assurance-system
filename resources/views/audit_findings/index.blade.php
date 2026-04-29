@@ -9,7 +9,6 @@
                 + Add New Finding
             </a>
         </div>
-
         <div class="card-body p-0">
             <div class="p-3 border-bottom bg-light">
                 <form action="{{ route('audit_findings.index') }}" method="GET" class="row g-2">
@@ -110,7 +109,6 @@
         © 2026 SPMI Digital System - RPL
     </div>
 </div>
-
 <style>
     .btn-xs {
         padding: 1px 5px;

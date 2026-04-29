@@ -40,7 +40,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="col-md-6 border-start">
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-muted">ASSIGNED UNITS</label>
@@ -53,7 +52,6 @@
                                 @endforeach
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <div class="form-check form-switch mt-2">
                                 <input class="form-check-input" type="checkbox" name="is_certified" value="1" id="isCertified">

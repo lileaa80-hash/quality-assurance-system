@@ -6,18 +6,15 @@
         <div class="card-header bg-primary text-white py-2">
             <h6 class="mb-0 fw-bold">Edit Audit Finding</h6>
         </div>
-
         <div class="card-body p-4">
             @if(session('error'))
                 <div class="alert alert-danger py-2 small shadow-sm mb-3 border-0">
                     {{ session('error') }}
                 </div>
             @endif
-
             <form action="{{ route('audit_findings.update', $finding->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-muted small mb-1">FINDING NUMBER</label>

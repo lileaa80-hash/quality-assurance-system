@@ -6,7 +6,6 @@
         <div class="card-header bg-primary text-white py-2">
             <h6 class="mb-0 fw-bold">Edit Audit Checklist Report</h6>
         </div>
-
         <div class="card-body p-4">
             <form action="{{ route('audit_checklists.update', $checklist->id) }}" method="POST">
                 @csrf
@@ -81,7 +80,6 @@
             </form>
         </div>
     </div>
-
     <div class="text-center mt-5 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL
     </div>

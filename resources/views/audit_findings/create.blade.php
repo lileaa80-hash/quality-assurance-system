@@ -6,7 +6,6 @@
         <div class="card-header bg-primary text-white py-2">
             <h6 class="mb-0 fw-bold">Add New Audit Finding</h6>
         </div>
-
         <div class="card-body p-4">
             @if ($errors->any())
                 <div class="alert alert-danger py-2 small shadow-sm mb-3">
@@ -61,7 +60,6 @@
                     </div>
                     
                     </div>
-
                 <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
                     <a href="{{ route('audit_findings.index') }}" class="btn btn-light btn-sm px-3 fw-bold border" style="font-size: 11px;">Cancel</a>
                     <button type="submit" class="btn btn-primary btn-sm px-3 fw-bold shadow-sm" style="font-size: 11px;">Save Finding Report</button>

@@ -19,7 +19,6 @@
             <form action="{{ route('audit_schedules.update', $schedule->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-            
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">

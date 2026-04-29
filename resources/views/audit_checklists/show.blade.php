@@ -30,7 +30,6 @@
                         <label class="text-muted small fw-bold d-block mb-1">UNIT NAME</label>
                         <p class="fw-bold border-start border-primary border-3 ps-2">{{ $checklist->unit_name }}</p>
                     </div>
-
                     <div class="col-md-6">
                         <label class="text-muted small fw-bold d-block mb-1">AUDITOR</label>
                         <p class="fw-semibold text-dark"><i class="fas fa-user-check me-2 text-primary"></i>{{ $checklist->auditor_name }}</p>
@@ -73,7 +72,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
                     <a href="{{ route('audit_checklists.edit', $checklist->id) }}" class="btn btn-warning btn-sm px-4 fw-bold text-white shadow-sm" style="font-size: 11px;">
                         Edit Report

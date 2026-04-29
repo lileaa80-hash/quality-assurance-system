@@ -37,7 +37,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="col-md-3">
                             <label class="form-label fw-bold text-muted small mb-1">TYPE</label>
                             <select name="type" class="form-select form-select-sm shadow-sm" required>

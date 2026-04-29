@@ -8,7 +8,6 @@
         </div>
 
         <div class="card-body p-4">
-            {{-- Alert untuk menampilkan error validasi --}}
             @if ($errors->any())
                 <div class="alert alert-danger py-2 small shadow-sm mb-3 border-0">
                     <ul class="mb-0">
@@ -18,14 +17,11 @@
                     </ul>
                 </div>
             @endif
-
             <form action="{{ route('accreditation_borangs.store') }}" method="POST">
                 @csrf
-                
                 <div class="mb-4">
                     <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">BORANG & STANDARD SELECTION</h6>
                     <div class="row g-3">
-                        {{-- Period Selection --}}
                         <div class="col-md-12">
                             <label class="form-label fw-bold text-muted small mb-1">ACCREDITATION PERIOD</label>
                             <select name="accreditation_period_id" class="form-select form-select-sm shadow-sm" required>

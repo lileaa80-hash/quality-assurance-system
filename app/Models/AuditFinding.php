@@ -15,42 +15,27 @@ class AuditFinding extends Model
         'objective_evidence','status','risk_level','supporting_files','photo_evidence','auditor_id','finding_date',
     ];
 
-    /**
-     * Casting field agar otomatis menjadi tipe data yang sesuai
-     */
     protected $casts = [
-        'supporting_files' => 'array', // Supaya otomatis jadi array saat diakses
+        'supporting_files' => 'array', 
         'finding_date' => 'datetime',
         'risk_level' => 'integer',
     ];
 
-    /**
-     * Relasi ke Jadwal Audit
-     */
     public function auditSchedule(): BelongsTo
     {
         return $this->belongsTo(AuditSchedule::class);
     }
 
-    /**
-     * Relasi ke Unit Kerja
-     */
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
     }
 
-    /**
-     * Relasi ke Checklist Audit (Nullable)
-     */
     public function auditChecklist(): BelongsTo
     {
         return $this->belongsTo(AuditChecklist::class);
     }
 
-    /**
-     * Relasi ke Auditor (User)
-     */
     public function auditor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'auditor_id');

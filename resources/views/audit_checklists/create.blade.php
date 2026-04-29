@@ -6,7 +6,6 @@
         <div class="card-header bg-primary text-white py-2">
             <h6 class="mb-0 fw-bold">Add New Audit Checklist Report</h6>
         </div>
-
         <div class="card-body p-4">
             <form action="{{ route('audit_checklists.store') }}" method="POST">
                 @csrf

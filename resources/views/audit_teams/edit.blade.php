@@ -10,7 +10,6 @@
             <form action="{{ route('audit_teams.update', $team->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">

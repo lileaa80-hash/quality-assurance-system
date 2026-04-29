@@ -13,7 +13,6 @@
                     {{ session('error') }}
                 </div>
             @endif
-
             <form action="{{ route('accreditation_borangs.update', $borang->id) }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -80,7 +79,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
                     <a href="{{ route('accreditation_borangs.index') }}" class="btn btn-light btn-sm px-3 fw-bold border" style="font-size: 11px;">Cancel</a>
                     <button type="submit" class="btn btn-warning btn-sm px-3 fw-bold shadow-sm" style="font-size: 11px;">Update Borang Data</button>

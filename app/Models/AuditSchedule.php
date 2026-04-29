@@ -17,17 +17,11 @@ class AuditSchedule extends Model
         'end_date' => 'date',
     ];
 
-    /**
-     * Relasi ke Unit yang diaudit
-     */
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
     }
 
-    /**
-     * Relasi ke Temuan Audit
-     */
     public function findings(): HasMany
     {
         return $this->hasMany(AuditFinding::class, 'audit_schedule_id');

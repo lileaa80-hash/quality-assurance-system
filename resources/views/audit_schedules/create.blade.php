@@ -15,7 +15,6 @@
         <div class="card-header bg-primary text-white py-2 text-center">
             <h6 class="mb-0 fw-bold">Create New Audit Schedule</h6>
         </div>
-        
         <div class="card-body">
             <form action="{{ route('audit_schedules.store') }}" method="POST">
                 @csrf

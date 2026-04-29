@@ -26,6 +26,7 @@
                             <span class="badge bg-light text-dark border">Standard Auditor</span>
                         @endif
                     </p>
+                    
                     <label class="text-muted small fw-bold">ASSIGNED UNITS</label>
                     <ul class="ps-3">
                         @php $units = json_decode($team->assigned_units) ?? []; @endphp

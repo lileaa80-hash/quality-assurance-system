@@ -23,6 +23,7 @@
                     <label class="text-muted small fw-bold">STATUS</label>
                     <div><span class="badge bg-info text-uppercase">{{ $schedule->status }}</span></div>
                 </div>
+                
             </div>
             <div class="border-top pt-3">
                 <a href="{{ route('audit_schedules.index') }}" class="btn btn-secondary btn-sm rounded-0">Back to List</a>
