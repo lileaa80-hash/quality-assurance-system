@@ -133,12 +133,10 @@
             </div>
         </div>
     </div>
-
     <div class="text-center mt-5 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL
     </div>
 </div>
-
 <style>
     .italic { font-style: italic; }
 </style>

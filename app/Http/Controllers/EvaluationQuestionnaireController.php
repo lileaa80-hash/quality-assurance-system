@@ -82,13 +82,10 @@ class EvaluationQuestionnaireController extends Controller
 
     public function edit($id)
     {
-        // Ambil data kuesioner berdasarkan ID
         $questionnaire = DB::table('evaluation_questionnaires')->where('id', $id)->first();
-        
         if (!$questionnaire) {
             return redirect()->route('evaluation_questionnaires.index')->with('error', 'Data tidak ditemukan.');
         }
-
         return view('evaluation_questionnaires.edit', compact('questionnaire'));
     }
 

@@ -6,9 +6,7 @@
         <div class="card-header bg-primary text-white py-2">
             <h6 class="mb-0 fw-bold">Add New Evaluation Questionnaire</h6>
         </div>
-
         <div class="card-body p-4">
-            {{-- Alert untuk menampilkan error validasi --}}
             @if ($errors->any())
                 <div class="alert alert-danger py-2 small shadow-sm mb-3 border-0">
                     <ul class="mb-0">
@@ -18,7 +16,6 @@
                     </ul>
                 </div>
             @endif
-
             <form action="{{ route('evaluation_questionnaires.store') }}" method="POST">
                 @csrf
                 
@@ -51,7 +48,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="mb-4">
                     <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">TARGET & PERIOD</h6>
                     <div class="row g-3">

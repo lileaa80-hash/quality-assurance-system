@@ -10,9 +10,6 @@ class EvaluationQuestion extends Model
 {
     use HasFactory;
 
-    /**
-     * Field yang boleh diisi secara mass-assignment.
-     */
     protected $fillable = [
         'questionnaire_id','section','question_text','type','options','scale_labels',
         'weight','order','is_required',

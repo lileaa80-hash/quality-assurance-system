@@ -26,6 +26,7 @@
                             <th class="py-3 text-muted small fw-bold text-center pe-4">ACTIONS</th>
                         </tr>
                     </thead>
+                    
                     <tbody>
                         @forelse($questionnaires as $item)
                         <tr class="align-middle">
