@@ -25,44 +25,45 @@ class EvaluationQuestionnaireController extends Controller
         return view('evaluation_questionnaires.create');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required',
-            'type' => 'required',
-            'year' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'target_audience' => 'required',
-            'status' => 'required',
+   public function store(Request $request)
+{
+    // 1. Validasi harus SAMA PERSIS dengan ENUM di migration
+    $request->validate([
+        'title' => 'required',
+        'type' => 'required|in:student_satisfaction,lecturer_performance,alumni_tracer,stakeholder_satisfaction,self_evaluation',
+        'year' => 'required',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date|after_or_equal:start_date',
+        'target_audience' => 'required|in:students,lecturers,staff,alumni,stakeholders,all',
+        'status' => 'required|in:draft,active,closed,archived',
+    ]);
+
+    try {
+        DB::table('evaluation_questionnaires')->insert([
+            'title' => $request->title,
+            'description' => $request->description,
+            'type' => $request->type,
+            'year' => $request->year,
+            'semester' => $request->semester,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'target_audience' => $request->target_audience,
+            'target_units' => $request->target_units ? json_encode($request->target_units) : null,
+            'status' => $request->status,
+            'is_anonymous' => $request->has('is_anonymous') ? 1 : 0,
+            'allow_multiple_submissions' => $request->has('allow_multiple_submissions') ? 1 : 0,
+            'created_by' => Auth::id() ?? 1, 
+            
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        try {
-            DB::table('evaluation_questionnaires')->insert([
-                'title' => $request->title,
-                'description' => $request->description,
-                'type' => $request->type,
-                'year' => $request->year,
-                'semester' => $request->semester,
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'target_audience' => $request->target_audience,
-                // JSON encode manual karena pakai DB table
-                'target_units' => $request->target_units ? json_encode($request->target_units) : null,
-                'status' => $request->status,
-                'is_anonymous' => $request->has('is_anonymous') ? 1 : 0,
-                'allow_multiple_submissions' => $request->has('allow_multiple_submissions') ? 1 : 0,
-                'created_by' => Auth::id() ?? 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            return redirect()->route('evaluation_questionnaires.index')->with('success', 'Kuesioner Berhasil Dibuat!');
-        } catch (\Exception $e) {
-            Log::error('Error Store Questionnaire: ' . $e->getMessage());
-            return back()->with('error', 'Gagal: ' . $e->getMessage());
-        }
+        return redirect()->route('evaluation_questionnaires.index')->with('success', 'Kuesioner Berhasil Dibuat!');
+    } catch (\Exception $e) {
+        Log::error('Error Store Questionnaire: ' . $e->getMessage());
+        return back()->withInput()->with('error', 'Gagal Simpan: ' . $e->getMessage());
     }
+}
 
     public function show($id)
     {

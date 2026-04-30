@@ -26,7 +26,6 @@
                             <th class="py-3 text-muted small fw-bold text-center pe-4">ACTIONS</th>
                         </tr>
                     </thead>
-                    
                     <tbody>
                         @forelse($questionnaires as $item)
                         <tr class="align-middle">
@@ -60,8 +59,10 @@
                             </td>
                             <td class="text-center pe-4">
                                 <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('evaluation_questionnaires.show', $item->id) }}" class="btn btn-info btn-xs text-white px-2 py-0" style="font-size: 10px;">Questions</a>
+                                    <a href="{{ route('evaluation_questions.index', ['questionnaire_id' => $item->id]) }}" class="btn btn-info btn-xs text-white px-2 py-0" style="font-size: 10px;">Questions</a>
+                                    
                                     <a href="{{ route('evaluation_questionnaires.edit', $item->id) }}" class="btn btn-warning btn-xs text-white px-2 py-0" style="font-size: 10px;">Edit</a>
+                                    
                                     <form action="{{ route('evaluation_questionnaires.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Delete this questionnaire?')">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-xs px-2 py-0" style="font-size: 10px;">Del</button>

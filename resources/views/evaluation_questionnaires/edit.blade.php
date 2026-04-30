@@ -28,19 +28,16 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="col-md-4">
                             <label class="form-label fw-bold text-muted small mb-1">YEAR</label>
                             <input type="number" name="year" class="form-control form-control-sm shadow-sm" 
                                    value="{{ old('year', $evaluationQuestionnaire->year) }}" required>
                         </div>
-
                         <div class="col-md-4">
                             <label class="form-label fw-bold text-muted small mb-1">SEMESTER</label>
                             <input type="text" name="semester" class="form-control form-control-sm shadow-sm" 
                                    value="{{ old('semester', $evaluationQuestionnaire->semester) }}" placeholder="e.g. Ganjil">
                         </div>
-
                         <div class="col-md-4">
                             <label class="form-label fw-bold text-muted small mb-1">STATUS</label>
                             <select name="status" class="form-select form-select-sm shadow-sm" required>
@@ -75,7 +72,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
                     <a href="{{ route('evaluation.index') }}" class="btn btn-light btn-sm px-3 fw-bold border" style="font-size: 11px;">Cancel</a>
                     <button type="submit" class="btn btn-warning btn-sm px-3 fw-bold shadow-sm" style="font-size: 11px;">Update Questionnaire</button>
