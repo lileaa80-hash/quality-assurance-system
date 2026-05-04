@@ -23,7 +23,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// --- Route Modul Utama SPMI ---
 Route::resource('units', UnitController::class);
 Route::resource('users', UserController::class);
 Route::resource('standards', StandardController::class);
@@ -38,7 +37,7 @@ Route::resource('accreditation_periods', AccreditationPeriodController::class);
 Route::resource('accreditation_borangs', AccreditationBorangController::class);
 Route::resource('document_versions', DocumentVersionController::class);
 Route::resource('evaluation_questionnaires', EvaluationQuestionnaireController::class);
-Route::resource('evaluation_questions', EvaluationQuestionController::class);
+// Route::resource('evaluation_questions', EvaluationQuestionController::class);
 
 Route::get('/test-minio', function () {
     try {
