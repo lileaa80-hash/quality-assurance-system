@@ -3,17 +3,15 @@
 @section('content')
 <div class="container mt-4">
     <div class="card shadow-sm border-0">
-        {{-- Header: Biru dengan tombol Back to List warna putih --}}
+       
         <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #007bff; padding: 0.8rem 1.5rem;">
             <h5 class="mb-0 fw-bold">Detailed Document View</h5>
             <a href="{{ route('documents.index') }}" class="btn btn-light btn-sm fw-bold text-primary px-3 shadow-sm">
                 Back to List
             </a>
         </div>
-
         <div class="card-body p-0">
             <div class="table-responsive">
-                {{-- Menggunakan table-striped untuk memberikan efek baris abu-abu seperti di screenshot --}}
                 <table class="table table-striped table-hover mb-0 align-middle">
                     <tbody>
                         <tr>
@@ -54,8 +52,6 @@
                 </table>
             </div>
         </div>
-
-        {{-- Footer: Tombol Modify Data warna Kuning --}}
         <div class="card-footer bg-white border-0 py-4 d-flex justify-content-end">
             <a href="{{ route('documents.edit', $document->id) }}" class="btn fw-bold px-4 shadow-sm" style="background-color: #ffc107; color: #fff;">
                 Modify Data
