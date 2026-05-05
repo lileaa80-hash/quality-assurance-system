@@ -6,9 +6,7 @@
         <div class="card-header bg-primary text-white py-2">
             <h6 class="mb-0 fw-bold">SPMI SYSTEM - Register New Document</h6>
         </div>
-
         <div class="card-body p-4">
-            {{-- Menampilkan pesan error jika ada --}}
             @if ($errors->any())
                 <div class="alert alert-danger shadow-sm border-0 small">
                     <ul class="mb-0">
@@ -18,7 +16,6 @@
                     </ul>
                 </div>
             @endif
-
             <form action="{{ route('documents.store') }}" method="POST">
                 @csrf
                 <div class="row g-3">

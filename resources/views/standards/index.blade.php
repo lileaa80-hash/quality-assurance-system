@@ -3,7 +3,6 @@
 @section('content')
 <div class="container-fluid mt-4">
     <div class="card shadow-sm border-0">
-        {{-- Header --}}
         <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #007bff; padding: 1rem 1.5rem;">
             <h5 class="mb-0 fw-bold">SPMI SYSTEM - Standards List</h5>
             <a href="{{ route('standards.create') }}" class="btn btn-light btn-sm fw-bold text-primary px-3">

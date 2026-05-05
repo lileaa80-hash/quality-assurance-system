@@ -3,9 +3,8 @@
 @section('content')
 <div class="container-fluid mt-4">
     <div class="row justify-content-center">
-        <div class="col-md-10"> {{-- Diperlebar sedikit agar serasi dengan layout user --}}
+        <div class="col-md-10"> 
             <div class="card shadow-sm border-0">
-                {{-- Header Warna Kuning/Amber sesuai screenshot --}}
                 <div class="card-header py-3" style="background-color: #ffc107;">
                     <h5 class="mb-0 fw-bold text-dark">SPMI SYSTEM - Edit Standard</h5>
                 </div>

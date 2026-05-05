@@ -3,18 +3,15 @@
 @section('content')
 <div class="container-fluid mt-4">
     <div class="row justify-content-center">
-        <div class="col-md-10"> {{-- Diperlebar agar konsisten dengan halaman edit lainnya --}}
+        <div class="col-md-10"> 
             <div class="card shadow-sm border-0">
-                {{-- Header Warna Kuning/Amber --}}
                 <div class="card-header py-3" style="background-color: #ffc107;">
                     <h5 class="mb-0 fw-bold text-dark">SPMI SYSTEM - Edit Standard Indicator</h5>
                 </div>
-
                 <div class="card-body p-4">
                     <form action="{{ route('indicators.update', $indicator->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-
                         <div class="mb-3">
                             <label class="form-label fw-bold text-muted small text-uppercase">Parent Standard</label>
                             <select name="standard_id" class="form-select @error('standard_id') is-invalid @enderror" required>
@@ -28,7 +25,6 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold text-muted small text-uppercase">Indicator Code</label>

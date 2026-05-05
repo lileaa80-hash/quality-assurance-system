@@ -3,7 +3,6 @@
 @section('content')
 <div class="container-fluid mt-4">
     <div class="card shadow-sm border-0">
-        {{-- Header: Menyelaraskan tombol ke dalam header sesuai desain User Management & Standards --}}
         <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #007bff; padding: 1rem 1.5rem;">
             <h5 class="mb-0 fw-bold">SPMI SYSTEM - Standard Indicators List</h5>
             <a href="{{ route('indicators.create') }}" class="btn btn-light btn-sm fw-bold text-primary px-3 shadow-sm">
@@ -11,7 +10,7 @@
             </a>
         </div>
         
-        <div class="card-body p-0"> {{-- P-0 agar tabel menempel pas ke pinggir card --}}
+        <div class="card-body p-0"> 
             <div class="px-4 py-3">
                 <h4 class="mb-0 fw-bold text-secondary">Indicators Management</h4>
             </div>

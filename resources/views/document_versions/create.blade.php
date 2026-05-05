@@ -6,7 +6,6 @@
         <div class="card-header bg-primary text-white py-2">
             <h6 class="mb-0 fw-bold">Upload New Document Version</h6>
         </div>
-
         <div class="card-body p-4">
             @if ($errors->any())
                 <div class="alert alert-danger py-2 small shadow-sm mb-3 border-0">
@@ -19,7 +18,6 @@
             @endif
             <form action="{{ route('document_versions.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                
                 <div class="mb-4">
                     <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">DOCUMENT SELECTION</h6>
                     <div class="row g-3">
@@ -41,13 +39,10 @@
                 <div class="mb-4">
                     <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">FILE & VERSION DETAILS</h6>
                     <div class="row g-3">
-                        {{-- File Upload --}}
                         <div class="col-md-8">
                             <label class="form-label fw-bold text-muted small mb-1">FILE ATTACHMENT (MAX 20MB)</label>
                             <input type="file" name="file" class="form-control form-control-sm shadow-sm" required>
                         </div>
-                        
-                        {{-- Status Selection --}}
                         <div class="col-md-4">
                             <label class="form-label fw-bold text-muted small mb-1">INITIAL STATUS</label>
                             <select name="status" class="form-select form-select-sm shadow-sm" required>

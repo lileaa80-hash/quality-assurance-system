@@ -9,18 +9,15 @@
         <div class="card-body p-4">
             <form action="{{ route('documents.update', $document->id) }}" method="POST">
                 @csrf
-                @method('PUT')
-                
+                @method('PUT') 
                 <div class="mb-3">
                     <label class="form-label fw-bold text-secondary">Document Number</label>
                     <input type="text" name="document_number" class="form-control bg-light" value="{{ $document->document_number }}" required>
                 </div>
-
                 <div class="mb-3">
                     <label class="form-label fw-bold text-secondary">Document Title</label>
                     <input type="text" name="title" class="form-control" value="{{ $document->title }}" required>
                 </div>
-
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold text-secondary">Document Type</label>
