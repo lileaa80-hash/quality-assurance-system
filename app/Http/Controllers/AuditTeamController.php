@@ -56,12 +56,19 @@ class AuditTeamController extends Controller
         return view('audit_teams.show', compact('team'));
     }
 
-    public function edit($id)
-    {
-        $team = DB::table('audit_teams')->where('id', $id)->first();
-        $units = DB::table('units')->get();
-        return view('audit_teams.edit', compact('team', 'units'));
-    }
+   public function edit($id)
+{
+    $team = DB::table('audit_teams')
+        ->join('users', 'audit_teams.user_id', '=', 'users.id')
+        ->join('audit_schedules', 'audit_teams.audit_schedule_id', '=', 'audit_schedules.id')
+        ->select('audit_teams.*', 'users.name as user_name', 'audit_schedules.audit_number')
+        ->where('audit_teams.id', $id)
+        ->first();
+
+    $units = DB::table('units')->get();
+    
+    return view('audit_teams.edit', compact('team', 'units'));
+}
 
     public function update(Request $request, $id)
     {
