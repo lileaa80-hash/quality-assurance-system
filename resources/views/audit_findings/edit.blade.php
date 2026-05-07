@@ -21,13 +21,11 @@
                         <input type="text" name="finding_number" class="form-control form-control-sm shadow-sm" 
                                value="{{ old('finding_number', $finding->finding_number) }}" required>
                     </div>
-
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-muted small mb-1">FINDING DATE</label>
                         <input type="date" name="finding_date" class="form-control form-control-sm shadow-sm" 
                                value="{{ old('finding_date', $finding->finding_date) }}" required>
                     </div>
-
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-muted small mb-1">AUDIT SCHEDULE</label>
                         <select name="audit_schedule_id" class="form-select form-select-sm shadow-sm" required>

@@ -23,12 +23,10 @@
                         <label class="form-label fw-bold text-muted small mb-1">DOCUMENT NUMBER</label>
                         <input type="text" name="document_number" class="form-control form-control-sm shadow-sm" placeholder="e.g. 090808" required>
                     </div>
-
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-muted small mb-1">TITLE</label>
                         <input type="text" name="title" class="form-control form-control-sm shadow-sm" placeholder="Enter document title..." required>
                     </div>
-
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-muted small mb-1">DOCUMENT TYPE</label>
                         <select name="type" class="form-select form-select-sm shadow-sm" required>

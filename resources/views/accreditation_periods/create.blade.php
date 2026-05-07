@@ -6,7 +6,6 @@
         <div class="card-header bg-primary text-white py-2">
             <h6 class="mb-0 fw-bold">Add New Accreditation Period</h6>
         </div>
-
         <div class="card-body p-4">
             @if(session('error'))
                 <div class="alert alert-danger py-2 small shadow-sm mb-3 border-0">
@@ -31,7 +30,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="col-md-3">
                             <label class="form-label fw-bold text-muted small mb-1">TYPE</label>
                             <select name="type" class="form-select form-select-sm shadow-sm" required>

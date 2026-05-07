@@ -39,7 +39,6 @@
                     <strong>CA No:</strong> <span class="text-primary fw-bold">{{ $action->ca_number }}</span>
                 </div>
             </div>
-
             <div class="p-4">
                 <div class="row g-4">
                     <div class="col-md-6">
@@ -51,12 +50,10 @@
                         <label class="text-muted small fw-bold d-block mb-1">RESPONSIBLE (PIC)</label>
                         <p class="fw-semibold text-dark"><i class="fas fa-user-tie me-2 text-primary"></i>{{ $action->pic_name }}</p>
                     </div>
-
                     <div class="col-md-6">
                         <label class="text-muted small fw-bold d-block mb-1">SOURCE FINDING REF</label>
                         <p class="text-primary fw-bold">{{ $action->finding_number }}</p>
                     </div>
-
                     <div class="col-md-6">
                         <label class="text-muted small fw-bold d-block mb-1">TARGET DATE</label>
                         <p class="text-dark"><i class="far fa-calendar-alt me-2 text-muted"></i>{{ \Carbon\Carbon::parse($action->target_completion_date)->format('d F Y') }}</p>

@@ -93,7 +93,6 @@
                     </tbody>
                 </table>
             </div>
-
             <div class="mt-4 px-2 d-flex justify-content-between align-items-center">
                  <small class="text-muted">Showing <b>{{ $schedules->count() }}</b> schedules</small>
                  <div>

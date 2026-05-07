@@ -64,22 +64,18 @@
                                 <label class="form-label font-weight-bold text-dark">Unit</label>
                                 <input type="text" name="unit" class="form-control" placeholder="Ex: %, Score, Document" value="{{ old('unit') }}">
                             </div>
-
                             <div class="col-md-4 mb-3">
                                 <label class="form-label font-weight-bold text-dark">Priority Weight</label>
                                 <input type="number" name="weight" class="form-control" value="{{ old('weight', 1) }}">
                             </div>
                         </div>
-
                         <div class="mb-4 mt-2">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" name="is_mandatory" id="isMandatory" value="1" checked>
                                 <label class="form-check-label text-dark" for="isMandatory">Set as Mandatory Indicator</label>
                             </div>
                         </div>
-
                         <hr>
-
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('indicators.index') }}" class="btn btn-light px-4">Cancel</a>
                             <button type="submit" class="btn btn-primary px-4 shadow-sm">Save Indicator</button>

@@ -35,7 +35,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="mb-4">
                     <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">FILE & VERSION DETAILS</h6>
                     <div class="row g-3">

@@ -10,7 +10,6 @@
         
         <div class="card-body p-4">
             <h4 class="mb-4 fw-bold">Modify Assignment for: <span class="text-primary">{{ $team->user_name ?? 'Auditor' }}</span></h4>
-
             <form action="{{ route('audit_teams.update', $team->id) }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -22,7 +21,6 @@
                             <input type="text" class="form-control bg-light border-1 fw-bold py-2" value="{{ $team->audit_number }}" readonly>
                             <small class="text-muted italic">Schedule cannot be changed after assignment.</small>
                         </div>
-
                         <div class="mb-4">
                             <label class="form-label small fw-bold text-muted text-uppercase">Auditor Role</label>
                             <select name="role" class="form-select py-2">

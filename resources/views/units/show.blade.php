@@ -6,7 +6,6 @@
         <div class="card-header bg-primary text-white py-3">
             <h5 class="mb-0 fw-bold">SPMI SYSTEM - Unit Details</h5>
         </div>
-
         <div class="card-body p-4">
             <div class="mb-4">
                 <h4 class="fw-bold text-secondary">Unit / Department Information</h4>
@@ -62,13 +61,11 @@
                     <div class="col-sm-9">: {{ \Carbon\Carbon::parse($unit->updated_at)->diffForHumans() }}</div>
                 </div>
             </div>
-
             <div class="d-flex justify-content-start gap-2 mt-4">
                 <a href="{{ route('units.index') }}" class="btn btn-secondary px-4">Back</a>
                 <a href="{{ route('units.edit', $unit->id) }}" class="btn btn-warning text-white px-4">Edit</a>
             </div>
         </div>
-
         <div class="card-footer bg-light py-2 text-center text-muted small border-0">
             © 2026 SPMI Digital System - RPL
         </div>

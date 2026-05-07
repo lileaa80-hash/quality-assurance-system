@@ -11,6 +11,7 @@
                 </div>
                 <div class="card-body p-0">
                     <table class="table table-striped mb-0">
+                        
                         <tr>
                             <th class="ps-4 py-3" width="35%">Parent Standard</th>
                             <td class="py-3"><strong>{{ $indicator->standard_name }}</strong> ({{ $indicator->standard_code }})</td>

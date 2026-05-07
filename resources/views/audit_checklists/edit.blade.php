@@ -6,12 +6,10 @@
         <div class="card-header bg-warning py-3 px-4">
             <h6 class="mb-0 fw-bold text-dark text-uppercase text-start">Edit Audit Checklist Report</h6>
         </div>
-        
         <div class="card-body p-4">
             <form action="{{ route('audit_checklists.update', $checklist->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
                 <div class="row g-4">
                     <div class="col-md-6">
                         <div class="mb-3">
@@ -24,7 +22,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label fw-bold text-muted small text-uppercase">Standard</label>
                             <select name="standard_id" class="form-select shadow-sm" required>
@@ -35,7 +32,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label fw-bold text-muted small text-uppercase">Audit Result</label>
                             <select name="result" class="form-select shadow-sm" required>

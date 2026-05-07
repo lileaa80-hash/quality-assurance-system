@@ -14,13 +14,11 @@
             <div class="px-4 py-3">
                 <h4 class="mb-0 fw-bold text-secondary">Documents Management</h4>
             </div>
-
             @if(session('success'))
                 <div class="alert alert-success m-3 border-0 shadow-sm">
                     {{ session('success') }}
                 </div>
             @endif
-
             <div class="table-responsive">
                 <table class="table table-hover mb-0 align-middle">
                     <thead class="bg-light text-uppercase" style="font-size: 0.85rem;">

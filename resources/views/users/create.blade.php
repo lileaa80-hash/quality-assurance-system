@@ -6,7 +6,6 @@
         <div class="card-header bg-primary text-white py-3">
             <h5 class="mb-0 fw-bold">SPMI SYSTEM - Add New User</h5>
         </div>
-        
         <form action="{{ route('users.store') }}" method="POST">
             @csrf
             <div class="card-body p-4">

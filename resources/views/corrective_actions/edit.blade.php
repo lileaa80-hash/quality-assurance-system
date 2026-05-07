@@ -6,12 +6,10 @@
         <div class="card-header bg-primary text-white py-2">
             <h6 class="mb-0 fw-bold">Edit Corrective Action Report</h6>
         </div>
-
         <div class="card-body p-4">
             <form action="{{ route('corrective_actions.update', $action->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-muted small mb-1">CA NUMBER</label>

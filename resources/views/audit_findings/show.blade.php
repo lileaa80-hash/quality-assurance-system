@@ -28,7 +28,6 @@
                     <strong>Ref No:</strong> <span class="text-primary fw-bold">{{ $finding->finding_number }}</span>
                 </div>
             </div>
-
             <div class="p-4">
                 <div class="row g-4">
                     <div class="col-md-6">

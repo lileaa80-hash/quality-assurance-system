@@ -19,7 +19,6 @@
                             <input type="text" name="title" class="form-control form-control-sm shadow-sm" 
                                    value="{{ old('title', $evaluationQuestionnaire->title) }}" required>
                         </div>
-
                         <div class="col-md-4">
                             <label class="form-label fw-bold text-muted small mb-1">TYPE</label>
                             <select name="type" class="form-select form-select-sm shadow-sm" required>

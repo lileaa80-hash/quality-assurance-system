@@ -7,7 +7,6 @@
             <h6 class="mb-0 fw-bold text-white text-uppercase">Auditor Assignment Detail</h6>
             <a href="{{ route('audit_teams.index') }}" class="btn btn-light btn-sm fw-bold px-3 shadow-sm">Back to List</a>
         </div>
-        
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-striped table-hover mb-0">

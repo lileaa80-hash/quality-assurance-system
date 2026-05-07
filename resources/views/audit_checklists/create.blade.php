@@ -7,7 +7,6 @@
         <div class="card-header bg-primary py-3 px-4">
             <h6 class="mb-0 fw-bold text-white text-uppercase text-start">Add New Audit Checklist Report</h6>
         </div>
-        
         <div class="card-body p-4">
             <form action="{{ route('audit_checklists.store') }}" method="POST">
                 @csrf
@@ -22,7 +21,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        {{-- Field lainnya tetap sama --}}
                         <div class="mb-3">
                             <label class="form-label fw-bold text-muted small text-uppercase">Standard</label>
                             <select name="standard_id" class="form-select shadow-sm" required>
@@ -32,7 +30,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label fw-bold text-muted small text-uppercase">Audit Result</label>
                             <select name="result" class="form-select shadow-sm" required>

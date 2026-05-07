@@ -9,7 +9,6 @@
                 + Upload New Version
             </a>
         </div>
-
         <div class="card-body p-0">
             @if(session('success'))
                 <div class="alert alert-success m-3 py-2 small border-0 shadow-sm" style="background-color: #d4edda;">

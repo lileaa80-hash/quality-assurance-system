@@ -6,7 +6,6 @@
         <div class="card-header bg-primary text-white py-2">
             <h6 class="mb-0 fw-bold">Add New Accreditation Borang</h6>
         </div>
-
         <div class="card-body p-4">
             @if ($errors->any())
                 <div class="alert alert-danger py-2 small shadow-sm mb-3 border-0">
@@ -33,8 +32,6 @@
                                 @endforeach
                             </select>
                         </div>
-
-                        {{-- Standard Selection --}}
                         <div class="col-md-6">
                             <label class="form-label fw-bold text-muted small mb-1">STANDARD</label>
                             <select name="standard_id" class="form-select form-select-sm shadow-sm" required>

@@ -9,14 +9,12 @@
                 Add New Standard
             </a>
         </div>
-        
         <div class="card-body p-0"> 
             @if(session('success'))
                 <div class="alert alert-success m-3">
                     {{ session('success') }}
                 </div>
             @endif
-
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead class="bg-light text-uppercase" style="font-size: 0.85rem;">

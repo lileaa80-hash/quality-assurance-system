@@ -11,6 +11,7 @@
                 </div>
                 <div class="card-body p-0">
                     <table class="table table-striped mb-0">
+                        
                         <tr>
                             <th class="ps-4" width="30%">Code</th>
                             <td><span class="badge bg-secondary">{{ $standard->code }}</span></td>

@@ -36,7 +36,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="mb-3">
                     <label class="form-label fw-bold text-secondary">Description</label>
                     <textarea name="description" class="form-control" rows="3">{{ $document->description }}</textarea>

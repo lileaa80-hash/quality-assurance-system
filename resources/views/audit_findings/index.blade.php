@@ -27,13 +27,11 @@
                     </div>
                 </form>
             </div>
-
             @if(session('success'))
                 <div class="alert alert-success m-3 py-2 small border-0 shadow-sm" style="background-color: #d4edda;">
                     {{ session('success') }}
                 </div>
             @endif
-
             <div class="table-responsive">
                 <table class="table table-hover mb-0" style="font-size: 12px;">
                     <thead class="bg-white">

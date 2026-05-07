@@ -3,7 +3,6 @@
 @section('content')
 <div class="container mt-4">
     <div class="card shadow-sm border-0">
-       
         <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #007bff; padding: 0.8rem 1.5rem;">
             <h5 class="mb-0 fw-bold">Detailed Document View</h5>
             <a href="{{ route('documents.index') }}" class="btn btn-light btn-sm fw-bold text-primary px-3 shadow-sm">

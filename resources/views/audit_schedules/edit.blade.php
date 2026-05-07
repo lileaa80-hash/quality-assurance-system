@@ -6,7 +6,6 @@
         <div class="card-header bg-warning py-3 px-4">
             <h6 class="mb-0 fw-bold text-dark">SPMI SYSTEM - Edit Audit Schedule: {{ $schedule->audit_number }}</h6>
         </div>
-        
         <div class="card-body p-4">
             @if ($errors->any())
                 <div class="alert alert-danger shadow-sm border-0 mb-4">
@@ -17,18 +16,15 @@
                     </ul>
                 </div>
             @endif
-
             <form action="{{ route('audit_schedules.update', $schedule->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-4">
                             <label class="form-label small fw-bold text-muted text-uppercase">Title / Agenda Name</label>
                             <input type="text" name="title" class="form-control" value="{{ $schedule->title }}" required>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <label class="form-label small fw-bold text-muted text-uppercase">Audit Type</label>

@@ -6,7 +6,6 @@
         <div class="card-header bg-warning text-dark py-3">
             <h5 class="mb-0 fw-bold">SPMI SYSTEM - Edit User Profile</h5>
         </div>
-        
         <form action="{{ route('users.update', $user->id) }}" method="POST">
             @csrf
             @method('PUT')
@@ -27,7 +26,6 @@
                             <option value="inactive" {{ $user->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
                         </select>
                     </div>
-
                     <div class="col-12">
                         <div class="alert alert-info border-0 shadow-sm mt-3 mb-0" style="font-size: 0.8rem;">
                             <i class="fas fa-info-circle me-1"></i> Biarkan kosong jika tidak ingin mengubah password.

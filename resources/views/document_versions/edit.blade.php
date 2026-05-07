@@ -22,10 +22,12 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="mb-2">
                     <label class="form-label fw-bold text-muted small mb-1">REVISE DESCRIPTION</label>
                     <textarea name="change_description" class="form-control form-control-sm shadow-sm" rows="4">{{ old('change_description', $version->change_description) }}</textarea>
                 </div>
+                
                 <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
                     <a href="{{ route('document_versions.index') }}" class="btn btn-light btn-sm px-3 fw-bold border">Cancel</a>
                     <button type="submit" class="btn btn-warning btn-sm px-3 fw-bold shadow-sm text-dark">Update Metadata</button>

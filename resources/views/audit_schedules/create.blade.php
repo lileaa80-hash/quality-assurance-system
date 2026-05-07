@@ -16,7 +16,6 @@
         <div class="card-header bg-primary text-white py-3 px-4">
             <h6 class="mb-0 fw-bold">SPMI SYSTEM - Create New Audit Schedule</h6>
         </div>
-        
         <div class="card-body p-4">
             <form action="{{ route('audit_schedules.store') }}" method="POST">
                 @csrf
@@ -26,7 +25,6 @@
                             <label class="form-label fw-bold small text-muted text-uppercase">Audit Number</label>
                             <input type="text" name="audit_number" class="form-control" value="{{ old('audit_number', 'AUD' . time()) }}" required>
                         </div>
-                        
                         <div class="mb-4">
                             <label class="form-label fw-bold small text-muted text-uppercase">Title / Agenda Name</label>
                             <input type="text" name="title" class="form-control" placeholder="Enter agenda title..." value="{{ old('title') }}" required>

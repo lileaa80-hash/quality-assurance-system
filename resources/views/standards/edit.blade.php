@@ -28,7 +28,6 @@
                                 <input type="text" name="version" class="form-control" value="{{ old('version', $standard->version) }}">
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label fw-bold text-muted small text-uppercase">Standard Name</label>
                             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" 
@@ -37,7 +36,6 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold text-muted small text-uppercase">Type</label>

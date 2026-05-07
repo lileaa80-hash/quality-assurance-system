@@ -83,7 +83,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
                     <a href="{{ route('evaluation_questionnaires.index') }}" class="btn btn-light btn-sm border">Cancel</a>
                     <button type="submit" class="btn btn-primary btn-sm px-3 fw-bold shadow-sm">Create Questionnaire</button>

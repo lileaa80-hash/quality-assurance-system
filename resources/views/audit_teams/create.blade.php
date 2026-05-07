@@ -6,7 +6,6 @@
         <div class="card-header bg-primary py-3 px-4">
             <h6 class="mb-0 fw-bold text-white text-uppercase">Assign New Audit Team Member</h6>
         </div>
-        
         <div class="card-body p-4">
             @if ($errors->any())
                 <div class="alert alert-danger shadow-sm border-0 mb-4">
@@ -17,7 +16,6 @@
                     </ul>
                 </div>
             @endif
-
             <form action="{{ route('audit_teams.store') }}" method="POST">
                 @csrf
                 <div class="row">
@@ -32,7 +30,6 @@
                             </select>
                             <div class="form-text small text-muted">Link this member to an existing audit schedule.</div>
                         </div>
-
                         <div class="mb-4">
                             <label class="form-label small fw-bold text-muted text-uppercase">Auditor Name</label>
                             <select name="user_id" class="form-select" required>

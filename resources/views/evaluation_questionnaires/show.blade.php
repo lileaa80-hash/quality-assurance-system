@@ -42,13 +42,11 @@
                             {{ $questionnaire->title }}
                         </h5>
                     </div>
-
                     <div class="col-md-4 text-md-end">
                         <label class="text-muted small fw-bold d-block mb-1">TARGET AUDIENCE</label>
                         <h5 class="fw-bold text-primary mb-0">{{ ucfirst($questionnaire->target_audience) }}</h5>
                         <small class="text-muted">Responden yang dituju</small>
                     </div>
-
                     <div class="col-12">
                         <div class="bg-light p-3 rounded border shadow-sm">
                             <h6 class="text-primary fw-bold small mb-2"><i class="fas fa-info-circle me-2"></i>DESCRIPTION / INSTRUCTIONS</h6>
@@ -57,7 +55,6 @@
                             </p>
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <label class="text-muted small fw-bold d-block mb-2">ACTIVE PERIOD</label>
                         <div class="d-flex gap-3 align-items-center">

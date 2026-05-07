@@ -33,7 +33,6 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label font-weight-bold text-dark">Standard Type</label>
@@ -67,7 +66,6 @@
                                 <label class="form-check-label" for="isActive">Mark as Active Standard</label>
                             </div>
                         </div>
-
                         <div class="d-flex justify-content-end gap-2 border-top pt-3">
                             <a href="{{ route('standards.index') }}" class="btn btn-light px-4">Cancel</a>
                             <button type="submit" class="btn btn-primary px-4 shadow-sm">Save Standard</button>

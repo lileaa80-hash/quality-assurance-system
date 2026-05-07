@@ -6,7 +6,6 @@
         <div class="card-header bg-warning py-2">
             <h6 class="mb-0 fw-bold text-dark">Edit Accreditation Borang: {{ $borang->name }}</h6>
         </div>
-
         <div class="card-body p-4">
             @if(session('error'))
                 <div class="alert alert-danger py-2 small shadow-sm mb-3 border-0">
@@ -25,7 +24,6 @@
                             <input type="text" name="name" class="form-control form-control-sm shadow-sm" 
                                    value="{{ old('name', $borang->name) }}" required>
                         </div>
-
                         <div class="col-md-6">
                             <label class="form-label fw-bold text-muted small mb-1">ACCREDITATION PERIOD</label>
                             <select name="accreditation_period_id" class="form-select form-select-sm shadow-sm" required>

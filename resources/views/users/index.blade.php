@@ -9,6 +9,7 @@
                 <i class="fas fa-plus-circle me-1"></i> Add New User
             </a>
         </div>
+        
         <div class="card-body p-4">
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">

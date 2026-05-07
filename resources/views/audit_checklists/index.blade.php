@@ -9,14 +9,12 @@
                 <i class="fas fa-plus me-1"></i> + Add New Audit
             </a>
         </div>
-
         <div class="card-body p-0">
             @if(session('success'))
                 <div class="alert alert-success m-3 py-2 small border-0 shadow-sm">
                     {{ session('success') }}
                 </div>
             @endif
-
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
                     <thead class="bg-light">
@@ -32,7 +30,6 @@
                         @forelse($checklists as $item)
                         <tr>
                             <td class="ps-4 fw-bold text-dark">{{ $item->unit_name }}</td>
-                            
                             <td>
                                 <div class="text-muted small mb-1">{{ $item->standard_name }}</div>
                                 <div class="fw-bold text-primary">{{ $item->indicator_name }}</div>

@@ -68,14 +68,12 @@
                 </table>
             </div>
         </div>
-
         <div class="card-footer bg-white border-0 py-3 px-4 text-end">
             <a href="{{ route('audit_checklists.edit', $checklist->id) }}" class="btn btn-warning btn-sm px-4 fw-bold shadow-sm">
                 Modify Report Data
             </a>
         </div>
     </div>
-
     <div class="text-center mt-5 mb-4 text-muted small">
         &copy; 2026 SPMI Digital System - RPL
     </div>

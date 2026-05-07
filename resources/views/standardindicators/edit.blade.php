@@ -39,7 +39,6 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label fw-bold text-muted small text-uppercase">Indicator Description</label>
                             <textarea name="indicator_text" class="form-control" rows="4" required>{{ old('indicator_text', $indicator->indicator_text) }}</textarea>

@@ -14,14 +14,12 @@
             <div class="px-4 py-3">
                 <h4 class="mb-0 fw-bold text-secondary">Indicators Management</h4>
             </div>
-
             @if(session('success'))
                 <div class="alert alert-success mx-4 border-0 shadow-sm alert-dismissible fade show">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
-
             <div class="table-responsive">
                 <table class="table table-hover mb-0 align-middle">
                     <thead class="bg-light text-uppercase" style="font-size: 0.85rem;">

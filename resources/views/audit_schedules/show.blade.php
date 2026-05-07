@@ -9,7 +9,6 @@
                 Back to List
             </a>
         </div>
-
         <div class="card-body p-0">
             <table class="table table-striped mb-0">
                 <tbody>

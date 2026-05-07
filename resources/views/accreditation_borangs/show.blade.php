@@ -33,7 +33,6 @@
                     <strong>Borang Name:</strong> <span class="text-primary fw-bold">{{ $borang->name }}</span>
                 </div>
             </div>
-
             <div class="p-4">
                 <div class="row g-4">
                     <div class="col-md-6">

@@ -7,7 +7,6 @@
             <h6 class="mb-0 fw-bold">Version Details: v{{ $version->version_number }}</h6>
             <a href="{{ route('document_versions.index') }}" class="btn btn-light btn-sm fw-bold shadow-sm" style="font-size: 11px;">Back to List</a>
         </div>
-
         <div class="card-body p-4">
             <div class="row mb-4">
                 <div class="col-md-6">
@@ -21,7 +20,6 @@
                     </span>
                 </div>
             </div>
-
             <div class="bg-light p-3 rounded mb-4 border">
                 <h6 class="fw-bold small text-muted border-bottom pb-2">FILE INFORMATION</h6>
                 <div class="row g-3 mt-1">

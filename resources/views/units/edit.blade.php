@@ -6,7 +6,6 @@
         <div class="card-header bg-warning text-dark py-3">
             <h5 class="mb-0 fw-bold">SPMI SYSTEM - Edit Unit / Department</h5>
         </div>
-        
         <form action="{{ route('units.update', $unit->id) }}" method="POST">
             @csrf
             @method('PUT')

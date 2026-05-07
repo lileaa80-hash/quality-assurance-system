@@ -10,7 +10,6 @@
         <form action="{{ route('units.store') }}" method="POST">
             @csrf
             <div class="card-body p-4">
-                
                 @if ($errors->any())
                     <div class="alert alert-danger border-0 shadow-sm mb-4">
                         <ul class="mb-0">
@@ -20,7 +19,6 @@
                         </ul>
                     </div>
                 @endif
-
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold">Unit Code</label>

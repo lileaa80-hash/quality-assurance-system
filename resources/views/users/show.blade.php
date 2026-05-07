@@ -7,7 +7,6 @@
             <h5 class="mb-0 fw-bold">SPMI SYSTEM - User Profile Details</h5>
             <a href="{{ route('users.index') }}" class="btn btn-light btn-sm px-3 shadow-sm">Back to List</a>
         </div>
-
         <div class="card-body p-4">
             <div class="row g-4">
                 <div class="col-md-4 border-end">

@@ -16,6 +16,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+            
             <div class="table-responsive">
                 <table class="table table-hover mb-0" style="font-size: 13px;">
                     <thead class="bg-light">

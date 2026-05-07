@@ -26,7 +26,6 @@
                             <input type="text" name="period_name" class="form-control form-control-sm shadow-sm" 
                                    value="{{ old('period_name', $period->period_name) }}" required>
                         </div>
-
                         <div class="col-md-3">
                             <label class="form-label fw-bold text-muted small mb-1">UNIT / DEPT</label>
                             <select name="unit_id" class="form-select form-select-sm shadow-sm" required>
