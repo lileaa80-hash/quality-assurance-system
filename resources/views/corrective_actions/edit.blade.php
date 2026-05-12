@@ -3,8 +3,8 @@
 @section('content')
 <div class="container py-4">
     <div class="card shadow-sm border-0" style="max-width: 900px; margin: auto;">
-        <div class="card-header bg-primary text-white py-2">
-            <h6 class="mb-0 fw-bold">Edit Corrective Action Report</h6>
+        <div class="card-header bg-warning text-dark py-2">
+            <h6 class="mb-0 fw-bold text-uppercase" style="font-size: 13px;">Edit Corrective Action Report</h6>
         </div>
         <div class="card-body p-4">
             <form action="{{ route('corrective_actions.update', $action->id) }}" method="POST">
@@ -31,7 +31,7 @@
                         <select name="audit_finding_id" class="form-select form-select-sm shadow-sm" required>
                             @foreach($findings as $f)
                                 <option value="{{ $f->id }}" {{ $action->audit_finding_id == $f->id ? 'selected' : '' }}>
-                                    {{ $f->finding_number }} - {{ Str::limit($f->finding_description, 100) }}
+                                    {{ $f->finding_number }} - {{ $f->finding_description }}
                                 </option>
                             @endforeach
                         </select>
@@ -99,8 +99,8 @@
                 </div>
 
                 <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
-                    <a href="{{ route('corrective_actions.index') }}" class="btn btn-light btn-sm px-3 fw-bold border" style="font-size: 11px;">Cancel</a>
-                    <button type="submit" class="btn btn-primary btn-sm px-3 fw-bold shadow-sm" style="font-size: 11px;">Update Report</button>
+                    <a href="{{ route('corrective_actions.index') }}" class="btn btn-secondary btn-sm px-3 fw-bold shadow-sm" style="font-size: 11px; background-color: #6c757d;">Cancel</a>
+                    <button type="submit" class="btn btn-warning btn-sm px-3 fw-bold shadow-sm" style="font-size: 11px;">Update Report</button>
                 </div>
             </form>
         </div>

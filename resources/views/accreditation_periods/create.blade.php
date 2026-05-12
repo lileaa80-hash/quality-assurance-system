@@ -3,19 +3,24 @@
 @section('content')
 <div class="container py-4">
     <div class="card shadow-sm border-0" style="max-width: 950px; margin: auto;">
-        <div class="card-header bg-primary text-white py-2">
-            <h6 class="mb-0 fw-bold">Add New Accreditation Period</h6>
+        <div class="card-header bg-primary text-white py-3 px-4">
+            <h6 class="mb-0 fw-bold text-uppercase" style="letter-spacing: 0.5px;">Add New Accreditation Period</h6>
         </div>
+        
         <div class="card-body p-4">
             @if(session('error'))
                 <div class="alert alert-danger py-2 small shadow-sm mb-3 border-0">
-                    {{ session('error') }}
+                    <i class="fas fa-exclamation-triangle me-1"></i> {{ session('error') }}
                 </div>
-            @endi
+            @endif
+
             <form action="{{ route('accreditation_periods.store') }}" method="POST">
                 @csrf
+                
                 <div class="mb-4">
-                    <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">BASIC INFORMATION</h6>
+                    <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">
+                        <i class="fas fa-info-circle me-1"></i> BASIC INFORMATION
+                    </h6>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-bold text-muted small mb-1">PERIOD NAME</label>
@@ -38,7 +43,6 @@
                                 <option value="maintenance">Maintenance</option>
                             </select>
                         </div>
-
                         <div class="col-md-4">
                             <label class="form-label fw-bold text-muted small mb-1">STATUS</label>
                             <select name="status" class="form-select form-select-sm shadow-sm" required>
@@ -53,7 +57,9 @@
                 </div>
 
                 <div class="mb-4">
-                    <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">TIMELINE & MILESTONES</h6>
+                    <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">
+                        <i class="fas fa-calendar-alt me-1"></i> TIMELINE & MILESTONES
+                    </h6>
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label fw-bold text-muted small mb-1">START DATE</label>
@@ -75,7 +81,9 @@
                 </div>
 
                 <div class="mb-2">
-                    <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">PRELIMINARY RESULTS & ASSETS (OPTIONAL)</h6>
+                    <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">
+                        <i class="fas fa-poll-h me-1"></i> PRELIMINARY RESULTS & ASSETS (OPTIONAL)
+                    </h6>
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label fw-bold text-muted small mb-1">RESULT GRADE</label>
@@ -93,11 +101,27 @@
                 </div>
 
                 <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
-                    <a href="{{ route('accreditation_periods.index') }}" class="btn btn-light btn-sm px-3 fw-bold border" style="font-size: 11px;">Cancel</a>
-                    <button type="submit" class="btn btn-primary btn-sm px-3 fw-bold shadow-sm" style="font-size: 11px;">Save Period Information</button>
+                    <a href="{{ route('accreditation_periods.index') }}" class="btn btn-light btn-sm px-4 fw-bold border" style="font-size: 11px;">Cancel</a>
+                    <button type="submit" class="btn btn-primary btn-sm px-4 fw-bold shadow-sm" style="font-size: 11px;">
+                        <i class="fas fa-save me-1"></i> Save Period Information
+                    </button>
                 </div>
             </form>
         </div>
     </div>
+
+    <div class="text-center mt-5 text-muted" style="font-size: 11px;">
+        © 2026 SPMI Digital System - RPL
+    </div>
 </div>
+
+<style>
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+    }
+    .text-primary {
+        color: #0d6efd !important;
+    }
+</style>
 @endsection

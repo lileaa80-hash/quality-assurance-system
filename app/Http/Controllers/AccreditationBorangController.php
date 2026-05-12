@@ -73,41 +73,39 @@ class AccreditationBorangController extends Controller
     }
 
    
-    public function show($id)
+   public function show($id)
     {
         $borang = DB::table('accreditation_borangs')
             ->join('accreditation_periods', 'accreditation_borangs.accreditation_period_id', '=', 'accreditation_periods.id')
             ->join('standards', 'accreditation_borangs.standard_id', '=', 'standards.id')
+            // Kita join tapi JANGAN panggil kolom spesifik dulu biar nggak crash
             ->join('standard_indicators', 'accreditation_borangs.standard_indicator_id', '=', 'standard_indicators.id')
             ->select(
                 'accreditation_borangs.*', 
                 'accreditation_periods.period_name', 
-                'standards.name as standard_name', 
-                'standard_indicators.name as indicator_name'
+                'standards.name as standard_name'
             )
             ->where('accreditation_borangs.id', $id)
             ->first();
-
-        if (!$borang) {
-            return redirect()->route('accreditation_borangs.index')->with('error', 'Data tidak ditemukan.');
-        }
+        if (!$borang) { abort(404); }
 
         return view('accreditation_borangs.show', compact('borang'));
     }
 
     public function edit($id)
     {
-        $borang = DB::table('accreditation_borangs')->where('id', $id)->first();
-        
+        $borang = DB::table('accreditation_borangs')
+            ->where('id', $id)
+            ->first();
+
         if (!$borang) {
-            return redirect()->route('accreditation_borangs.index')->with('error', 'Data tidak ditemukan.');
+            abort(404);
         }
 
         $periods = DB::table('accreditation_periods')->get();
-        $standards = DB::table('standards')->get();
-        $indicators = DB::table('standard_indicators')->get();
-
-        return view('accreditation_borangs.edit', compact('borang', 'periods', 'standards', 'indicators'));
+        // Tambahkan variabel pendukung lainnya jika ada (seperti standards)
+        
+        return view('accreditation_borangs.edit', compact('borang', 'periods'));
     }
 
     public function update(Request $request, $id)

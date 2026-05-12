@@ -4,11 +4,12 @@
 <div class="container py-4">
     <div class="card shadow-sm border-0">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
-            <h6 class="mb-0 fw-bold">Audit Finding Management</h6>
+            <h6 class="mb-0 fw-bold">AUDIT FINDING MANAGEMENT</h6>
             <a href="{{ route('audit_findings.create') }}" class="btn btn-light btn-sm fw-bold shadow-sm" style="font-size: 11px;">
                 + Add New Finding
             </a>
         </div>
+
         <div class="card-body p-0">
             <div class="p-3 border-bottom bg-light">
                 <form action="{{ route('audit_findings.index') }}" method="GET" class="row g-2">
@@ -27,20 +28,22 @@
                     </div>
                 </form>
             </div>
+
             @if(session('success'))
                 <div class="alert alert-success m-3 py-2 small border-0 shadow-sm" style="background-color: #d4edda;">
                     {{ session('success') }}
                 </div>
             @endif
+
             <div class="table-responsive">
                 <table class="table table-hover mb-0" style="font-size: 12px;">
-                    <thead class="bg-white">
+                    <thead class="bg-primary text-white">
                         <tr>
-                            <th class="ps-4 py-3 text-muted small fw-bold" style="width: 15%;">FINDING NO.</th>
-                            <th class="py-3 text-muted small fw-bold" style="width: 25%;">UNIT & SCHEDULE</th>
-                            <th class="py-3 text-muted small fw-bold" style="width: 30%;">DESCRIPTION</th>
-                            <th class="py-3 text-muted small fw-bold text-center">STATUS</th>
-                            <th class="py-3 text-muted small fw-bold text-center pe-4">ACTIONS</th>
+                            <th class="ps-4 py-3 small fw-bold" style="width: 15%;">FINDING NO.</th>
+                            <th class="py-3 small fw-bold" style="width: 25%;">UNIT & SCHEDULE</th>
+                            <th class="py-3 small fw-bold" style="width: 30%;">DESCRIPTION</th>
+                            <th class="py-3 small fw-bold text-center">STATUS</th>
+                            <th class="py-3 small fw-bold text-center pe-4">ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +58,7 @@
                                 <div class="text-muted small italic">{{ $item->schedule_title }}</div>
                             </td>
                             <td>
-                                <div class="text-truncate" style="max-width: 250px;">
+                                <div class="text-wrap" style="max-width: 250px;">
                                     <span class="badge bg-light text-dark border fw-normal mb-1" style="font-size: 9px;">{{ strtoupper($item->category) }}</span><br>
                                     {{ Str::limit($item->finding_description, 60) }}
                                 </div>
@@ -73,13 +76,25 @@
                                 </span>
                             </td>
                             <td class="text-center pe-4">
-                                <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('audit_findings.show', $item->id) }}" class="btn btn-info btn-xs text-white px-2 py-0" style="font-size: 10px;">Show</a>
-                                    <a href="{{ route('audit_findings.edit', $item->id) }}" class="btn btn-warning btn-xs text-white px-2 py-0" style="font-size: 10px;">Edit</a>
-                                    <form action="{{ route('audit_findings.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Delete this finding?')">
+                                <div class="d-flex justify-content-center align-items-center gap-1">
+                                    <a href="{{ route('audit_findings.show', $item->id) }}" 
+                                       class="btn btn-info text-white d-flex align-items-center justify-content-center btn-custom-action">
+                                       Show
+                                    </a>
+
+                                    <a href="{{ route('audit_findings.edit', $item->id) }}" 
+                                       class="btn btn-warning text-white d-flex align-items-center justify-content-center btn-custom-action">
+                                       Edit
+                                    </a>
+
+                                    <form action="{{ route('audit_findings.destroy', $item->id) }}" method="POST" 
+                                          onsubmit="return confirm('Delete this finding?')" class="m-0 p-0">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-xs px-2 py-0" style="font-size: 10px;">Delete</button>
+                                        <button type="submit" 
+                                                class="btn btn-danger d-flex align-items-center justify-content-center btn-custom-action">
+                                            Delete
+                                        </button>
                                     </form>
                                 </div>
                             </td>
@@ -95,6 +110,7 @@
                 </table>
             </div>
         </div>
+
         @if($findings->hasPages())
         <div class="card-footer bg-white py-2">
             <div class="small">
@@ -103,17 +119,34 @@
         </div>
         @endif
     </div>
+
     <div class="text-center mt-5 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL
     </div>
 </div>
+
 <style>
-    .btn-xs {
-        padding: 1px 5px;
-        font-size: 10px;
-        line-height: 1.5;
+    /* Styling khusus tombol aksi agar presisi */
+    .btn-custom-action {
+        font-size: 10px !important;
+        width: 45px;
+        height: 22px;
+        padding: 0 !important;
         border-radius: 3px;
+        line-height: 1;
     }
+    
     .italic { font-style: italic; }
+    
+    /* Header tabel agar bersih tanpa border bawah tambahan */
+    thead th {
+        border-bottom: none !important;
+        letter-spacing: 0.3px;
+    }
+
+    /* Menghilangkan border pada form delete agar tidak merusak layout */
+    form {
+        display: inline-block;
+    }
 </style>
 @endsection
