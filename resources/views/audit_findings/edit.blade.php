@@ -6,31 +6,26 @@
         <div class="card-header bg-warning text-dark py-3 px-4">
             <h6 class="mb-0 fw-bold">EDIT AUDIT FINDING</h6>
         </div>
-
         <div class="card-body p-4">
             @if(session('error'))
                 <div class="alert alert-danger py-2 small shadow-sm mb-4 border-0">
                     {{ session('error') }}
                 </div>
             @endif
-
             <form action="{{ route('audit_findings.update', $finding->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
                 <div class="row g-4">
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-dark small mb-1">FINDING NUMBER</label>
                         <input type="text" name="finding_number" class="form-control form-control-sm bg-white" 
                                value="{{ old('finding_number', $finding->finding_number) }}" required>
                     </div>
-
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-dark small mb-1">FINDING DATE</label>
                         <input type="date" name="finding_date" class="form-control form-control-sm bg-white" 
                                value="{{ old('finding_date', $finding->finding_date) }}" required>
                     </div>
-
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-dark small mb-1">AUDIT SCHEDULE</label>
                         <select name="audit_schedule_id" class="form-select form-select-sm bg-white" required>

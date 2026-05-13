@@ -106,28 +106,21 @@
         </div>
         @endif
     </div>
-
     <div class="text-center mt-5 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL | Document Management Control
     </div>
 </div>
-
 <style>
-    /* Ukuran tombol ekstra kecil untuk dashboard yang padat */
     .btn-xs {
         padding: 2px 6px;
         font-size: 10px;
         line-height: 1.2;
         border-radius: 3px;
     }
-    
-    /* Efek hover pada baris tabel */
     .table-hover tbody tr:hover {
         background-color: #f8fafc;
         transition: 0.2s;
     }
-
-    /* Penyesuaian shadow pada badge */
     .badge {
         letter-spacing: 0.3px;
     }

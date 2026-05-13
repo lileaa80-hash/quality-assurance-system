@@ -49,7 +49,6 @@
                 <div class="detail-label small fw-bold text-muted" style="width: 250px;">FINDING DATE</div>
                 <div class="detail-content small text-dark">{{ \Carbon\Carbon::parse($finding->finding_date)->format('d F Y') }}</div>
             </div>
-
             <div class="detail-row d-flex border-bottom bg-white p-3">
                 <div class="detail-label small fw-bold text-muted" style="width: 250px;">CATEGORY / RISK</div>
                 <div class="detail-content small">
@@ -58,14 +57,12 @@
                     <span class="text-danger fw-bold">Level {{ $finding->risk_level }} / 5</span>
                 </div>
             </div>
-
             <div class="detail-row d-flex border-bottom bg-light p-3">
                 <div class="detail-label small fw-bold text-muted" style="width: 250px;">FINDING DESCRIPTION</div>
                 <div class="detail-content small text-dark" style="flex: 1;">
                     <div class="p-3 bg-white border rounded" style="white-space: pre-line;">{{ $finding->finding_description }}</div>
                 </div>
             </div>
-
             <div class="detail-row d-flex border-bottom bg-white p-3">
                 <div class="detail-label small fw-bold text-muted" style="width: 250px;">OBJECTIVE EVIDENCE</div>
                 <div class="detail-content small text-dark" style="flex: 1;">
@@ -74,7 +71,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="p-4 bg-white d-flex justify-content-end gap-2">
                 <form action="{{ route('audit_findings.destroy', $finding->id) }}" method="POST" onsubmit="return confirm('Delete this finding?')">
                     @csrf
@@ -96,7 +92,6 @@
 </div>
 
 <style>
-    /* Styling agar baris detail rapi dan presisi */
     .detail-row {
         transition: background-color 0.2s;
     }
@@ -104,7 +99,6 @@
         letter-spacing: 0.5px;
         text-transform: uppercase;
     }
-    /* Memastikan konten mengisi sisa ruang */
     .detail-content {
         flex: 1;
     }

@@ -29,7 +29,6 @@ class CorrectiveActionController extends Controller
 
     public function create()
     {
-        // Ambil finding yang masih OPEN agar bisa dibuatkan CAPA
         $findings = DB::table('audit_findings')->where('status', 'open')->get();
         $units = DB::table('units')->get();
         $users = DB::table('users')->get();

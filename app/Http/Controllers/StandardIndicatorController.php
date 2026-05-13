@@ -15,7 +15,6 @@ class StandardIndicatorController extends Controller
             ->orderBy('standards.code', 'asc')
             ->get();
 
-        // Memanggil folder resources/views/standardindicators/index.blade.php
         return view('standardindicators.index', compact('indicators'));
     }
 
@@ -76,7 +75,6 @@ class StandardIndicatorController extends Controller
             'indicator_text' => 'required',
         ]);
 
-        // Fix: Pastikan ID ditemukan sebelum update
         DB::table('standard_indicators')
             ->where('id', $id)
             ->update([

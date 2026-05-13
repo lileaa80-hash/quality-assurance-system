@@ -24,6 +24,7 @@
                     <span class="badge {{ $statusBadge }} px-3 py-2" style="font-size: 11px; border-radius: 4px;">
                         {{ strtoupper($questionnaire->status) }}
                     </span>
+                    
                     <span class="text-muted small fw-bold text-uppercase ms-2">Type:</span>
                     <span class="badge bg-white text-primary border border-primary px-3 py-2" style="font-size: 11px; border-radius: 4px;">
                         {{ strtoupper(str_replace('_', ' ', $questionnaire->type)) }}
@@ -47,6 +48,7 @@
                         <h5 class="fw-bold text-primary mb-0">{{ ucfirst($questionnaire->target_audience) }}</h5>
                         <small class="text-muted">Responden yang dituju</small>
                     </div>
+
                     <div class="col-12">
                         <div class="bg-light p-3 rounded border shadow-sm">
                             <h6 class="text-primary fw-bold small mb-2"><i class="fas fa-info-circle me-2"></i>DESCRIPTION / INSTRUCTIONS</h6>
@@ -55,6 +57,7 @@
                             </p>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <label class="text-muted small fw-bold d-block mb-2">ACTIVE PERIOD</label>
                         <div class="d-flex gap-3 align-items-center">
@@ -62,7 +65,7 @@
                                 <span class="d-block text-muted" style="font-size: 10px;">START DATE</span>
                                 <span class="small fw-bold">{{ \Carbon\Carbon::parse($questionnaire->start_date)->format('d M Y') }}</span>
                             </div>
-                            <i class="fas fa-arrow-right text-muted"></i>
+                            <div class="text-muted">→</div>
                             <div class="p-2 border rounded bg-white shadow-sm flex-fill text-center">
                                 <span class="d-block text-muted" style="font-size: 10px;">END DATE</span>
                                 <span class="small fw-bold">{{ \Carbon\Carbon::parse($questionnaire->end_date)->format('d M Y') }}</span>
@@ -74,7 +77,7 @@
                         <label class="text-muted small fw-bold d-block mb-2">ADDITIONAL SETTINGS</label>
                         <div class="row g-2">
                             <div class="col-6">
-                                <div class="p-2 border rounded bg-white shadow-sm h-100">
+                                <div class="p-2 border rounded bg-white shadow-sm h-100 text-center">
                                     <span class="d-block text-muted" style="font-size: 10px;">ANONYMOUS</span>
                                     <span class="badge {{ $questionnaire->is_anonymous ? 'bg-success' : 'bg-danger' }} w-100" style="font-size: 9px;">
                                         {{ $questionnaire->is_anonymous ? 'ENABLED' : 'DISABLED' }}
@@ -82,33 +85,13 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="p-2 border rounded bg-white shadow-sm h-100">
-                                    <span class="d-block text-muted" style="font-size: 100x;">MULTIPLE SUBMIT</span>
+                                <div class="p-2 border rounded bg-white shadow-sm h-100 text-center">
+                                    <span class="d-block text-muted" style="font-size: 10px;">MULTIPLE SUBMIT</span>
                                     <span class="badge {{ $questionnaire->allow_multiple_submissions ? 'bg-success' : 'bg-secondary' }} w-100" style="font-size: 9px;">
                                         {{ $questionnaire->allow_multiple_submissions ? 'ALLOWED' : 'ONCE ONLY' }}
                                     </span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <label class="text-muted small fw-bold d-block mb-1">FINAL REPORT DOCUMENT (MINIO)</label>
-                        <div class="p-3 bg-white rounded border shadow-sm d-flex align-items-center justify-content-between">
-                            @if($questionnaire->report_file)
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-file-pdf text-danger me-3 fa-lg"></i>
-                                    <div>
-                                        <span class="text-dark small d-block fw-bold">Report Summary</span>
-                                        <span class="small text-muted">{{ $questionnaire->report_file }}</span>
-                                    </div>
-                                </div>
-                                <a href="{{ Storage::disk('minio')->url($questionnaire->report_file) }}" target="_blank" class="btn btn-primary btn-sm px-3 fw-bold" style="font-size: 10px;">
-                                    <i class="fas fa-download me-1"></i> Download Report
-                                </a>
-                            @else
-                                <p class="mb-0 text-muted small italic">No report file has been uploaded yet.</p>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -128,11 +111,5 @@
             </div>
         </div>
     </div>
-    <div class="text-center mt-5 text-muted" style="font-size: 11px;">
-        © 2026 SPMI Digital System - RPL
-    </div>
 </div>
-<style>
-    .italic { font-style: italic; }
-</style>
 @endsection

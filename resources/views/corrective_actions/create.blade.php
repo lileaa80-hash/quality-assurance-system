@@ -46,7 +46,6 @@
                             @endforeach
                         </select>
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label fw-bold text-dark small mb-1">CAUSE CATEGORY</label>
                         <select name="cause_category" class="form-select form-select-sm bg-light-focus" required>
@@ -58,13 +57,11 @@
                             <option value="other">Other</option>
                         </select>
                     </div>
-
                     <div class="col-md-8">
                         <label class="form-label fw-bold text-dark small mb-1">ROOT CAUSE</label>
                         <textarea name="root_cause" class="form-control form-control-sm bg-light-focus" 
                                   rows="1" placeholder="Analyze the root cause..." required>{{ old('root_cause') }}</textarea>
                     </div>
-
                     <div class="col-12">
                         <hr class="my-2 opacity-25">
                         <label class="form-label fw-bold text-dark small mb-1">CORRECTIVE ACTION PLAN</label>

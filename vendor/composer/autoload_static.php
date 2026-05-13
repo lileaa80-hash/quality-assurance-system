@@ -767,6 +767,7 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'App\\Http\\Controllers\\DocumentController' => __DIR__ . '/../..' . '/app/Http/Controllers/DocumentController.php',
         'App\\Http\\Controllers\\DocumentVersionController' => __DIR__ . '/../..' . '/app/Http/Controllers/DocumentVersionController.php',
         'App\\Http\\Controllers\\EvaluationQuestionController' => __DIR__ . '/../..' . '/app/Http/Controllers/EvaluationQuestionController.php',
+        'App\\Http\\Controllers\\EvaluationQuestionnaireController' => __DIR__ . '/../..' . '/app/Http/Controllers/EvaluationQuestionnaireController.php',
         'App\\Http\\Controllers\\StandardController' => __DIR__ . '/../..' . '/app/Http/Controllers/StandardController.php',
         'App\\Http\\Controllers\\StandardIndicatorController' => __DIR__ . '/../..' . '/app/Http/Controllers/StandardIndicatorController.php',
         'App\\Http\\Controllers\\UnitController' => __DIR__ . '/../..' . '/app/Http/Controllers/UnitController.php',

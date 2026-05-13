@@ -8,12 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class StandardController extends Controller
 {
-    /**
-     * Display a listing of the standards.
-     */
     public function index()
     {
-        // Get all standards with creator name using Query Builder Join
         $standards = DB::table('standards')
             ->leftJoin('users', 'standards.created_by', '=', 'users.id')
             ->select('standards.*', 'users.name as creator_name')
@@ -23,12 +19,8 @@ class StandardController extends Controller
         return view('standards.index', compact('standards'));
     }
 
-    /**
-     * Show the form for creating a new standard.
-     */
     public function create()
     {
-        // Get list for parent standard selection
         $parentStandards = DB::table('standards')
             ->whereNull('parent_id')
             ->select('id', 'code', 'name')
@@ -37,19 +29,14 @@ class StandardController extends Controller
         return view('standards.create', compact('parentStandards'));
     }
 
-    /**
-     * Store a newly created standard in database.
-     */
     public function store(Request $request)
     {
-        // Validation - Biar data nggak asal masuk
         $request->validate([
             'code' => 'required|unique:standards,code',
             'name' => 'required',
             'type' => 'required',
         ]);
 
-        // Insert using Query Builder
         DB::table('standards')->insert([
             'code'        => $request->code,
             'name'        => $request->name,
@@ -85,9 +72,6 @@ class StandardController extends Controller
         return view('standards.show', compact('standard'));
     }
 
-    /**
-     * Show the form for editing.
-     */
     public function edit($id)
     {
         $standard = DB::table('standards')->where('id', $id)->first();
@@ -100,9 +84,6 @@ class StandardController extends Controller
         return view('standards.edit', compact('standard', 'parentStandards'));
     }
 
-    /**
-     * Update standard data.
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -125,9 +106,6 @@ class StandardController extends Controller
             ->with('success', 'Standard updated successfully!');
     }
 
-    /**
-     * Delete standard.
-     */
     public function destroy($id)
     {
         DB::table('standards')->where('id', $id)->delete();

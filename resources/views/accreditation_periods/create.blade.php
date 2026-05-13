@@ -6,17 +6,14 @@
         <div class="card-header bg-primary text-white py-3 px-4">
             <h6 class="mb-0 fw-bold text-uppercase" style="letter-spacing: 0.5px;">Add New Accreditation Period</h6>
         </div>
-        
         <div class="card-body p-4">
             @if(session('error'))
                 <div class="alert alert-danger py-2 small shadow-sm mb-3 border-0">
                     <i class="fas fa-exclamation-triangle me-1"></i> {{ session('error') }}
                 </div>
             @endif
-
             <form action="{{ route('accreditation_periods.store') }}" method="POST">
                 @csrf
-                
                 <div class="mb-4">
                     <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">
                         <i class="fas fa-info-circle me-1"></i> BASIC INFORMATION

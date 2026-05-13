@@ -27,7 +27,6 @@ class EvaluationQuestionnaireController extends Controller
 
    public function store(Request $request)
 {
-    // 1. Validasi harus SAMA PERSIS dengan ENUM di migration
     $request->validate([
         'title' => 'required',
         'type' => 'required|in:student_satisfaction,lecturer_performance,alumni_tracer,stakeholder_satisfaction,self_evaluation',

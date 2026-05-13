@@ -51,7 +51,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="col-md-4">
                             <label class="form-label fw-bold text-muted small mb-1">CURRENT STATUS</label>
                             <select name="status" class="form-select form-select-sm shadow-sm border-warning" required>
@@ -92,7 +91,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="mb-2">
                     <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3 text-uppercase">
                         <i class="fas fa-trophy me-1"></i> Final Results & Certification

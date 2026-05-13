@@ -8,7 +8,6 @@
                 <i class="fas fa-file-upload me-2"></i> Upload New Document Version
             </h6>
         </div>
-
         <div class="card-body p-4 bg-white">
             @if ($errors->any())
                 <div class="alert alert-danger py-2 small shadow-sm mb-4 border-0 d-flex align-items-center">
@@ -20,10 +19,8 @@
                     </ul>
                 </div>
             @endif
-
             <form action="{{ route('document_versions.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                
                 <div class="mb-4">
                     <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">
                         <i class="fas fa-search me-1"></i> DOCUMENT SELECTION
@@ -71,7 +68,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="mb-2">
                     <h6 class="text-primary fw-bold small border-bottom pb-2 mb-3">
                         <i class="fas fa-history me-1"></i> CHANGE LOG
@@ -85,7 +81,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="mt-5 pt-3 border-top d-flex justify-content-between align-items-center">
                     <span class="text-muted small" style="font-size: 10px;">
                         <i class="fas fa-user-shield me-1"></i> Logged in as: <strong>{{ Auth::user()->name ?? 'Uploader' }}</strong>
@@ -102,12 +97,10 @@
             </form>
         </div>
     </div>
-    
     <div class="text-center mt-4 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL | Secure Document Upload
     </div>
 </div>
-
 <style>
     .form-label {
         letter-spacing: 0.2px;

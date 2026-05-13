@@ -17,7 +17,6 @@ use App\Http\Controllers\AccreditationBorangController;
 use App\Http\Controllers\DocumentVersionController;
 use App\Http\Controllers\EvaluationQuestionnaireController;
 use App\Http\Controllers\EvaluationQuestionController;
-use GuzzleHttp\Promise\EachPromise;
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,7 +36,8 @@ Route::resource('accreditation_periods', AccreditationPeriodController::class);
 Route::resource('accreditation_borangs', AccreditationBorangController::class);
 Route::resource('document_versions', DocumentVersionController::class);
 Route::resource('evaluation_questionnaires', EvaluationQuestionnaireController::class);
-// Route::resource('evaluation_questions', EvaluationQuestionController::class);
+Route::resource('evaluation_questions', EvaluationQuestionController::class);
+
 
 Route::get('/test-minio', function () {
     try {

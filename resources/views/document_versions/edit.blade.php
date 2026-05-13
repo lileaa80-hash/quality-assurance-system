@@ -11,11 +11,9 @@
             <form action="{{ route('document_versions.update', $version->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-
                 <div class="mb-5">
                     <h6 class="fw-bold text-primary text-uppercase mb-3" style="font-size: 13px; letter-spacing: 1px;">Version & Status Details</h6>
                     <hr class="mt-0 mb-4 opacity-25">
-                    
                     <div class="row g-4">
                         <div class="col-md-6">
                             <label class="form-label fw-bold text-muted small mb-1 text-uppercase">Version Status</label>

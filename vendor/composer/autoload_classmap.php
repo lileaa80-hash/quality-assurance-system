@@ -54,6 +54,7 @@ return array(
     'App\\Http\\Controllers\\DocumentController' => $baseDir . '/app/Http/Controllers/DocumentController.php',
     'App\\Http\\Controllers\\DocumentVersionController' => $baseDir . '/app/Http/Controllers/DocumentVersionController.php',
     'App\\Http\\Controllers\\EvaluationQuestionController' => $baseDir . '/app/Http/Controllers/EvaluationQuestionController.php',
+    'App\\Http\\Controllers\\EvaluationQuestionnaireController' => $baseDir . '/app/Http/Controllers/EvaluationQuestionnaireController.php',
     'App\\Http\\Controllers\\StandardController' => $baseDir . '/app/Http/Controllers/StandardController.php',
     'App\\Http\\Controllers\\StandardIndicatorController' => $baseDir . '/app/Http/Controllers/StandardIndicatorController.php',
     'App\\Http\\Controllers\\UnitController' => $baseDir . '/app/Http/Controllers/UnitController.php',

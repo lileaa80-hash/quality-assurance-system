@@ -9,7 +9,6 @@
                 + Add New Finding
             </a>
         </div>
-
         <div class="card-body p-0">
             <div class="p-3 border-bottom bg-light">
                 <form action="{{ route('audit_findings.index') }}" method="GET" class="row g-2">
@@ -28,7 +27,6 @@
                     </div>
                 </form>
             </div>
-
             @if(session('success'))
                 <div class="alert alert-success m-3 py-2 small border-0 shadow-sm" style="background-color: #d4edda;">
                     {{ session('success') }}

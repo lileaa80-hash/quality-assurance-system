@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DocumentController extends Controller
 {
-    /**
-     * Menampilkan daftar dokumen.
-     */
     public function index()
     {
         // Mengambil data dokumen terbaru beserta user pembuatnya
@@ -18,17 +15,11 @@ class DocumentController extends Controller
         return view('documents.index', compact('documents'));
     }
 
-    /**
-     * Menampilkan form tambah dokumen baru.
-     */
     public function create()
     {
         return view('documents.create');
     }
 
-    /**
-     * Menyimpan dokumen baru ke database.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -59,42 +50,26 @@ class DocumentController extends Controller
         }
     }
 
-    /**
-     * MENAMPILKAN DETAIL DOKUMEN (Penyembuh error yang kamu alami sekarang)
-     */
     public function show(Document $document)
     {
-        // Melempar data $document ke folder resources/views/documents/show.blade.php
         return view('documents.show', compact('document'));
     }
 
-    /**
-     * Menampilkan form edit dokumen.
-     */
     public function edit(Document $document)
     {
         return view('documents.edit', compact('document'));
     }
 
-    /**
-     * Update data dokumen.
-     */
     public function update(Request $request, Document $document)
     {
         $data = $request->all();
-        
-        // Tetap paksa lowercase agar tidak error saat update
         if(isset($data['type'])) $data['type'] = strtolower($data['type']);
         if(isset($data['status'])) $data['status'] = strtolower($data['status']);
-        
         $document->update($data);
 
         return redirect()->route('documents.index')->with('success', 'Document updated!');
     }
 
-    /**
-     * Menghapus dokumen.
-     */
     public function destroy($id)
     {
         $document = Document::find($id);

@@ -9,7 +9,6 @@
                 <i class="fas fa-arrow-left me-1"></i> BACK TO LIST
             </a>
         </div>
-
         <div class="card-body p-0">
             <div class="p-3 border-bottom bg-light d-flex justify-content-between align-items-center px-4">
                 <div class="d-flex align-items-center gap-3">

@@ -36,9 +36,7 @@
                             @endforeach
                         </select>
                     </div>
-
                     <hr class="my-3 text-muted">
-
                     <div class="col-md-6">
                         <label class="form-label fw-bold text-muted small mb-1">CAUSE CATEGORY</label>
                         <select name="cause_category" class="form-select form-select-sm shadow-sm" required>

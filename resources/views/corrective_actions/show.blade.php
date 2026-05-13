@@ -46,7 +46,6 @@
                     <span class="text-primary fw-bold" style="font-size: 16px;">{{ $action->ca_number }}</span>
                 </div>
             </div>
-
             <div class="p-4 px-5">
                 <div class="row g-4 mb-4">
                     <div class="col-md-6">
@@ -55,14 +54,12 @@
                             {{ $action->unit_name }}
                         </p>
                     </div>
-
                     <div class="col-md-6">
                         <label class="text-muted small fw-bold d-block mb-1 text-uppercase">Responsible (PIC)</label>
                         <p class="fw-semibold text-dark mb-0">
                             <i class="fas fa-user-circle me-2 text-muted"></i>{{ $action->pic_name }}
                         </p>
                     </div>
-
                     <div class="col-md-6">
                         <label class="text-muted small fw-bold d-block mb-1 text-uppercase">Source Finding Ref</label>
                         <p class="text-primary fw-bold mb-0">

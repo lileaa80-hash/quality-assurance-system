@@ -66,7 +66,6 @@
                     </div>
                 </div>
             </div>
-
             <hr class="mt-5 mb-4 opacity-50">
             <div class="d-flex justify-content-end gap-2 mb-2">
                 <form action="{{ route('document_versions.destroy', $version->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
@@ -74,7 +73,6 @@
                     @method('DELETE')
                     <button type="submit" class="btn btn-outline-danger px-4 fw-bold shadow-sm" style="font-size: 13px;">DELETE</button>
                 </form>
-                
                 <a href="{{ route('document_versions.edit', $version->id) }}" class="btn btn-warning text-white px-4 fw-bold shadow-sm" style="font-size: 13px; background-color: #ffc107; border: none;">
                     EDIT DATA
                 </a>
