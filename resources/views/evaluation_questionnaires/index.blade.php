@@ -2,92 +2,143 @@
 
 @section('content')
 <div class="container py-4">
-    <div class="card shadow-sm border-0">
-        {{-- Header Card disesuaikan dengan Document Version --}}
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
-            <h6 class="mb-0 fw-bold text-uppercase" style="letter-spacing: 1px;">Evaluation Questionnaires</h6>
-            <a href="{{ route('evaluation_questionnaires.create') }}" class="btn btn-light btn-sm fw-bold shadow-sm px-3" style="font-size: 11px;">
-                UPLOAD NEW QUESTIONNAIRE
+    <div class="card shadow-sm border-0" style="border-radius: 8px; overflow: hidden;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3 px-4">
+            <h6 class="mb-0 fw-bold text-uppercase" style="letter-spacing: 0.5px;">Evaluation Questionnaires</h6>
+            <a href="{{ route('evaluation_questionnaires.create') }}" class="btn btn-light btn-sm fw-bold shadow-sm" style="font-size: 11px;">
+                <i class="fas fa-plus me-1"></i> ADD QUESTIONNAIRE
             </a>
         </div>
 
         <div class="card-body p-0">
             @if(session('success'))
-                <div class="alert alert-success m-3 py-2 small border-0 shadow-sm">
-                    {{ session('success') }}
+                <div class="alert alert-success m-3 py-2 small border-0 shadow-sm" style="background-color: #d4edda; color: #155724;">
+                    <i class="fas fa-check-circle me-1"></i> {{ session('success') }}
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger m-3 py-2 small border-0 shadow-sm" style="background-color: #f8d7da; color: #721c24;">
+                    <i class="fas fa-exclamation-circle me-1"></i> {{ session('error') }}
                 </div>
             @endif
 
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    {{-- Header tabel dengan style abu-abu halus --}}
-                    <thead class="bg-light">
-                        <tr style="font-size: 11px;">
-                            <th class="ps-4 py-3 text-muted fw-bold text-uppercase">Questionnaire & Type</th>
-                            <th class="py-3 text-muted fw-bold text-uppercase">Period</th>
-                            <th class="py-3 text-muted fw-bold text-uppercase text-center">Target</th>
-                            <th class="py-3 text-muted fw-bold text-uppercase text-center">Status</th>
-                            <th class="py-3 text-muted fw-bold text-uppercase text-center pe-4">Actions</th>
+                <table class="table table-hover mb-0" style="font-size: 12px;">
+                    <thead>
+                        <tr class="bg-white">
+                            <th class="ps-4 py-3 text-muted small fw-bold text-uppercase">TITLE & TYPE</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">PERIOD</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase text-center">TARGET AUDIENCE</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase text-center">SETTINGS</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase text-center">STATUS</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase text-center pe-4">ACTIONS</th>
                         </tr>
                     </thead>
-                    <tbody style="font-size: 12px;">
+                    <tbody>
                         @forelse($questionnaires as $item)
                         <tr class="align-middle">
-                            {{-- Kolom Title & Type disamakan dengan gaya Document --}}
                             <td class="ps-4">
-                                <div class="fw-bold text-primary mb-1">{{ $item->title }}</div>
-                                <div class="text-muted small">
-                                    <span class="fw-bold">Type:</span> {{ str_replace('_', ' ', $item->type) }}
+                                <div class="fw-bold text-primary">{{ $item->title }}</div>
+                                <div class="badge bg-light text-secondary border mt-1 text-uppercase" style="font-size: 9px; font-weight: 500;">
+                                    {{ str_replace('_', ' ', $item->type) }}
                                 </div>
                             </td>
                             <td>
-                                <div class="fw-bold text-dark">{{ $item->year }} - {{ $item->semester }}</div>
-                                <div class="text-muted" style="font-size: 10px;">
-                                    {{ \Carbon\Carbon::parse($item->start_date)->format('d/m/y') }} - {{ \Carbon\Carbon::parse($item->end_date)->format('d/m/y') }}
+                                <div class="fw-semibold text-dark">Year: {{ $item->year }}</div>
+                                <div class="text-muted" style="font-size: 10px;">Semester: {{ $item->semester ?? '-' }}</div>
+                            </td>
+                            <td class="text-center">
+                                <div class="badge bg-info text-white text-uppercase" style="font-size: 9px;">
+                                    {{ $item->target_audience }}
+                                </div>
+                                @if($item->target_units)
+                                    <div class="text-muted mt-1" style="font-size: 9px; max-width: 150px; margin: 0 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ implode(', ', json_decode($item->target_units)) }}">
+                                        Units: {{ implode(', ', json_decode($item->target_units)) }}
+                                    </div>
+                                @endif
+                            </td>
+                            <td class="text-center" style="font-size: 11px;">
+                                <div class="text-muted">
+                                    <i class="fas {{ $item->is_anonymous ? 'fa-user-secret text-success' : 'fa-user text-secondary' }} me-1"></i> 
+                                    {{ $item->is_anonymous ? 'Anonymous' : 'Public' }}
+                                </div>
+                                <div class="text-muted" style="font-size: 9px;">
+                                    Multi-submit: {!! $item->allow_multiple_submissions ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>' !!}
                                 </div>
                             </td>
                             <td class="text-center">
-                                <span class="badge bg-light text-dark border px-2 py-1 fw-normal" style="font-size: 10px;">
-                                    {{ strtoupper($item->target_audience) }}
-                                </span>
-                            </td>
-                            <td class="text-center">
                                 @php
-                                    $statusColor = [
-                                        'active'   => '#ffc107', // Kuning seperti 'PREVIOUS'
-                                        'draft'    => '#6c757d',
-                                        'closed'   => '#dc3545',
-                                        'archived' => '#343a40'
-                                    ][$item->status] ?? '#6c757d';
+                                    $statusBadge = [
+                                        'draft'    => 'bg-warning text-dark',
+                                        'active'   => 'bg-success text-white',
+                                        'closed'   => 'bg-danger text-white',
+                                        'archived' => 'bg-secondary text-white',
+                                    ][$item->status] ?? 'bg-dark text-white';
                                 @endphp
-                                <span class="badge text-uppercase" style="background-color: {{ $statusColor }}; font-size: 9px; padding: 5px 10px;">
-                                    {{ $item->status }}
+                                <span class="badge {{ $statusBadge }} px-2 py-1 shadow-sm" style="font-size: 9px; border-radius: 4px; min-width: 65px;">
+                                    {{ strtoupper($item->status) }}
                                 </span>
                             </td>
                             <td class="text-center pe-4">
                                 <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('evaluation_questions.index', ['questionnaire_id' => $item->id]) }}" class="btn btn-info btn-sm text-white px-2 py-1" style="font-size: 10px; font-weight: bold;">View</a>
-                                    <a href="{{ route('evaluation_questionnaires.edit', $item->id) }}" class="btn btn-warning btn-sm text-white px-2 py-1" style="font-size: 10px; font-weight: bold;">Edit</a>
-                                    <form action="{{ route('evaluation_questionnaires.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Delete this questionnaire?')" class="d-inline">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm px-2 py-1" style="font-size: 10px; font-weight: bold;">Delete</button>
+                                    <a href="{{ route('evaluation_questionnaires.show', $item->id) }}" 
+                                       class="btn btn-info btn-xs text-white px-2 py-1 fw-bold" 
+                                       style="font-size: 10px; min-width: 45px;">View</a>
+                                    
+                                    <a href="{{ route('evaluation_questionnaires.edit', $item->id) }}" 
+                                       class="btn btn-warning btn-xs text-white px-2 py-1 fw-bold" 
+                                       style="font-size: 10px; min-width: 45px;">Edit</a>
+                                    
+                                    <form action="{{ route('evaluation_questionnaires.destroy', $item->id) }}" method="POST" 
+                                          onsubmit="return confirm('Hapus kuesioner ini beserta data berkas fisiknya permanen?')" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-xs text-white px-2 py-1 fw-bold" 
+                                                style="font-size: 10px; min-width: 45px;">Delete</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center py-5 text-muted">No questionnaires found.</td>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="fas fa-folder-open d-block mb-2 fa-2x opacity-25"></i>
+                                <span style="font-size: 11px;">No evaluation questionnaires found.</span>
+                            </td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
-        {{-- Footer opsional jika ingin benar-benar mirip --}}
-        <div class="card-footer bg-white py-3 border-0 text-center text-muted small">
-            © {{ date('Y') }} SPMI Digital System - RPL | Questionnaire Management Control
+
+        @if(method_exists($questionnaires, 'links'))
+        <div class="card-footer bg-white py-2 border-top">
+            <div class="d-flex justify-content-center">
+                {{ $questionnaires->links() }}
+            </div>
         </div>
+        @endif
+    </div>
+
+    <div class="text-center mt-5 text-muted" style="font-size: 11px;">
+        © 2026 SPMI Digital System - RPL | Questionnaire Evaluation Control
     </div>
 </div>
+
+<style>
+    .btn-xs {
+        padding: 2px 6px;
+        font-size: 10px;
+        line-height: 1.2;
+        border-radius: 3px;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #f8fafc;
+        transition: 0.2s;
+    }
+    .badge {
+        letter-spacing: 0.3px;
+    }
+</style>
 @endsection

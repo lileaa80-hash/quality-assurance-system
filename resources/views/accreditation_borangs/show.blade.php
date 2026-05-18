@@ -31,7 +31,6 @@
                 <div class="text-end">
                     <span class="text-muted small fw-bold text-uppercase">Indicator:</span>
                     <span class="text-primary fw-bold ms-1" style="font-size: 13px;">
-                        {{-- Teknik Safe Access: Cek berbagai kemungkinan nama kolom --}}
                         {{ $borang->indicator_name ?? ($borang->name ?? ($borang->indicator ?? 'N/A')) }}
                     </span>
                 </div>
