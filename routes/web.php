@@ -45,11 +45,11 @@ Route::resource('workflow_steps', WorkflowStepController::class);
 Route::resource('approvals', ApprovalController::class);
 
 
-Route::get('/test-minio', function () {
-    try {
-        Storage::disk('minio')->put('test.txt', 'Halo MinIO! File dibuat pada: ' . now());  
-        return "Berhasil upload ke MinIO!";
-    } catch (\Exception $e) {
-        return "Gagal terhubung ke MinIO. Pesan Error: " . $e->getMessage();
-    }
-});
+// Route::get('/test-minio', function () {
+//     try {
+//         Storage::disk('minio')->put('test.txt', 'Halo MinIO! File dibuat pada: ' . now());  
+//         return "Berhasil upload ke MinIO!";
+//     } catch (\Exception $e) {
+//         return "Gagal terhubung ke MinIO. Pesan Error: " . $e->getMessage();
+//     }
+// });

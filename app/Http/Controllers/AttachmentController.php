@@ -16,9 +16,9 @@ class AttachmentController extends Controller
      */
     public function index()
     {
-        // Menggunakan join agar nama user pengunggah tampil di tabel index
+        // Menggunakan leftJoin agar halaman index tidak error/kosong jika data users atau tabel users belum siap
         $attachments = DB::table('file_attachments')
-            ->join('users', 'file_attachments.uploaded_by', '=', 'users.id')
+            ->leftJoin('users', 'file_attachments.uploaded_by', '=', 'users.id')
             ->select('file_attachments.*', 'users.name as uploader_name')
             ->orderBy('file_attachments.created_at', 'desc')
             ->paginate(10);
@@ -31,7 +31,6 @@ class AttachmentController extends Controller
      */
     public function create()
     {
-        // Opsi daftar model target untuk polymorphic target (attachable_type)
         $targetTypes = [
             'App\Models\Document' => 'Document (Dokumen Mutu)',
             'App\Models\AuditReport' => 'Audit Report (Laporan Audit)',
@@ -49,7 +48,7 @@ class AttachmentController extends Controller
         $request->validate([
             'attachable_type' => 'required|string|max:255',
             'attachable_id'   => 'required|integer|min:1',
-            'file'            => 'required|file|max:20480', // Maksimal berkas 20MB
+            'file'            => 'required|file|max:20480', // Maksimal 20MB
         ]);
 
         try {
@@ -61,21 +60,21 @@ class AttachmentController extends Controller
             $fileSize = $file->getSize();
             $extension = $file->getClientOriginalExtension();
             
-            // Generate nama unik UUID untuk disimpan di object storage MinIO
+            // Generate nama unik UUID
             $filename = Str::uuid() . '.' . $extension;
 
-            // Kelompokkan folder di MinIO berdasarkan nama tabel/model target
+            // Folder di MinIO
             $folderName = strtolower(basename(str_replace('\\', '/', $request->attachable_type)));
             $targetFolder = "attachments/{$folderName}";
 
-            // 1. Unggah fisik berkas ke MinIO storage disk
-            $uploadedPath = Storage::disk('minio')->putFileAs($targetFolder, $file, $filename);
+            // 1. Unggah ke MinIO menggunakan disk 's3' bawaan Laravel
+            $uploadedPath = Storage::disk('s3')->putFileAs($targetFolder, $file, $filename);
 
             if (!$uploadedPath) {
                 throw new \Exception("Gagal mengunggah komponen fisik berkas ke server MinIO.");
             }
 
-            // 2. Logika Alur Versioning: Ambil nomor versi terakhir dari objek terkait
+            // 2. Ambil nomor versi terakhir
             $latestVersion = DB::table('file_attachments')
                 ->where('attachable_type', $request->attachable_type)
                 ->where('attachable_id', $request->attachable_id)
@@ -83,7 +82,7 @@ class AttachmentController extends Controller
 
             $nextVersion = $latestVersion + 1;
 
-            // 3. Matikan flag berkas aktif lama (is_current = false) jika ada versi sebelumnya
+            // 3. Matikan flag berkas aktif lama
             if ($latestVersion > 0) {
                 DB::table('file_attachments')
                     ->where('attachable_type', $request->attachable_type)
@@ -94,38 +93,38 @@ class AttachmentController extends Controller
                     ]);
             }
 
-            // 4. Susun metadata opsional berkas dalam format JSON
+            // 4. Metadata JSON
             $metadata = [
                 'client_ip'  => $request->ip(),
                 'extension'  => $extension,
                 'user_agent' => $request->userAgent()
             ];
 
-            // 5. Simpan record baris data lampiran baru
+            // 5. Simpan record data
             DB::table('file_attachments')->insert([
                 'attachable_type'   => $request->attachable_type,
                 'attachable_id'     => $request->attachable_id,
                 'filename'          => $filename,
                 'original_filename' => $originalName,
                 'file_path'         => $uploadedPath,
-                'disk'              => 'minio',
+                'disk'              => 's3',
                 'mime_type'         => $mimeType,
                 'file_size'         => $fileSize,
                 'metadata'          => json_encode($metadata),
                 'version'           => $nextVersion,
                 'is_current'        => true,
-                'uploaded_by'       => Auth::id() ?? 1, // Fallback ke ID 1 jika auth belum dipasang
+                'uploaded_by'       => Auth::id() ?? 1, // Jika belum login, otomatis pakai ID 1
                 'created_at'        => now(),
                 'updated_at'        => now(),
             ]);
 
             DB::commit();
-            return redirect()->route('file_attachments.index')->with('success', 'Berkas Lampiran Berhasil Diunggah ke MinIO (Versi ' . $nextVersion . ')!');
+            return redirect()->route('file_attachments.index')->with('success', 'Berkas Berhasil Diunggah!');
 
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error Store Attachment: ' . $e->getMessage());
-            return back()->withInput()->with('error', 'Gagal memproses unggahan berkas: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Gagal mengunggah berkas: ' . $e->getMessage());
         }
     }
 
@@ -135,7 +134,7 @@ class AttachmentController extends Controller
     public function show($id)
     {
         $attachment = DB::table('file_attachments')
-            ->join('users', 'file_attachments.uploaded_by', '=', 'users.id')
+            ->leftJoin('users', 'file_attachments.uploaded_by', '=', 'users.id')
             ->select('file_attachments.*', 'users.name as uploader_name')
             ->where('file_attachments.id', $id)
             ->first();
@@ -173,9 +172,7 @@ class AttachmentController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'attachable_type' => 'required|string|max:255',
-            'attachable_id'   => 'required|integer|min:1',
-            'is_current'      => 'required|boolean',
+            'is_current' => 'required|boolean',
         ]);
 
         try {
@@ -183,15 +180,13 @@ class AttachmentController extends Controller
 
             $attachment = DB::table('file_attachments')->where('id', $id)->first();
             if (!$attachment) {
-                return back()->with('error', 'Data riwayat berkas tidak ditemukan.');
+                return back()->with('error', 'Data berkas tidak ditemukan.');
             }
 
-            // Jika berkas ini di-set menjadi berkas utama aktif (is_current = true), 
-            // maka matikan status berkas lain yang terhubung dengan objek target ini.
             if ($request->is_current == true) {
                 DB::table('file_attachments')
-                    ->where('attachable_type', $request->attachable_type)
-                    ->where('attachable_id', $request->attachable_id)
+                    ->where('attachable_type', $attachment->attachable_type)
+                    ->where('attachable_id', $attachment->attachable_id)
                     ->where('id', '!=', $id)
                     ->update([
                         'is_current' => false,
@@ -202,19 +197,17 @@ class AttachmentController extends Controller
             DB::table('file_attachments')
                 ->where('id', $id)
                 ->update([
-                    'attachable_type' => $request->attachable_type,
-                    'attachable_id'   => $request->attachable_id,
-                    'is_current'      => $request->is_current,
-                    'updated_at'      => now(),
+                    'is_current' => $request->is_current,
+                    'updated_at' => now(),
                 ]);
 
             DB::commit();
-            return redirect()->route('file_attachments.index')->with('success', 'Status Informasi Lampiran Berhasil Diperbarui!');
+            return redirect()->route('file_attachments.index')->with('success', 'Data Berhasil Diperbarui!');
 
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error Update Attachment: ' . $e->getMessage());
-            return back()->with('error', 'Gagal memperbarui data lampiran: ' . $e->getMessage());
+            return back()->with('error', 'Gagal memperbarui data: ' . $e->getMessage());
         }
     }
 
@@ -231,15 +224,15 @@ class AttachmentController extends Controller
                 return redirect()->route('file_attachments.index')->with('error', 'Data berkas tidak ditemukan.');
             }
 
-            // 1. Hapus komponen fisik objek berkas di bucket storage MinIO terlebih dahulu
+            // Hapus berkas fisik di MinIO
             if (Storage::disk($attachment->disk)->exists($attachment->file_path)) {
                 Storage::disk($attachment->disk)->delete($attachment->file_path);
             }
 
-            // 2. Hapus rekor baris data di database
+            // Hapus rekor di DB
             DB::table('file_attachments')->where('id', $id)->delete();
             
-            // 3. Jika berkas utama aktif yang dihapus, otomatis naikkan versi tertinggi di bawahnya menjadi berkas aktif utama
+            // Rollback status is_current ke versi sebelumnya jika yang dihapus adalah file utama aktif
             if ($attachment->is_current) {
                 $substituteAttachment = DB::table('file_attachments')
                     ->where('attachable_type', $attachment->attachable_type)
@@ -257,32 +250,13 @@ class AttachmentController extends Controller
                 }
             }
 
-            DB::commit();
-            return redirect()->route('file_attachments.index')->with('success', 'Komponen Fisik Berkas dan Rekor Data Lampiran Berhasil Dihapus!');
+    //         DB::commit();
+    //         return redirect()->route('file_attachments.index')->with('success', 'Berkas dan Rekor Data Berhasil Dihapus!');
             
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Error Delete Attachment: ' . $e->getMessage());
-            return redirect()->route('file_attachments.index')->with('error', 'Gagal menghapus entitas berkas lampiran: ' . $e->getMessage());
+        // } catch (\Exception $e) {
+    //     //     DB::rollBack();
+    //     //     Log::error('Error Delete Attachment: ' . $e->getMessage());
+    //     //     return redirect()->route('file_attachments.index')->with('error', 'Gagal menghapus data: ' . $e->getMessage());
         }
-    }
-
-    /**
-     * Unduh langsung file secara aman dari server cloud object storage MinIO
-     */
-    public function download($id)
-    {
-        $attachment = DB::table('file_attachments')->where('id', $id)->first();
-
-        if (!$attachment) {
-            abort(404, 'Data informasi rekor berkas tidak ditemukan.');
-        }
-
-        if (!Storage::disk($attachment->disk)->exists($attachment->file_path)) {
-            return back()->with('error', 'Objek fisik berkas tidak lagi ditemukan di dalam server storage MinIO!');
-        }
-
-        // Return file download menggunakan nama asli berkas sewaktu diunggah oleh user
-        return Storage::disk($attachment->disk)->download($attachment->file_path, $attachment->original_filename);
     }
 }
