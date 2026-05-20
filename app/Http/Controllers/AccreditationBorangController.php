@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage; // WAJIB DIPANGGIL UNTUK MINIO
 
 class AccreditationBorangController extends Controller
 {
@@ -38,47 +39,58 @@ class AccreditationBorangController extends Controller
 
     public function store(Request $request)
     {
-    $request->validate([
-        'accreditation_period_id' => 'required',
-        'standard_id'             => 'required',
-        'standard_indicator_id'   => 'required',
-        'status'                  => 'required',
-    ]);
+        $request->validate([
+            'accreditation_period_id' => 'required',
+            'standard_id'             => 'required',
+            'standard_indicator_id'   => 'required',
+            'status'                  => 'required',
+            'supporting_documents'    => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:20480', // Max 20MB
+        ]);
 
-    try {
-        $data = [
-            'accreditation_period_id' => $request->accreditation_period_id,
-            'standard_id'             => $request->standard_id,
-            'standard_indicator_id'   => $request->standard_indicator_id,
-            'response'                => $request->response,
-            'analysis'                => $request->analysis,
-            'target'                  => $request->target,
-            'achievement'             => $request->achievement,
-            'supporting_documents'    => $request->supporting_documents ? json_encode($request->supporting_documents) : null,
-            'self_assessment_score'   => $request->self_assessment_score ?? 0,
-            'status'                  => $request->status,
-            'filled_by'               => Auth::id() ?? 1,
-            'created_at'              => now(),
-            'updated_at'              => now(),
-        ];
+        try {
+            $path = null;
 
-        DB::table('accreditation_borangs')->insert($data);
+            // Proses upload file bukti pendukung borang ke MinIO
+            if ($request->hasFile('supporting_documents')) {
+                $file = $request->file('supporting_documents');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                
+                /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+                $disk = Storage::disk('minio');
+                $path = $disk->putFileAs('borangs', $file, $fileName);
+            }
 
-        return redirect()->route('accreditation_borangs.index')->with('success', 'Borang Berhasil!');
+            $data = [
+                'accreditation_period_id' => $request->accreditation_period_id,
+                'standard_id'             => $request->standard_id,
+                'standard_indicator_id'   => $request->standard_indicator_id,
+                'response'                => $request->response,
+                'analysis'                => $request->analysis,
+                'target'                  => $request->target,
+                'achievement'             => $request->achievement,
+                // Simpan path dari MinIO ke kolom supporting_documents
+                'supporting_documents'    => $path, 
+                'self_assessment_score'   => $request->self_assessment_score ?? 0,
+                'status'                  => $request->status,
+                'filled_by'               => Auth::id() ?? 1,
+                'created_at'              => now(),
+                'updated_at'              => now(),
+            ];
 
-    } catch (\Exception $e) {
-  
-        dd("DATABASE ERROR: " . $e->getMessage()); 
+            DB::table('accreditation_borangs')->insert($data);
+
+            return redirect()->route('accreditation_borangs.index')->with('success', 'Borang dan File Bukti Berhasil Disimpan!');
+
+        } catch (\Exception $e) {
+            dd("DATABASE ERROR: " . $e->getMessage()); 
+        }
     }
-    }
 
-   
-   public function show($id)
+    public function show($id)
     {
         $borang = DB::table('accreditation_borangs')
             ->join('accreditation_periods', 'accreditation_borangs.accreditation_period_id', '=', 'accreditation_periods.id')
             ->join('standards', 'accreditation_borangs.standard_id', '=', 'standards.id')
-            // Kita join tapi JANGAN panggil kolom spesifik dulu biar nggak crash
             ->join('standard_indicators', 'accreditation_borangs.standard_indicator_id', '=', 'standard_indicators.id')
             ->select(
                 'accreditation_borangs.*', 
@@ -87,23 +99,24 @@ class AccreditationBorangController extends Controller
             )
             ->where('accreditation_borangs.id', $id)
             ->first();
+            
         if (!$borang) { abort(404); }
 
-        return view('accreditation_borangs.show', compact('borang'));
+        // Tambahkan link URL utuh dari MinIO agar file bisa diklik/di-download di halaman show
+        $fileUrl = $borang->supporting_documents ? Storage::disk('minio')->url($borang->supporting_documents) : null;
+
+        return view('accreditation_borangs.show', compact('borang', 'fileUrl'));
     }
 
     public function edit($id)
     {
-        $borang = DB::table('accreditation_borangs')
-            ->where('id', $id)
-            ->first();
+        $borang = DB::table('accreditation_borangs')->where('id', $id)->first();
 
         if (!$borang) {
             abort(404);
         }
 
         $periods = DB::table('accreditation_periods')->get();
-        // Tambahkan variabel pendukung lainnya jika ada (seperti standards)
         
         return view('accreditation_borangs.edit', compact('borang', 'periods'));
     }
@@ -113,20 +126,39 @@ class AccreditationBorangController extends Controller
         $request->validate([
             'status'                => 'required|in:draft,submitted,approved',
             'self_assessment_score' => 'nullable|numeric|min:0|max:4',
+            'supporting_documents'  => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:20480',
         ]);
 
         try {
-            DB::table('accreditation_borangs')
-                ->where('id', $id)
-                ->update([
-                    'response'              => $request->response,
-                    'analysis'              => $request->analysis,
-                    'target'                => $request->target,
-                    'achievement'           => $request->achievement,
-                    'self_assessment_score' => $request->self_assessment_score,
-                    'status'                => $request->status,
-                    'updated_at'            => now(),
-                ]);
+            $updateData = [
+                'response'              => $request->response,
+                'analysis'              => $request->analysis,
+                'target'                => $request->target,
+                'achievement'           => $request->achievement,
+                'self_assessment_score' => $request->self_assessment_score,
+                'status'                => $request->status,
+                'updated_at'            => now(),
+            ];
+
+            // Jika user mengunggah file baru saat edit, ganti file lama di MinIO
+            if ($request->hasFile('supporting_documents')) {
+                $borangOld = DB::table('accreditation_borangs')->where('id', $id)->first();
+                
+                /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+                $disk = Storage::disk('minio');
+
+                // Hapus file lama jika ada
+                if (!empty($borangOld->supporting_documents) && $disk->exists($borangOld->supporting_documents)) {
+                    $disk->delete($borangOld->supporting_documents);
+                }
+
+                // Upload file pengganti baru
+                $file = $request->file('supporting_documents');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $updateData['supporting_documents'] = $disk->putFileAs('borangs', $file, $fileName);
+            }
+
+            DB::table('accreditation_borangs')->where('id', $id)->update($updateData);
 
             return redirect()->route('accreditation_borangs.index')
                              ->with('success', 'Borang Berhasil Diperbarui!');
@@ -140,9 +172,22 @@ class AccreditationBorangController extends Controller
     public function destroy($id)
     {
         try {
-            DB::table('accreditation_borangs')->where('id', $id)->delete();
+            $borang = DB::table('accreditation_borangs')->where('id', $id)->first();
+            
+            if ($borang) {
+                // Hapus file pendukung fisik dari MinIO terlebih dahulu sebelum data DB dihapus
+                /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+                $disk = Storage::disk('minio');
+                
+                if (!empty($borang->supporting_documents) && $disk->exists($borang->supporting_documents)) {
+                    $disk->delete($borang->supporting_documents);
+                }
+                
+                DB::table('accreditation_borangs')->where('id', $id)->delete();
+            }
+
             return redirect()->route('accreditation_borangs.index')
-                             ->with('success', 'Borang Berhasil Dihapus!');
+                             ->with('success', 'Borang dan Bukti Fisik Berhasil Dihapus!');
         } catch (\Exception $e) {
             return redirect()->route('accreditation_borangs.index')
                              ->with('error', 'Gagal menghapus data.');

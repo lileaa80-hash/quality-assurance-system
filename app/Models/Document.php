@@ -12,9 +12,10 @@ class Document extends Model
 {
     use HasFactory;
 
+    // Tambahan 'file_path' dan 'file_url' dimasukkan ke sini agar aman dari Mass Assignment
     protected $fillable = [
-        'document_number','title','type','status','description','parent_id','effective_date','created_by',
-        'current_version','is_controlled','is_active',
+        'document_number','title','type','status','description','parent_id','effective_date','created_by','current_version',
+        'is_controlled','is_active','file_path', 'file_url',  
     ];
 
     protected $casts = [

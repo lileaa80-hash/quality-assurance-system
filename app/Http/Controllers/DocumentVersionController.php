@@ -52,8 +52,8 @@ class DocumentVersionController extends Controller
             
             $newVersion = $lastVersion + 1;
 
-            // 2. Upload ke MinIO (disk: s3/minio)
-            $path = $file->store('documents/v' . $newVersion, 's3'); 
+            // 2. KOREKSI: Upload ke MinIO menggunakan disk custom 'minio' kita
+            $path = $file->store('documents/v' . $newVersion, 'minio'); 
 
             // 3. Simpan ke database
             $data = [
@@ -72,13 +72,13 @@ class DocumentVersionController extends Controller
 
             DB::table('document_versions')->insert($data);
 
-            // 4. Update current_version di tabel documents (opsional tapi disarankan)
+            // 4. Update current_version di tabel documents
             DB::table('documents')
                 ->where('id', $request->document_id)
                 ->update(['current_version' => $newVersion]);
 
             DB::commit();
-            return redirect()->route('document_versions.index')->with('success', 'Versi Baru Berhasil Diunggah!');
+            return redirect()->route('document_versions.index')->with('success', 'Versi Baru Berhasil Diunggah ke MinIO!');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -132,21 +132,30 @@ class DocumentVersionController extends Controller
         try {
             DB::beginTransaction();
             $version = DB::table('document_versions')->where('id', $id)->first();
+            
             if (!$version) {
-                    return redirect()->route('document_versions.index')->with('error', 'Data tidak ditemukan.');
-                }
-                if (Storage::disk('s3')->exists($version->file_path)) {
-                    Storage::disk('s3')->delete($version->file_path);
-                }
-                DB::table('document_versions')->where('id', $id)->delete();
-                DB::commit();
-                return redirect()->route('document_versions.index')
-                                ->with('success', 'Versi Dokumen dan File Fisik Berhasil Dihapus!');
-            } catch (\Exception $e) {
-                DB::rollBack();
-                Log::error('Error Delete Version: ' . $e->getMessage());
-                return redirect()->route('document_versions.index')
-                                ->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+                return redirect()->route('document_versions.index')->with('error', 'Data tidak ditemukan.');
             }
+            
+            // 5. KOREKSI: Pastikan pengecekan dan penghapusan file mengarah ke disk 'minio'
+            /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+            $disk = Storage::disk('minio');
+            
+            if (!empty($version->file_path) && $disk->exists($version->file_path)) {
+                $disk->delete($version->file_path);
+            }
+            
+            DB::table('document_versions')->where('id', $id)->delete();
+            DB::commit();
+            
+            return redirect()->route('document_versions.index')
+                             ->with('success', 'Versi Dokumen dan File Fisik Berhasil Dihapus dari MinIO!');
+                             
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error Delete Version: ' . $e->getMessage());
+            return redirect()->route('document_versions.index')
+                             ->with('error', 'Gagal menghapus data: ' . $e->getMessage());
         }
     }
+}

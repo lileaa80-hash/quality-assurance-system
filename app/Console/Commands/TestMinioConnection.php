@@ -7,58 +7,38 @@ use Illuminate\Support\Facades\Storage;
 
 class TestMinioConnection extends Command
 {
-    // Nama perintah yang akan dipanggil di terminal
     protected $signature = 'minio:test';
-    
-    // Deskripsi perintah
-    protected $description = 'Test MinIO connection and operations on Laravel 12';
+    protected $description = 'Test MinIO connection and operations';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle(): int
+    public function handle()
     {
-        $this->info('Sedang mengetes koneksi MinIO kamu...');
+        $this->info('Sedang mengetes koneksi MinIO kamu menggunakan Driver Resmi...');
 
         try {
-            $testContent = 'Halo Erlia! File ini berhasil terkirim dari Laravel 12 - ' . now();
-            $testPath = 'test/test_' . time() . '.txt';
+            // 1. Tes Tulis File memakai put() standar Laravel
+            $testContent = 'Halo Erlia! File ini berhasil terkirim menggunakan driver resmi Laravel 12!';
+            $testPath = 'test/test_resmi_' . time() . '.txt';
             
-            // Menggunakan disk s3 yang sudah dikonfigurasi untuk MinIO
-            $this->info('1. Mencoba menulis file...');
-            Storage::disk('s3')->put($testPath, $testContent);
-            $this->info('   ✓ Tes menulis file (Write): BERHASIL!');
+            Storage::disk('minio')->put($testPath, $testContent);
+            $this->info('✓ Tes Menulis File: BERHASIL!');
             
-            $this->info('2. Mencoba membaca file...');
-            $content = Storage::disk('s3')->get($testPath);
+            // 2. Tes Baca File memakai get() standar Laravel
+            $content = Storage::disk('minio')->get($testPath);
             if ($content === $testContent) {
-                $this->info('   ✓ Tes membaca file (Read): BERHASIL!');
-            } else {
-                $this->warn('   ⚠ Konten file tidak cocok!');
+                $this->info('✓ Tes Membaca File: BERHASIL!');
             }
             
-            $url = Storage::disk('s3')->url($testPath);
-            $this->info("   ✓ URL File kamu: {$url}");
+            // 3. Tes Hapus File memakai delete() standar Laravel
+            Storage::disk('minio')->delete($testPath);
+            $this->info('✓ Tes Menghapus File: BERHASIL!');
             
-            $this->info('3. Mencoba menghapus file tes...');
-            Storage::disk('s3')->delete($testPath);
-            $this->info('   ✓ Tes menghapus file (Delete): BERHASIL!');
+            $this->info('✅ MANTAP SAKTI! Semua tes koneksi MinIO lolos tanpa error!');
             
-            $this->info('✅ MANTAP! Semua tes koneksi MinIO lolos tanpa error!');
-            
-        // } catch (\Exception $e) {
-        //     $this->error('❌ Waduh Error: ' . $e->getMessage());
-            
-        //     $this->line('');
-        //     $this->comment('💡 Tips Pengecekan:');
-        //     $this->comment('- Pastikan server MinIO kamu sudah menyala.');
-        //     $this->comment('- Cek kembali AWS_ENDPOINT, AWS_KEY, dan AWS_SECRET di file .env kamu.');
-        //     $this->comment('- Pastikan AWS_BUCKET yang kamu tuju sudah dibuat di dashboard MinIO.');
-        //     $this->comment('- Jangan lupa jalankan: composer require league/flysystem-aws-s3-v3');
-            
-        //     return Command::FAILURE; // Mengembalikan status 1 jika error
-        // }
+        } catch (\Exception $e) {
+            $this->error('❌ Error Terdeteksi: ' . $e->getMessage());
+            return 1;
+        }
         
-        return Command::SUCCESS; // Mengembalikan status 0 jika sukses
+        return 0;
     }
 }
