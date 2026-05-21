@@ -20,6 +20,8 @@ use App\Http\Controllers\EvaluationQuestionController;
 use App\Http\Controllers\WorkflowController;
 use App\Http\Controllers\WorkflowStepController;
 use App\Http\Controllers\ApprovalController;
+use App\Http\Controllers\FileAttachmentController;
+use App\Http\Controllers\EvaluationResponseController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,6 +45,8 @@ Route::resource('evaluation_questions', EvaluationQuestionController::class);
 Route::resource('workflows', WorkflowController::class);
 Route::resource('workflow_steps', WorkflowStepController::class);
 Route::resource('approvals', ApprovalController::class);
+Route::resource('file_attachments', FileAttachmentController::class);
+Route::resource('evaluation_responses', EvaluationResponseController::class);
 
 
 Route::get('/test-minio', function () {
