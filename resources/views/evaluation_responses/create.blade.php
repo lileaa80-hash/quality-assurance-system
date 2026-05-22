@@ -19,8 +19,7 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif
-
+            @endifhhh
             <form action="{{ route('evaluation_responses.store') }}" method="POST">
                 @csrf
 
