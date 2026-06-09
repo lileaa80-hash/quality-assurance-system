@@ -1,40 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
+<div class="container mt-4">
     <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary py-3 d-flex justify-content-between align-items-center">
-            <h6 class="mb-0 fw-bold text-white text-uppercase">Audit Checklist Report Management</h6>
-            <a href="{{ route('audit_checklists.create') }}" class="btn btn-light btn-sm fw-bold shadow-sm px-3">
-                <i class="fas fa-plus me-1"></i> + Add New Audit
+        <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #007bff; padding: 1rem 1.5rem;">
+            <h5 class="mb-0 fw-bold">SPMI SYSTEM - Audit Checklist Reports</h5>
+            <a href="{{ route('audit_checklists.create') }}" class="btn btn-light btn-sm fw-bold text-primary px-3" style="border-radius: 5px;">
+                Add New Audit
             </a>
         </div>
         <div class="card-body p-0">
             @if(session('success'))
-                <div class="alert alert-success m-3 py-2 small border-0 shadow-sm">
+                <div class="alert alert-success m-3 border-0 shadow-sm alert-dismissible fade show">
                     {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
-                    <thead class="bg-light">
-                        <tr class="text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">
-                            <th class="ps-4 py-3 text-muted fw-bold">Unit</th>
-                            <th class="py-3 text-muted fw-bold">Standard & Indicator</th>
-                            <th class="py-3 text-muted fw-bold text-center">Result</th>
-                            <th class="py-3 text-muted fw-bold">Auditor</th>
-                            <th class="py-3 text-muted fw-bold text-center pe-4">Actions</th>
+                    <thead class="bg-light" style="font-size: 0.85rem; color: #495057;">
+                        <tr>
+                            <th class="px-4 py-3 border-0">NO</th>
+                            <th class="py-3 border-0">UNIT</th>
+                            <th class="py-3 border-0">STANDARD & INDICATOR</th>
+                            <th class="py-3 border-0 text-center">RESULT</th>
+                            <th class="py-3 border-0">AUDITOR</th>
+                            <th class="px-4 py-3 border-0 text-center">ACTIONS</th>
                         </tr>
                     </thead>
-                    <tbody style="font-size: 13px;">
-                        @forelse($checklists as $item)
+                    <tbody>
+                        @forelse($checklists as $index => $item)
                         <tr>
-                            <td class="ps-4 fw-bold text-dark">{{ $item->unit_name }}</td>
+                            <td class="px-4 fw-bold text-secondary">
+                                {{ $index + 1 }}
+                            </td>
+                            <td class="fw-bold text-dark">{{ $item->unit_name }}</td>
                             <td>
                                 <div class="text-muted small mb-1">{{ $item->standard_name }}</div>
-                                <div class="fw-bold text-primary">{{ $item->indicator_name }}</div>
+                                <div class="fw-bold text-primary" style="font-size: 0.9rem;">{{ $item->indicator_name }}</div>
                             </td>
-                            
                             <td class="text-center">
                                 @php
                                     $badgeClass = [
@@ -48,24 +52,22 @@
                                     {{ str_replace('_', ' ', $item->result) }}
                                 </span>
                             </td>
-                            
                             <td class="text-muted fw-semibold">{{ $item->auditor_name }}</td>
-                            
-                            <td class="text-center pe-4">
-                                <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('audit_checklists.show', $item->id) }}" class="btn btn-info btn-sm text-white px-2 py-1" style="font-size: 11px;">Show</a>
-                                    <a href="{{ route('audit_checklists.edit', $item->id) }}" class="btn btn-warning btn-sm text-white px-2 py-1" style="font-size: 11px;">Edit</a>
+                            <td class="px-4 text-center">
+                                <div class="btn-group gap-1">
+                                    <a href="{{ route('audit_checklists.show', $item->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #00bee4; font-size: 0.85rem; border-radius: 4px;">View</a>
+                                    <a href="{{ route('audit_checklists.edit', $item->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #ffc107; font-size: 0.85rem; border-radius: 4px;">Edit</a>
                                     <form action="{{ route('audit_checklists.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this report?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm px-2 py-1" style="font-size: 11px;">Delete</button>
+                                        <button type="submit" class="btn btn-sm text-white px-2 py-1" style="background-color: #dc3545; font-size: 0.85rem; border-radius: 4px;">Delete</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center py-5 text-muted">
+                            <td colspan="6" class="text-center py-5 text-muted">
                                 <i class="fas fa-folder-open mb-2 d-block fa-2x"></i>
                                 No audit records found. Click <strong>"+ Add New Audit"</strong> to start.
                             </td>
@@ -73,6 +75,10 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+            
+            <div class="card-footer bg-white border-0 py-3 px-4">
+                <small class="text-muted">Showing 1 to {{ count($checklists) }} of {{ count($checklists) }} records</small>
             </div>
         </div>
     </div>

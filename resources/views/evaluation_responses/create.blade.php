@@ -19,7 +19,7 @@
                         @endforeach
                     </ul>
                 </div>
-            @endifhhh
+            @endif  
             <form action="{{ route('evaluation_responses.store') }}" method="POST">
                 @csrf
 
@@ -34,7 +34,7 @@
                                 <option value="" selected disabled>-- Select Questionnaire Cluster --</option>
                                 @foreach($questionnaires as $q)
                                     <option value="{{ $q->id }}" {{ old('questionnaire_id') == $q->id ? 'selected' : '' }}>
-                                        [{{ $q->year }}] {{ $q->title }}
+                                        [{{ $q->year ?? '' }}] {{ $q->title ?? '' }}
                                     </option>
                                 @endforeach
                             </select>
@@ -44,8 +44,8 @@
                             <select name="question_id" id="questionSelect" class="form-select form-select-sm shadow-none" required>
                                 <option value="" selected disabled>-- Select Bound Question Item --</option>
                                 @foreach($questions as $question)
-                                    <option value="{{ $question->id }}" data-type="{{ $question->type }}" {{ old('question_id') == $question->id ? 'selected' : '' }}>
-                                        [{{ strtoupper($question->type) }}] {{ Str::limit($question->question_text, 60) }}
+                                    <option value="{{ $question->id }}" data-type="{{ $question->type ?? 'unknown' }}" {{ old('question_id') == $question->id ? 'selected' : '' }}>
+                                        [{{ strtoupper($question->type ?? 'UNKNOWN') }}] {{ Str::limit($question->question_text ?? '', 60) }}
                                     </option>
                                 @endforeach
                             </select>
@@ -64,7 +64,7 @@
                                 <option value="">-- Set as Anonymous Guest Response --</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" {{ old('respondent_id') == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }} ({{ $user->email }})
+                                        {{ $user->name ?? '' }} {{ isset($user->email) ? '('.$user->email.')' : '' }}
                                     </option>
                                 @endforeach
                             </select>

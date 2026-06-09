@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage; // WAJIB DIPANGGIL UNTUK MINIO
+use Illuminate\Support\Facades\Storage;
 
 class AccreditationBorangController extends Controller
 {
@@ -43,14 +43,13 @@ class AccreditationBorangController extends Controller
             'accreditation_period_id' => 'required',
             'standard_id'             => 'required',
             'standard_indicator_id'   => 'required',
-            'status'                  => 'required',
-            'supporting_documents'    => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:20480', // Max 20MB
+            'status'                  => 'required|in:draft,submitted,approved',
+            'supporting_documents'    => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,zip|max:20480',
         ]);
 
         try {
             $path = null;
 
-            // Proses upload file bukti pendukung borang ke MinIO
             if ($request->hasFile('supporting_documents')) {
                 $file = $request->file('supporting_documents');
                 $fileName = time() . '_' . $file->getClientOriginalName();
@@ -68,7 +67,6 @@ class AccreditationBorangController extends Controller
                 'analysis'                => $request->analysis,
                 'target'                  => $request->target,
                 'achievement'             => $request->achievement,
-                // Simpan path dari MinIO ke kolom supporting_documents
                 'supporting_documents'    => $path, 
                 'self_assessment_score'   => $request->self_assessment_score ?? 0,
                 'status'                  => $request->status,
@@ -82,7 +80,8 @@ class AccreditationBorangController extends Controller
             return redirect()->route('accreditation_borangs.index')->with('success', 'Borang dan File Bukti Berhasil Disimpan!');
 
         } catch (\Exception $e) {
-            dd("DATABASE ERROR: " . $e->getMessage()); 
+            Log::error('Error Store Borang: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
         }
     }
 
@@ -100,9 +99,10 @@ class AccreditationBorangController extends Controller
             ->where('accreditation_borangs.id', $id)
             ->first();
             
-        if (!$borang) { abort(404); }
+        if (!$borang) { 
+            abort(404); 
+        }
 
-        // Tambahkan link URL utuh dari MinIO agar file bisa diklik/di-download di halaman show
         $fileUrl = $borang->supporting_documents ? Storage::disk('minio')->url($borang->supporting_documents) : null;
 
         return view('accreditation_borangs.show', compact('borang', 'fileUrl'));
@@ -140,19 +140,16 @@ class AccreditationBorangController extends Controller
                 'updated_at'            => now(),
             ];
 
-            // Jika user mengunggah file baru saat edit, ganti file lama di MinIO
             if ($request->hasFile('supporting_documents')) {
                 $borangOld = DB::table('accreditation_borangs')->where('id', $id)->first();
                 
                 /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
                 $disk = Storage::disk('minio');
 
-                // Hapus file lama jika ada
                 if (!empty($borangOld->supporting_documents) && $disk->exists($borangOld->supporting_documents)) {
                     $disk->delete($borangOld->supporting_documents);
                 }
 
-                // Upload file pengganti baru
                 $file = $request->file('supporting_documents');
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $updateData['supporting_documents'] = $disk->putFileAs('borangs', $file, $fileName);
@@ -175,7 +172,6 @@ class AccreditationBorangController extends Controller
             $borang = DB::table('accreditation_borangs')->where('id', $id)->first();
             
             if ($borang) {
-                // Hapus file pendukung fisik dari MinIO terlebih dahulu sebelum data DB dihapus
                 /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
                 $disk = Storage::disk('minio');
                 

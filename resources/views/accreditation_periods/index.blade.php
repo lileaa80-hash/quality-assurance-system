@@ -1,38 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
+<div class="container mt-4">
     <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3 px-4">
-            <h6 class="mb-0 fw-bold" style="letter-spacing: 0.5px;">ACCREDITATION PERIOD MANAGEMENT</h6>
-            <a href="{{ route('accreditation_periods.create') }}" class="btn btn-light btn-sm fw-bold shadow-sm px-3" style="font-size: 11px; border-radius: 5px;">
-                <i class="fas fa-plus me-1"></i> ADD NEW PERIOD
+        <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #007bff; padding: 1rem 1.5rem;">
+            <h5 class="mb-0 fw-bold">SPMI SYSTEM - Accreditation Periods</h5>
+            <a href="{{ route('accreditation_periods.create') }}" class="btn btn-light btn-sm fw-bold text-primary px-3" style="border-radius: 5px;">
+                Add New Period
             </a>
         </div>
+        
         <div class="card-body p-0">
             @if(session('success'))
-                <div class="alert alert-success m-3 py-2 small border-0 shadow-sm" style="background-color: #d4edda; color: #155724;">
-                    <i class="fas fa-check-circle me-1"></i> {{ session('success') }}
+                <div class="alert alert-success m-3 border-0 shadow-sm alert-dismissible fade show">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
+
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr class="bg-light">
-                            <th class="ps-4 py-3 text-dark small fw-bold" style="width: 25%;">PERIOD NAME & UNIT</th>
-                            <th class="py-3 text-dark small fw-bold" style="width: 15%;">TYPE</th>
-                            <th class="py-3 text-dark small fw-bold text-center">TIMELINE</th>
-                            <th class="py-3 text-dark small fw-bold text-center">GRADE/SCORE</th>
-                            <th class="py-3 text-dark small fw-bold text-center">STATUS</th>
-                            <th class="py-3 text-dark small fw-bold text-center pe-4">ACTIONS</th>
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light" style="font-size: 0.85rem; color: #495057;">
+                        <tr>
+                            <th class="px-4 py-3 border-0" style="width: 25%;">PERIOD NAME & UNIT</th>
+                            <th class="py-3 border-0" style="width: 15%;">TYPE</th>
+                            <th class="py-3 border-0 text-center">TIMELINE</th>
+                            <th class="py-3 border-0 text-center">GRADE/SCORE</th>
+                            <th class="py-3 border-0 text-center">STATUS</th>
+                            <th class="px-4 py-3 border-0 text-center">ACTIONS</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="font-size: 13px;">
                         @forelse($periods as $item)
-                        <tr class="align-middle">
-                            <td class="ps-4 py-3">
+                        <tr>
+                            <td class="px-4">
                                 <div class="fw-bold text-primary" style="font-size: 13px;">{{ $item->period_name }}</div>
-                                <div class="text-muted" style="font-size: 10px; font-weight: 500;">
+                                <div class="text-muted small mt-1" style="font-weight: 500;">
                                     <i class="fas fa-university me-1"></i>{{ $item->unit_name }}
                                 </div>
                             </td>
@@ -57,7 +60,7 @@
                                     </div>
                                     <div class="text-muted mt-1" style="font-size: 10px;">Score: {{ $item->result_score ?? 'N/A' }}</div>
                                 @else
-                                    <span class="text-muted italic small" style="font-size: 11px;">Not Assessed</span>
+                                    <span class="text-muted small" style="font-style: italic;">Not Assessed</span>
                                 @endif
                             </td>
 
@@ -77,63 +80,37 @@
                                 </span>
                             </td>
 
-                            <td class="text-center pe-4">
-                                <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('accreditation_periods.show', $item->id) }}" class="btn btn-info btn-sm text-white px-2 py-1" style="font-size: 10px; min-width: 50px; font-weight: 600;">
-                                        Show
-                                    </a>
-                                    <a href="{{ route('accreditation_periods.edit', $item->id) }}" class="btn btn-warning btn-sm text-white px-2 py-1" style="font-size: 10px; min-width: 50px; font-weight: 600;">
-                                        Edit
-                                    </a>
+                            <td class="px-4 text-center">
+                                <div class="btn-group gap-1">
+                                    <a href="{{ route('accreditation_periods.show', $item->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #00bee4; font-size: 0.85rem; border-radius: 4px;">View</a>
+                                    <a href="{{ route('accreditation_periods.edit', $item->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #ffc107; font-size: 0.85rem; border-radius: 4px;">Edit</a>
                                     <form action="{{ route('accreditation_periods.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?')" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm px-2 py-1" style="font-size: 10px; min-width: 55px; font-weight: 600;">
-                                            Delete
-                                        </button>
+                                        <button type="submit" class="btn btn-sm text-white px-2 py-1" style="background-color: #dc3545; font-size: 0.85rem; border-radius: 4px;">Delete</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center py-5">
-                                <p class="text-muted small mb-0">No accreditation periods found.</p>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                No accreditation periods found.
                             </td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
+            
+            <div class="card-footer bg-white border-0 py-3 px-4">
+                <small class="text-muted">Showing 1 to {{ count($periods) }} of {{ count($periods) }} records</small>
+            </div>
         </div>
     </div>
 
-    <div class="text-center mt-5 text-muted" style="font-size: 11px;">
+    <div class="text-center mt-5 mb-4 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL
     </div>
 </div>
-
-<style>
-    .table thead th {
-        border-top: none;
-        border-bottom: 1px solid #eee;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    .table tbody td {
-        border-bottom: 1px solid #f8f9fa;
-    }
-    .table-hover tbody tr:hover {
-        background-color: rgba(0, 123, 255, 0.02);
-    }
-    .badge {
-        letter-spacing: 0.3px;
-    }
-    .italic {
-        font-style: italic;
-    }
-    .btn-sm {
-        border-radius: 4px;
-    }
-</style>
 @endsection

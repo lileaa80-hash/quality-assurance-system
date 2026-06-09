@@ -1,42 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
+<div class="container mt-4">
     <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3 px-4">
-            <h6 class="mb-0 fw-bold text-uppercase" style="letter-spacing: 1px;">
-                <i class="fas fa-list-alt me-2"></i> Accreditation Borang Management
-            </h6>
-            <a href="{{ route('accreditation_borangs.create') }}" class="btn btn-light btn-sm fw-bold px-3 shadow-sm" style="font-size: 11px; color: #0d6efd;">
-                <i class="fas fa-plus me-1"></i> FILL NEW BORANG
+        <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #007bff; padding: 1rem 1.5rem;">
+            <h5 class="mb-0 fw-bold">SPMI SYSTEM - Accreditation Borangs</h5>
+            <a href="{{ route('accreditation_borangs.create') }}" class="btn btn-light btn-sm fw-bold text-primary px-3" style="border-radius: 5px;">
+                Fill New Borang
             </a>
         </div>
 
         <div class="card-body p-0">
             @if(session('success'))
-                <div class="alert alert-success m-3 py-2 small border-0 shadow-sm">
-                    <i class="fas fa-check-circle me-1"></i> {{ session('success') }}
+                <div class="alert alert-success m-3 border-0 shadow-sm alert-dismissible fade show">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
 
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="bg-light">
-                        <tr class="text-uppercase text-muted small fw-bold" style="font-size: 10px;">
-                            <th class="ps-4 py-3" style="width: 25%;">Standard & Period</th>
-                            <th class="py-3">Filler</th>
-                            <th class="py-3 text-center">Score (Self/Assr)</th>
-                            <th class="py-3 text-center">Supporting Docs</th>
-                            <th class="py-3 text-center">Status</th>
-                            <th class="py-3 text-center pe-4">Actions</th>
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light" style="font-size: 0.85rem; color: #495057;">
+                        <tr>
+                            <th class="px-4 py-3 border-0" style="width: 25%;">Standard & Period</th>
+                            <th class="py-3 border-0">Filler</th>
+                            <th class="py-3 border-0 text-center">Score (Self/Assr)</th>
+                            <th class="py-3 border-0 text-center">Supporting Docs</th>
+                            <th class="py-3 border-0 text-center">Status</th>
+                            <th class="px-4 py-3 border-0 text-center">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="font-size: 13px;">
                         @forelse($borangs as $item)
-                        <tr class="align-middle">
-                            <td class="ps-4">
+                        <tr>
+                            <td class="px-4">
                                 <div class="fw-bold text-primary" style="font-size: 13px;">{{ $item->standard_name }}</div>
-                                <div class="text-muted small">Periode: {{ $item->period_name }}</div>
+                                <div class="text-muted small mt-1">Periode: {{ $item->period_name }}</div>
                             </td>
                             <td>
                                 <div class="fw-semibold text-dark">{{ $item->filler_name }}</div>
@@ -73,28 +72,21 @@
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td class="text-center pe-4">
-                                <div class="d-flex justify-content-center align-items-center flex-nowrap gap-1">
-                                    <a href="{{ route('accreditation_borangs.show', $item->id) }}" class="btn btn-info btn-sm text-white px-3 fw-bold" style="font-size: 10px;">
-                                        VIEW
-                                    </a>
-                                    <a href="{{ route('accreditation_borangs.edit', $item->id) }}" class="btn btn-warning btn-sm text-white px-3 fw-bold" style="font-size: 10px;">
-                                        EDIT
-                                    </a>
-                                    <form action="{{ route('accreditation_borangs.destroy', $item->id) }}" method="POST" class="m-0" onsubmit="return confirm('Delete this borang?')">
+                            <td class="px-4 text-center">
+                                <div class="btn-group gap-1">
+                                    <a href="{{ route('accreditation_borangs.show', $item->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #00bee4; font-size: 0.85rem; border-radius: 4px;">View</a>
+                                    <a href="{{ route('accreditation_borangs.edit', $item->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #ffc107; font-size: 0.85rem; border-radius: 4px;">Edit</a>
+                                    <form action="{{ route('accreditation_borangs.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this borang?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm px-3 fw-bold" style="font-size: 10px;">
-                                            DELETE
-                                        </button>
+                                        <button type="submit" class="btn btn-sm text-white px-2 py-1" style="background-color: #dc3545; font-size: 0.85rem; border-radius: 4px;">Delete</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center py-5 text-muted small">
-                                <i class="fas fa-inbox fa-2x d-block mb-2 opacity-25"></i>
+                            <td colspan="6" class="text-center py-5 text-muted">
                                 No data available.
                             </td>
                         </tr>
@@ -102,28 +94,15 @@
                     </tbody>
                 </table>
             </div>
+            
+            <div class="card-footer bg-white border-0 py-3 px-4">
+                <small class="text-muted">Showing 1 to {{ count($borangs) }} of {{ count($borangs) }} records</small>
+            </div>
         </div>
     </div>
     
-    <div class="text-center mt-5 text-muted" style="font-size: 11px;">
+    <div class="text-center mt-5 mb-4 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL
     </div>
 </div>
-
-<style>
-    /* Menghilangkan border default tabel yang mengganggu visual tombol */
-    .table td {
-        border-color: #f0f0f0;
-    }
-    /* Tombol tetap solid dan tidak ada outline aneh */
-    .btn-sm {
-        border-radius: 4px;
-        border: none;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    /* Efek hover lembut pada baris */
-    .table-hover tbody tr:hover {
-        background-color: #fbfcfe !important;
-    }
-</style>
 @endsection

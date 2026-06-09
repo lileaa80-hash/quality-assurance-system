@@ -1,49 +1,51 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
-    <div class="card shadow-sm border-0" style="border-radius: 8px; overflow: hidden;">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3 px-4">
-            <h6 class="mb-0 fw-bold text-uppercase" style="letter-spacing: 0.5px;">Workflows Master</h6>
-            <a href="{{ route('workflows.create') }}" class="btn btn-light btn-sm fw-bold shadow-sm" style="font-size: 11px;">
-                <i class="fas fa-plus me-1"></i> ADD NEW WORKFLOW
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #007bff; padding: 1rem 1.5rem;">
+            <h5 class="mb-0 fw-bold">SPMI SYSTEM - Workflows Master</h5>
+            <a href="{{ route('workflows.create') }}" class="btn btn-light btn-sm fw-bold text-primary px-3" style="border-radius: 5px;">
+                Add New Workflow
             </a>
         </div>
 
         <div class="card-body p-0">
             @if(session('success'))
-                <div class="alert alert-success m-3 py-2 small border-0 shadow-sm" style="background-color: #d4edda; color: #155724;">
-                    <i class="fas fa-check-circle me-1"></i> {{ session('success') }}
+                <div class="alert alert-success m-3 border-0 shadow-sm alert-dismissible fade show">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
             @if(session('error'))
-                <div class="alert alert-danger m-3 py-2 small border-0 shadow-sm" style="background-color: #f8d7da; color: #721c24;">
-                    <i class="fas fa-exclamation-circle me-1"></i> {{ session('error') }}
+                <div class="alert alert-danger m-3 border-0 shadow-sm alert-dismissible fade show">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
 
             <div class="table-responsive">
-                <table class="table table-hover mb-0" style="font-size: 12px;">
-                    <thead>
-                        <tr class="bg-white">
-                            <th class="ps-4 py-3 text-muted small fw-bold text-uppercase">Workflow Name</th>
-                            <th class="py-3 text-muted small fw-bold text-uppercase">Code</th>
-                            <th class="py-3 text-muted small fw-bold text-uppercase">Type</th>
-                            <th class="py-3 text-muted small fw-bold text-uppercase">Description</th>
-                            <th class="py-3 text-muted small fw-bold text-uppercase text-center">Status</th>
-                            <th class="py-3 text-muted small fw-bold text-uppercase text-center pe-4">Actions</th>
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light" style="font-size: 0.85rem; color: #495057;">
+                        <tr>
+                            <th class="ps-4 py-3 border-0" style="width: 25%;">Workflow Name</th>
+                            <th class="py-3 border-0" style="width: 15%;">Code</th>
+                            <th class="py-3 border-0" style="width: 20%;">Type</th>
+                            <th class="py-3 border-0">Description</th>
+                            <th class="py-3 border-0 text-center">Status</th>
+                            <th class="px-4 py-3 border-0 text-center">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="font-size: 13px;">
                         @forelse($workflows as $workflow)
-                        <tr class="align-middle">
-                            <td class="ps-4 fw-medium text-dark">
+                        <tr>
+                            <td class="ps-4 fw-bold text-dark">
                                 {{ $workflow->name }}
                             </td>
                             <td>
-                                <div class="badge bg-light text-primary border text-uppercase px-2 py-1" style="font-size: 10px; font-weight: 600;">
+                                <span class="badge bg-light text-primary border text-uppercase px-2 py-1" style="font-size: 10px; font-weight: 600;">
                                     {{ $workflow->code }}
-                                </div>
+                                </span>
                             </td>
                             <td>
                                 <div class="text-uppercase text-secondary fw-semibold" style="font-size: 11px;">
@@ -64,22 +66,14 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="text-center pe-4">
-                                <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('workflows.show', $workflow->id) }}" 
-                                       class="btn btn-info btn-xs text-white px-2 py-1 fw-bold" 
-                                       style="font-size: 10px; min-width: 45px;">View</a>
-                                    
-                                    <a href="{{ route('workflows.edit', $workflow->id) }}" 
-                                       class="btn btn-warning btn-xs text-white px-2 py-1 fw-bold" 
-                                       style="font-size: 10px; min-width: 45px;">Edit</a>
-                                    
-                                    <form action="{{ route('workflows.destroy', $workflow->id) }}" method="POST" 
-                                          onsubmit="return confirm('Are you sure you want to delete this workflow?')" class="d-inline">
+                            <td class="px-4 text-center">
+                                <div class="btn-group gap-1">
+                                    <a href="{{ route('workflows.show', $workflow->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #00bee4; font-size: 0.85rem; border-radius: 4px;">View</a>
+                                    <a href="{{ route('workflows.edit', $workflow->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #ffc107; font-size: 0.85rem; border-radius: 4px;">Edit</a>
+                                    <form action="{{ route('workflows.destroy', $workflow->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this workflow?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-xs text-white px-2 py-1 fw-bold" 
-                                                style="font-size: 10px; min-width: 45px;">Delete</button>
+                                        <button type="submit" class="btn btn-sm text-white px-2 py-1" style="background-color: #dc3545; font-size: 0.85rem; border-radius: 4px;">Delete</button>
                                     </form>
                                 </div>
                             </td>
@@ -88,42 +82,36 @@
                         <tr>
                             <td colspan="6" class="text-center py-5 text-muted">
                                 <i class="fas fa-folder-open d-block mb-2 fa-2x opacity-25"></i>
-                                <span style="font-size: 11px;">No workflows found.</span>
+                                No workflows found.
                             </td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-        </div>
 
-        @if(method_exists($workflows, 'links'))
-        <div class="card-footer bg-white py-2 border-top">
-            <div class="d-flex justify-content-center">
-                {{ $workflows->links() }}
+            <div class="card-footer bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                <small class="text-muted">
+                    Showing {{ $workflows->count() }} records
+                </small>
+                @if(method_exists($workflows, 'links'))
+                    <div>
+                        {{ $workflows->links() }}
+                    </div>
+                @endif
             </div>
         </div>
-        @endif
     </div>
 
-    <div class="text-center mt-5 text-muted" style="font-size: 11px;">
+    <div class="text-center mt-5 mb-4 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL | Workflow Management Controls
     </div>
 </div>
 
 <style>
-    .btn-xs {
-        padding: 2px 6px;
-        font-size: 10px;
-        line-height: 1.2;
-        border-radius: 3px;
-    }
     .table-hover tbody tr:hover {
         background-color: #f8fafc;
         transition: 0.2s;
-    }
-    .badge {
-        letter-spacing: 0.3px;
     }
 </style>
 @endsection

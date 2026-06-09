@@ -1,38 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
+<div class="container mt-4">
     <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary py-3 px-4 d-flex justify-content-between align-items-center">
-            <h6 class="mb-0 fw-bold text-white text-uppercase">Audit Teams Management</h6>
-            <a href="{{ route('audit_teams.create') }}" class="btn btn-light btn-sm fw-bold px-3 shadow-sm" style="font-size: 11px;">
-                + Add Member
+        <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #007bff; padding: 1rem 1.5rem;">
+            <h5 class="mb-0 fw-bold">SPMI SYSTEM - Audit Teams Management</h5>
+            <a href="{{ route('audit_teams.create') }}" class="btn btn-light btn-sm fw-bold text-primary px-3" style="border-radius: 5px;">
+                Add Member
             </a>
         </div>
-        <div class="card-body p-4">
+        
+        <div class="card-body p-0">
             @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm m-3" role="alert">
                     <i class="fas fa-check-circle me-2"></i>
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+            
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
-                    <thead>
-                        <tr class="text-uppercase small text-muted border-bottom">
-                            <th class="fw-bold py-3 px-3">No. Audit</th>
-                            <th class="fw-bold py-3">Auditor Name</th>
-                            <th class="fw-bold py-3">Role</th>
-                            <th class="fw-bold py-3 text-center">Status</th>
-                            <th class="fw-bold py-3 text-center">Actions</th>
+                    <thead class="bg-light" style="font-size: 0.85rem; color: #495057;">
+                        <tr>
+                            <th class="px-4 py-3 border-0">AUDIT NO</th>
+                            <th class="py-3 border-0">AUDITOR NAME</th>
+                            <th class="py-3 border-0">ROLE</th>
+                            <th class="py-3 border-0 text-center">STATUS</th>
+                            <th class="px-4 py-3 border-0 text-center">ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($teams as $team)
                         <tr>
-                            <td class="px-3">
-                                <span class="badge bg-secondary px-2 py-1" style="font-size: 10px;">
+                            <td class="px-4">
+                                <span class="badge bg-secondary opacity-75 px-2 py-1" style="font-size: 11px;">
                                     {{ $team->audit_number }}
                                 </span>
                             </td>
@@ -55,19 +57,13 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="text-center">
-                                <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('audit_teams.show', $team->id) }}" class="btn btn-info btn-sm text-white px-3 shadow-sm" style="font-size: 10px; font-weight: bold;">
-                                        SHOW
-                                    </a>
-                                    <a href="{{ route('audit_teams.edit', $team->id) }}" class="btn btn-warning btn-sm text-white px-3 shadow-sm" style="font-size: 10px; font-weight: bold;">
-                                        EDIT
-                                    </a>
+                            <td class="px-4 text-center">
+                                <div class="btn-group gap-1">
+                                    <a href="{{ route('audit_teams.show', $team->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #00bee4; font-size: 0.85rem; border-radius: 4px;">View</a>
+                                    <a href="{{ route('audit_teams.edit', $team->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #ffc107; font-size: 0.85rem; border-radius: 4px;">Edit</a>
                                     <form action="{{ route('audit_teams.destroy', $team->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus member ini?')">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm text-white px-3 shadow-sm" style="font-size: 10px; font-weight: bold;">
-                                            DELETE
-                                        </button>
+                                        <button type="submit" class="btn btn-sm text-white px-2 py-1" style="background-color: #dc3545; font-size: 0.85rem; border-radius: 4px;">Delete</button>
                                     </form>
                                 </div>
                             </td>
@@ -81,8 +77,8 @@
                 </table>
             </div>
 
-            <div class="mt-4 px-2 d-flex justify-content-between align-items-center">
-                 <small class="text-muted">Showing <b>{{ $teams->count() }}</b> members</small>
+            <div class="card-footer bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                 <small class="text-muted">Showing 1 to {{ $teams->count() }} of {{ $teams->count() }} members</small>
                  <div>
                     {{ $teams->links() }}
                  </div>

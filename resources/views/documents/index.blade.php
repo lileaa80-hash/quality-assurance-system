@@ -1,19 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid mt-4">
+<div class="container mt-4">
     <div class="card shadow-sm border-0">
         <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #007bff; padding: 1rem 1.5rem;">
             <h5 class="mb-0 fw-bold">SPMI SYSTEM - Documents List</h5>
-            <a href="{{ route('documents.create') }}" class="btn btn-light btn-sm fw-bold text-primary px-3">
+            <a href="{{ route('documents.create') }}" class="btn btn-light btn-sm fw-bold text-primary px-3" style="border-radius: 5px;">
                 Add New Document
             </a>
         </div>
         
         <div class="card-body p-0">
-            <div class="px-4 py-3">
-                <h4 class="mb-0 fw-bold text-secondary">Documents Management</h4>
-            </div>
             @if(session('success'))
                 <div class="alert alert-success m-3 border-0 shadow-sm">
                     {{ session('success') }}
@@ -21,21 +18,20 @@
             @endif
             <div class="table-responsive">
                 <table class="table table-hover mb-0 align-middle">
-                    <thead class="bg-light text-uppercase" style="font-size: 0.85rem;">
+                    <thead class="bg-light" style="font-size: 0.85rem; color: #495057;">
                         <tr>
-                            <th class="px-4 py-3 border-0">Code / No</th>
-                            <th class="py-3 border-0">Title & Creator</th>
-                            <th class="py-3 border-0">Description</th>
-                            <th class="py-3 border-0">Type</th>
-                            <th class="py-3 border-0">Status</th>
-                            <th class="px-4 py-3 border-0 text-center">Actions</th>
+                            <th class="px-4 py-3 border-0">NO</th>
+                            <th class="py-3 border-0">FULL NAME</th>
+                            <th class="py-3 border-0">EMAIL ADDRESS</th>
+                            <th class="py-3 border-0">STATUS</th>
+                            <th class="px-4 py-3 border-0 text-center">ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($documents as $doc)
+                        @forelse($documents as $index => $doc)
                         <tr>
-                            <td class="px-4">
-                                <span class="badge bg-secondary opacity-75">{{ $doc->document_number }}</span>
+                            <td class="px-4 fw-bold text-secondary">
+                                {{ $index + 1 }}
                             </td>
                             <td>
                                 <div class="fw-bold text-dark">{{ $doc->title }}</div>
@@ -47,26 +43,23 @@
                                 </p>
                             </td>
                             <td>
-                                <span class="badge bg-warning text-dark text-uppercase" style="font-size: 0.7rem;">{{ $doc->type }}</span>
-                            </td>
-                            <td>
-                                <span class="badge bg-danger text-uppercase px-3" style="font-size: 0.7rem;">{{ $doc->status }}</span>
+                                <span class="badge text-uppercase px-3" style="font-size: 0.75rem; background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 4px;">{{ $doc->status }}</span>
                             </td>
                             <td class="px-4 text-center">
                                 <div class="btn-group gap-1">
-                                    <a href="{{ route('documents.show', $doc->id) }}" class="btn btn-sm btn-info text-white border-0" style="background-color: #17a2b8;">Show</a>
-                                    <a href="{{ route('documents.edit', $doc->id) }}" class="btn btn-sm btn-warning text-white border-0" style="background-color: #ffc107;">Edit</a>
+                                    <a href="{{ route('documents.show', $doc->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #00bee4; font-size: 0.85rem; border-radius: 4px;">View</a>
+                                    <a href="{{ route('documents.edit', $doc->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #ffc107; font-size: 0.85rem; border-radius: 4px;">Edit</a>
                                     <form action="{{ route('documents.destroy', $doc->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger border-0" style="background-color: #dc3545;" onclick="return confirm('Yakin ingin menghapus?')">Delete</button>
+                                        <button type="submit" class="btn btn-sm text-white px-2 py-1" style="background-color: #dc3545; font-size: 0.85rem; border-radius: 4px;" onclick="return confirm('Yakin ingin menghapus?')">Delete</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center py-5">
+                            <td colspan="5" class="text-center py-5">
                                 <span class="text-muted">No documents found.</span>
                             </td>
                         </tr>
@@ -75,8 +68,8 @@
                 </table>
             </div>
             
-            <div class="card-footer bg-white border-0 py-3">
-                <small class="text-muted">Showing {{ count($documents) }} documents</small>
+            <div class="card-footer bg-white border-0 py-3 px-4">
+                <small class="text-muted">Showing 1 to {{ count($documents) }} of {{ count($documents) }} documents</small>
             </div>
         </div>
     </div>

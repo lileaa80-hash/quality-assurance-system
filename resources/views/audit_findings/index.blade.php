@@ -1,63 +1,66 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
+<div class="container mt-4">
     <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
-            <h6 class="mb-0 fw-bold">AUDIT FINDING MANAGEMENT</h6>
-            <a href="{{ route('audit_findings.create') }}" class="btn btn-light btn-sm fw-bold shadow-sm" style="font-size: 11px;">
-                + Add New Finding
+        <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #007bff; padding: 1rem 1.5rem;">
+            <h5 class="mb-0 fw-bold">SPMI SYSTEM - Audit Findings</h5>
+            <a href="{{ route('audit_findings.create') }}" class="btn btn-light btn-sm fw-bold text-primary px-3" style="border-radius: 5px;">
+                Add New Finding
             </a>
         </div>
+        
         <div class="card-body p-0">
             <div class="p-3 border-bottom bg-light">
-                <form action="{{ route('audit_findings.index') }}" method="GET" class="row g-2">
+                <form action="{{ route('audit_findings.index') }}" method="GET" class="row g-2 m-0">
                     <div class="col-md-4">
-                        <input type="text" name="search" class="form-control form-control-sm" placeholder="Search finding number or description..." value="{{ request('search') }}" style="font-size: 12px;">
+                        <input type="text" name="search" class="form-control form-control-sm" placeholder="Search finding number or description..." value="{{ request('search') }}" style="font-size: 12px; border-radius: 4px;">
                     </div>
                     <div class="col-md-2">
-                        <select name="status" class="form-select form-select-sm" style="font-size: 12px;">
+                        <select name="status" class="form-select form-select-sm" style="font-size: 12px; border-radius: 4px;">
                             <option value="">All Status</option>
                             <option value="open" {{ request('status') == 'open' ? 'selected' : '' }}>OPEN</option>
                             <option value="closed" {{ request('status') == 'closed' ? 'selected' : '' }}>CLOSED</option>
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary btn-sm px-3" style="font-size: 11px;">Filter</button>
+                        <button type="submit" class="btn btn-primary btn-sm px-3" style="font-size: 12px; border-radius: 4px; background-color: #007bff; border: none;">Filter</button>
                     </div>
                 </form>
             </div>
+
             @if(session('success'))
-                <div class="alert alert-success m-3 py-2 small border-0 shadow-sm" style="background-color: #d4edda;">
+                <div class="alert alert-success m-3 border-0 shadow-sm alert-dismissible fade show">
                     {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
 
             <div class="table-responsive">
-                <table class="table table-hover mb-0" style="font-size: 12px;">
-                    <thead class="bg-primary text-white">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light" style="font-size: 0.85rem; color: #495057;">
                         <tr>
-                            <th class="ps-4 py-3 small fw-bold" style="width: 15%;">FINDING NO.</th>
-                            <th class="py-3 small fw-bold" style="width: 25%;">UNIT & SCHEDULE</th>
-                            <th class="py-3 small fw-bold" style="width: 30%;">DESCRIPTION</th>
-                            <th class="py-3 small fw-bold text-center">STATUS</th>
-                            <th class="py-3 small fw-bold text-center pe-4">ACTIONS</th>
+                            <th class="px-4 py-3 border-0" style="width: 15%;">FINDING NO.</th>
+                            <th class="py-3 border-0" style="width: 25%;">UNIT & SCHEDULE</th>
+                            <th class="py-3 border-0" style="width: 35%;">DESCRIPTION</th>
+                            <th class="py-3 border-0 text-center">STATUS</th>
+                            <th class="px-4 py-3 border-0 text-center">ACTIONS</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="font-size: 13px;">
                         @forelse($findings as $item)
-                        <tr class="align-middle">
-                            <td class="ps-4">
+                        <tr>
+                            <td class="px-4">
                                 <div class="fw-bold text-primary">{{ $item->finding_number }}</div>
                                 <div class="text-muted" style="font-size: 10px;">{{ \Carbon\Carbon::parse($item->finding_date)->format('d/m/Y') }}</div>
                             </td>
                             <td>
                                 <div class="fw-bold text-dark">{{ $item->unit_name }}</div>
-                                <div class="text-muted small italic">{{ $item->schedule_title }}</div>
+                                <div class="text-muted small italic" style="font-style: italic;">{{ $item->schedule_title }}</div>
                             </td>
                             <td>
-                                <div class="text-wrap" style="max-width: 250px;">
-                                    <span class="badge bg-light text-dark border fw-normal mb-1" style="font-size: 9px;">{{ strtoupper($item->category) }}</span><br>
+                                <div class="text-wrap" style="max-width: 280px;">
+                                    <span class="badge bg-light text-dark border fw-normal mb-1" style="font-size: 9px; border-radius: 3px;">{{ strtoupper($item->category) }}</span><br>
                                     {{ Str::limit($item->finding_description, 60) }}
                                 </div>
                             </td>
@@ -69,37 +72,25 @@
                                         'in_progress' => 'bg-warning text-dark'
                                     ][$item->status] ?? 'bg-secondary';
                                 @endphp
-                                <span class="badge {{ $statusBadge }} px-2 py-1" style="font-size: 9px; border-radius: 4px;">
-                                    {{ strtoupper($item->status) }}
+                                <span class="badge {{ $statusBadge }} px-2 py-1 text-uppercase" style="font-size: 9px; border-radius: 4px;">
+                                    {{ $item->status }}
                                 </span>
                             </td>
-                            <td class="text-center pe-4">
-                                <div class="d-flex justify-content-center align-items-center gap-1">
-                                    <a href="{{ route('audit_findings.show', $item->id) }}" 
-                                       class="btn btn-info text-white d-flex align-items-center justify-content-center btn-custom-action">
-                                       Show
-                                    </a>
-
-                                    <a href="{{ route('audit_findings.edit', $item->id) }}" 
-                                       class="btn btn-warning text-white d-flex align-items-center justify-content-center btn-custom-action">
-                                       Edit
-                                    </a>
-
-                                    <form action="{{ route('audit_findings.destroy', $item->id) }}" method="POST" 
-                                          onsubmit="return confirm('Delete this finding?')" class="m-0 p-0">
+                            <td class="px-4 text-center">
+                                <div class="btn-group gap-1">
+                                    <a href="{{ route('audit_findings.show', $item->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #00bee4; font-size: 0.85rem; border-radius: 4px;">View</a>
+                                    <a href="{{ route('audit_findings.edit', $item->id) }}" class="btn btn-sm text-white px-2 py-1" style="background-color: #ffc107; font-size: 0.85rem; border-radius: 4px;">Edit</a>
+                                    <form action="{{ route('audit_findings.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Delete this finding?')" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" 
-                                                class="btn btn-danger d-flex align-items-center justify-content-center btn-custom-action">
-                                            Delete
-                                        </button>
+                                        <button type="submit" class="btn btn-sm text-white px-2 py-1" style="background-color: #dc3545; font-size: 0.85rem; border-radius: 4px;">Delete</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center py-5 text-muted" style="font-size: 11px;">
+                            <td colspan="5" class="text-center py-5 text-muted">
                                 No audit findings found.
                             </td>
                         </tr>
@@ -107,44 +98,20 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        @if($findings->hasPages())
-        <div class="card-footer bg-white py-2">
-            <div class="small">
-                {{ $findings->links() }}
+            
+            <div class="card-footer bg-white border-0 py-3 px-4">
+                <small class="text-muted">Showing 1 to {{ count($findings) }} of {{ count($findings) }} records</small>
+                @if($findings->hasPages())
+                    <div class="mt-2">
+                        {{ $findings->links() }}
+                    </div>
+                @endif
             </div>
         </div>
-        @endif
     </div>
 
-    <div class="text-center mt-5 text-muted" style="font-size: 11px;">
+    <div class="text-center mt-5 mb-4 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL
     </div>
 </div>
-
-<style>
-    /* Styling khusus tombol aksi agar presisi */
-    .btn-custom-action {
-        font-size: 10px !important;
-        width: 45px;
-        height: 22px;
-        padding: 0 !important;
-        border-radius: 3px;
-        line-height: 1;
-    }
-    
-    .italic { font-style: italic; }
-    
-    /* Header tabel agar bersih tanpa border bawah tambahan */
-    thead th {
-        border-bottom: none !important;
-        letter-spacing: 0.3px;
-    }
-
-    /* Menghilangkan border pada form delete agar tidak merusak layout */
-    form {
-        display: inline-block;
-    }
-</style>
 @endsection

@@ -15,6 +15,7 @@ use App\Http\Controllers\CorrectiveActionController;
 use App\Http\Controllers\AccreditationPeriodController;
 use App\Http\Controllers\AccreditationBorangController;
 use App\Http\Controllers\DocumentVersionController;
+use App\Http\Controllers\DocumentDistributionController;
 use App\Http\Controllers\EvaluationQuestionnaireController;
 use App\Http\Controllers\EvaluationQuestionController;
 use App\Http\Controllers\WorkflowController;
@@ -22,6 +23,10 @@ use App\Http\Controllers\WorkflowStepController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\FileAttachmentController;
 use App\Http\Controllers\EvaluationResponseController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ReportController;
+use App\Models\Notification;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,6 +45,7 @@ Route::resource('corrective_actions', CorrectiveActionController::class);
 Route::resource('accreditation_periods', AccreditationPeriodController::class);
 Route::resource('accreditation_borangs', AccreditationBorangController::class);
 Route::resource('document_versions', DocumentVersionController::class);
+Route::resource('document_distributions', DocumentDistributionController::class);
 Route::resource('evaluation_questionnaires', EvaluationQuestionnaireController::class);
 Route::resource('evaluation_questions', EvaluationQuestionController::class);
 Route::resource('workflows', WorkflowController::class);
@@ -47,6 +53,9 @@ Route::resource('workflow_steps', WorkflowStepController::class);
 Route::resource('approvals', ApprovalController::class);
 Route::resource('file_attachments', FileAttachmentController::class);
 Route::resource('evaluation_responses', EvaluationResponseController::class);
+Route::resource('notifications', NotificationController::class);
+Route::resource('activities', ActivityController::class);
+Route::resource('reports', ReportController::class);
 
 
 Route::get('/test-minio', function () {

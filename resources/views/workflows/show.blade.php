@@ -77,7 +77,6 @@
             </div>
         </div>
     </div>
-    
     <div class="text-center mt-4 text-muted" style="font-size: 11px;">
         © 2026 SPMI Digital System - RPL | Workflow Management Controls
     </div>
